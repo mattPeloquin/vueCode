@@ -1,0 +1,15 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display each collection with drill-down into children
+    up to a depth of 5.
+
+{%endcomment%}
+
+<panel class="es_panel_drill" data-bind="
+        bind_content_panel: $data
+        ">
+    {% mp_include "collection_header" %}
+
+
+    {% mp_include "collection_footer" %}
+    </panel>

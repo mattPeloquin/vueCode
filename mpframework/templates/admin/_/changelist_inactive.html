@@ -1,0 +1,42 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Inactive toggle filter for changelists.
+    Should be included in the mp_special_filters block
+
+{%endcomment%}
+
+<div id="inactive_toggle">
+    <div class="mp_slider">
+        <div class="ball mp_button"></div>
+        <div class="text">Show inactive</div>
+        </div>
+    </div>
+
+<script> 'use strict';
+    mp.when_ui_loaded( function special_filters() {
+
+        // Set initial state, based on how defaults are setup
+        var show_inactive = false
+        var current = window.location.toString().split('?')[1]
+        current = current ? current.split('&') : []
+        _.each( current, function( param ) {
+            if( _.startsWith( param, 'state' ) && _.endsWith( param, 'all' ) ) {
+                show_inactive = true
+                $("#inactive_toggle .mp_slider").addClass('slider_on')
+                }
+            })
+
+        // Fixup query params based on all handlers
+        $("#inactive_toggle").on( 'click', function() {
+            show_inactive = !show_inactive
+            _.remove( current, function( param ) {
+                return _.startsWith( param, 'state' )
+                })
+            })
+        $(".mp_special_filters").on( 'click', function() {
+            if( show_inactive ) current.push('state=all')
+            window.location = '?' + current.join('&')
+            })
+
+        })
+</script>

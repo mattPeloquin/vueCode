@@ -1,0 +1,21 @@
+{% extends 'user/login/frontporch_base.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Basic login used for popup logins
+
+{% endcomment %}
+
+{% block main_area %}
+    <div class="es_login_basic mp_flex_column">
+
+        {% include "user/login/intro.html" %}
+        {% include "user/login/info_messages.html" %}
+        {% include "user/login/error_messages.html" %}
+        {% include "user/login/signin_panel.html" %}
+        {% include "user/login/signup_panel.html" %}
+
+        </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

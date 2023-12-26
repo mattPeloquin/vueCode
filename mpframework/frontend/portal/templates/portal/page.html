@@ -1,0 +1,128 @@
+{% extends '_base/page_normal.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Base template for all portal pages
+
+    Portals are Single Page Apps (SPAs) configured by Frames, which inherit
+    from this page and setup one or more panes. Panes define the top-level
+    of the portal UI, and usually hold both navigation for top-collections
+    and panels that display collection content.
+
+    This page caches the main body area since content data that inflates
+    the portal is loaded from JSON or uncached JS.
+
+    BE CAREFUL WITH ANY SERVER TAGS INSIDE MAIN PORTAL BLOCK:
+
+        portal_area-cache
+
+    ...in particular, due to user-profile caching, can't include CSRF token
+    (use ajax submit for forms embedded in portal).
+
+{%endcomment%}
+
+{% load cache %}
+
+{% block script_first-no_cache %}
+    {{ block.super }}
+    <script> 'use_strict';
+        {#-- Start portal data loading early in page render #}
+        {% if url_bootstrap_content %}
+            mp.load_urls.push('{{ url_bootstrap_content }}')
+        {% endif %}
+        {% if url_bootstrap_delta %}
+            mp.load_urls.push('{{ url_bootstrap_delta }}')
+        {% endif %}
+        {% if url_bootstrap_user %}
+            mp.load_urls.push('{{ url_bootstrap_user }}')
+        {% endif %}
+        {% if url_bootstrap_nocache %}
+            mp.load_urls.push('{{ url_bootstrap_nocache }}')
+        {% endif %}
+        </script>
+{% endblock %}
+
+{% block script_first-cache %}
+    {{ block.super }}
+    {% include "portal/script.chtml" %}
+{% endblock %}
+
+{% block top_banner-cache %}
+    {% if not sb_options.site.banner.hide_portal %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{#-- TEMPLATE CACHE THE MAIN PAGE AREA #}
+{% block main %}
+{% cache ttime portal-area template_cache_staff %}{#+++++++++++++#}
+
+    <main class="es_main es_theme_root mp_main">
+        {% block portal_area-cache %}
+        {% endblock %}
+        </main>
+
+{#++++++++++++++++++++++++++++++++++++++++++++++++#}{% endcache %}
+{% endblock %}
+
+{% block client_templates-cache_auth %}
+    {{ block.super }}
+
+    {#-- Load up the portal templates #}
+    {% mp_include_files "portal" "templates" ".html" %}
+
+{% endblock %}
+
+{% block script_load-cache_auth %}
+
+    {#-- Error detection based on portal JS completing within time window #}
+    mp._errors_fatal['PORTAL'] = function() {
+        return !mpp._portal_ready
+        }
+
+    {{ block.super }}
+{% endblock %}
+
+{% block script_loaded-cache_auth %}
+    {{ block.super }}
+
+    {#-- Portal specializations add calls to their initializations here #}
+    {% mp_include_files "portal" "init" ".html.js" %}
+
+{% endblock %}
+
+{% block page-no_cache_script %}
+    {{ block.super }}
+
+    mpp.portal_page_script = function() {
+        {% block portal-ready-script %}
+
+            {% mp_include_files "portal" "ready" ".html.js" %}
+
+        {% endblock %}
+        }
+
+    {#-- Force navigation to #}
+    {% if nav_to_path %}
+        mpp.nav_to_path = '{{ nav_to_path }}'
+    {% endif %}
+    {% if nav_to_content_id %}
+        mpp.nav_to_content_id = '{{ nav_to_content_id }}'
+    {% endif %}
+
+    {#-- Portal info to pass from server to client #}
+    mpp.keep_ko_bindings = {{ dev_keep_ko_bindings | jsbool }}
+    mpp.access_apas = {{ access_apas | json }}
+
+    {#-- Standard and optional embedding of non-template cached portal data #}
+    mp.load_json_data({{ bootstrap_data_embed | json }})
+    {% if bootstrap_data_content %}
+        mp.load_json_data({{ bootstrap_data_content | json }})
+    {% endif %}
+    {% if bootstrap_data_user %}
+        mp.load_json_data({{ bootstrap_data_user | json }})
+    {% endif %}
+    {% if bootstrap_data_nocache %}
+        mp.load_json_data({{ bootstrap_data_nocache | json }})
+    {% endif %}
+
+{% endblock %}

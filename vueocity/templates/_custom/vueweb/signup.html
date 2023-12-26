@@ -1,0 +1,152 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Signup page
+
+{%endcomment%}
+
+<div id="vue_signup" class="mp_flex_column">
+
+    <h1>Free as long as you need</h1>
+    <p>No credit card required.</p>
+    <p>Create your site, upload content, test delivery.
+        When you are ready to go live, select a <a href="{{ url_portal }}/pricing">plan</a>.</p>
+
+    <form id="signup_form" method="post"
+            action="{% url 'onboard_signup' %}">
+        {% if signup_form %}
+            <div class="create_error">
+                {% if throttled %}
+                    Please try again in a few moments
+                {% else %}
+                    {{ signup_form.non_field_errors }}
+                    {% for field in signup_form %}
+                        {% if field.errors %}
+                            {{ field.errors.as_ul }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                </div>
+        {% endif %}
+
+        <div class="mp_flex_column mp_flex_start">
+            <div class="signup_label mp_flex mp_flex_vcenter">
+                <span>Your site name</span>
+                <span class="subdomain_url"></span>
+                </div>
+            <div class="signup_row">
+                <input name="subdomain" required autocomplete="false"
+                       data-parsley-trigger="change focusin focusout"
+                       data-parsley-debounce="600"
+                       data-parsley-pattern="[^\s\./\\|+!%{}()]+"
+                       data-parsley-minlength="3"
+                       data-parsley-validation-threshold="1"
+                       data-parsley-remote="{% url 'api_domain_check' '' %}/{value}"
+                       data-parsley-required-message="Please choose your site's url name"
+                       data-parsley-pattern-message="Site urls cannot have spaces or special chars"
+                       data-parsley-remote-message="Unfortunately that site name is not available"
+                       onkeyup="$(this).closest('.mp_flex_column').find('.subdomain_url').html( $(this).val() + '.vueocity.com' );
+                                $(this).closest('.mp_flex_column').find('.sandbox_name').val( 'Your ' + $(this).val() + ' site' );"
+                       />
+                <div class="es_field_valid_show subdomain mp_invisible fa fa-check-circle">
+                    </div>
+                </div>
+
+            <div class="signup_label onboard_role">
+                Feature level <span>(you can change later)</span>
+                </div>
+            <div class="signup_row onboard_role">
+                <select id="onboard_role" name="onboard_role">
+                    <option value="All" mp_icon="icon_tools">
+                        Show me everything!
+                        </option>
+                    <option value="SomeCode" mp_icon="icon_tool">
+                        I do some CSS and HTML
+                        </option>
+                    <option value="NoCode" mp_icon="icon_camera">
+                        No coding please!
+                        </option>
+                    </select>
+                </div>
+
+             <div class="signup_label">
+                Email
+                </div>
+            <div class="signup_row">
+                <input type="email" name="email" required
+                       data-parsley-trigger="change focusin focusout"
+                       data-parsley-required-message="Email for your owner account"
+                       />
+                <div class="es_field_valid_show email mp_invisible fa fa-check-circle">
+                    </div>
+                </div>
+            <div class="signup_label">
+                Password
+                </div>
+            <div class="signup_row">
+                <input type="password" name="password1" required
+                    data-parsley-trigger="change focusin focusout"
+                    data-parsley-minlength="6"
+                    data-parsley-pattern="(?=.*[0-9!@#\$%\^&\*_\-\+ ])(?=.*[a-zA-Z])([a-zA-Z0-9!@#\$%\^&\*_\-\+ ]+)"
+                    data-parsley-required-message="Password for your owner account"
+                    data-parsley-pattern-message="Passwords need more than just letters"
+                    />
+                <div class="es_field_valid_show password1 mp_invisible fa fa-check-circle">
+                    </div>
+                </div>
+
+            <input type="hidden" class="sandbox_name" name="sandbox_name" value="Your new site" />
+            <input class="tzoffset" type="hidden" name="tzoffset" />
+
+            {# Honeypot to fool robots #}
+            <div class="signup_name">
+                <div class="signup_label">Code</div>
+                <input name="code1" autocomplete="false" />
+                </div>
+
+            <input class="es_button_text" type="submit" name="start_trial"
+                   value="Create my site..."
+                   />
+
+            </div>
+        </form>
+    </div>
+
+<script> 'use strict';
+mp.when_portal_ready( function init_signup() {
+
+    {#-- Hide the Honeypot, use js to fool robots not good with js #}
+    $(".signup_name").hide()
+
+    // Stash away the timezone offset
+    $(".tzoffset").val( mp.get_tz_offset() )
+
+    $("#signup_form").parsley()
+    $("#signup_form" ).submit( function( event ) {
+        event.preventDefault()
+        gtag_report_conversion()
+        const wait = mp.show_wait_overlay( true,
+                    `Creating ${ $('.subdomain_url').html() }...` )
+
+        mp.ajax_submit_form( this, {
+            finished: function( values ) {
+                if( values && values.token ) {
+                    function go_new_site() {
+                        let login_url = '{% url 'onboard_login' '_token_' %}'
+                        login_url = login_url.replace( '_token_', values.token )
+                        window.location.assign( login_url )
+                        }
+                    // Pause for a bit to let new site settle
+                    mp.show_wait( wait, true,
+                            `${ $('.subdomain_url').html() } is almost ready...` )
+                    setTimeout( go_new_site, 2000 )
+                    }
+                else {
+                    mp.log_error(`ONBOARD FAIL:${values}`)
+                    window.location.reload()
+                    }
+                },
+            })
+        })
+
+    })
+    </script>

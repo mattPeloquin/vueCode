@@ -1,0 +1,100 @@
+
+=== Can't connect to EC2 ===
+
+Is ssh authorized_keys messed up?
+If terminal open, can debug with
+
+    sudo cat /var/log/secure
+
+Folder permissions can cause refusal, including on parent folders.
+If home folder gets messed up, remove group and other permissions
+
+    chmod og-rwx /home/ec2-user
+    chmod 700 /home/ec2-user/.ssh
+    chmod 600 /home/ec2-user/.ssh/authorized_keys
+
+App for processes and machine health
+"Shift-M" to sort by memory
+    top
+
+See errors from common services, for example
+    sudo cat /var/log/messages | grep rsyslog
+
+List all processes
+    ps -aux
+    ps fax | grep nginx
+
+Terminate named process
+    sudo killall -9 nginx
+
+Various checks of limits
+    ulimit -a
+    more /proc/sys/fs/file-max
+    lsof -u ec2-user | wc -l
+    ls -1 /proc/32321/fd | wc -l
+
+systemctl is on Amazon linux
+
+    systemctl status rsyslog.service -l
+
+
+===== Other Liunx =======
+
+Remove an entire folder tree
+> rm -fr
+
+Full name of current dir
+> pwd
+
+Show absolute path of all items in a folder
+> ls -d -1 $PWD/**/*
+
+Run a script, run script in verbose/debug mode
+> bash script.sh
+> bash -x script.sh
+
+Permissions
+u = user, ie., owner
+g = group
+o = other
+a = ugo
+> sudo chmod -R go+rwx  mpFramework
+> sudo chown -R ec2-user:ec2-user mpFramework
+> sudo chmod 775
+
+Extract a compressions file
+> tar -xf <file>
+
+Folder usage
+> du -sc .[^.]* * | sort -nr
+> du -sch .[^.]* *
+> du -sch .[^.]* * | grep [GM]
+
+Volumes and usage
+> df -h
+
+Show block devices
+> lsblk
+
+To create new volume on block device (like ephemeral drive)
+mkfs to make file system
+mkdir to create dir
+mount to attach device to folder
+
+
+===== Installs and Yolk  =======
+
+List files installed with a package
+> rpm -ql <package>
+
+Yolk is a tool for working with Python packages (install with pip yolk)
+
+Provide list of packages and versions
+> yolk -l
+
+
+===== Bash  =======
+
+# If you need folder a script was run from, add this to the top of script
+#runfolder=$(dirname $0)
+

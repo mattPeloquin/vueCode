@@ -1,0 +1,15 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    LiveEvent display invite information or embed on "open page"
+
+{% endcomment %}
+
+<div class="es_liveevent_open">
+
+    <h1>{{ event.name }}</h1>
+
+    {% if event.invite_html %}
+        {{ event.invite_html | safe }}
+    {% endif %}
+
+    </div>

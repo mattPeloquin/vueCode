@@ -1,0 +1,22 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Sign-in HTML layout and urls; can be overridden in extensions
+
+{% endcomment %}
+
+<script>
+    mp.add_onload( () => {
+        document.getElementById('mpsignup').innerHTML = mp.sbt('signup')
+        document.getElementById('mpsignin').innerHTML = mp.sbt('signin')
+        })
+
+    {% block login_script %}
+    {% endblock %}
+    </script>
+
+{% block login_links %}
+    <a id="mpsignup" class="es_button_text" href="{% url 'login_create' %}">
+        </a>
+    <a id="mpsignin" class="es_button_text" href="{% url 'login' %}">
+        </a>
+{% endblock %}

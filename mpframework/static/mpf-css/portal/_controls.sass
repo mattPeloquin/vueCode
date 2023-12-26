@@ -1,0 +1,122 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Portal controls
+ */
+
+// Hide portal on loading
+.mp_hide_portal
+    visibility: hidden !important
+
+// Portal content controls
+// Relative positioning is key to allow absolute positioning of elements
+// within the content space, including staff edit controls
+
+item, .mp_tree_node, .es_collection_header, .es_content_nav
+    position: relative
+    .mp_control
+        visibility: hidden
+    &:is(:hover,:focus,:active)
+        & > .mp_control
+            visibility: visible
+    // Show all items programtically
+    .mp_control.mp_effect_highlight
+        visibility: visible
+
+.mp_tree_node, .es_collection_header
+    & > .mp_control
+        font-size: 125%
+        top: -0.2em
+        left: -0.2em
+        .es_tool_button
+            opacity: 0.8
+
+item .mp_control
+    .es_content_tool_popup
+        left: auto
+.mp_control
+    z-index: 4
+    position: absolute
+    top: 0
+    left: 0
+    +es_pointer
+    .es_tool_button
+        opacity: 0.6
+        padding: 0.1em 0.3em 0 0.3em
+        background: $bStaff_hidden
+        border-radius: 6px 2px 12px 2px
+        &.fa
+            color: rgba( $cBlue, 0.6 )
+            font-size: 120%
+    &:is(:hover,:focus,:active,.es_theme_highlight)
+        z-index: 2  // Necessary to keep popup over other staff buttons
+        opacity: 1
+        .es_tool_button
+            color: $cWhite !important
+    .es_content_tool
+        position: relative
+        z-index: 1
+        .es_tool_popup
+            .es_textfaded
+                padding-right: 0.4em
+        .mp_button_text, .mp_menu_text
+            padding: 0.3em 0.6em
+    .es_content_tool_popup
+        font-size: 0.9rem
+        z-index: 1
+        position: absolute
+        // Popup overlays the open button, default is left side
+        top: 0
+        left: 0
+        right: auto
+        padding: 0.3em 0.6em
+        color: rgba( $cBlack, 0.9 )
+        background: $bStaff_overlay
+        border-radius: 9px 3px 18px 3px
+        box-shadow: $mp_shadow_staff
+        text-shadow: none
+        font-weight: normal
+    .mp_menu_dropdown .mp_menu_item
+        padding: 0
+
+.mp_sort
+    display: table-cell
+
+.es_toggle_extra_css
+    font-size: 90%
+    left: 0.4em
+    top: 0.4em
+
+.mp_staff_content_info .es_content_tool_popup
+    font-family: monospace
+    top: 1.8em
+    left: -3em !important
+    width: 20em
+    max-width: 28em
+    line-height: 1.1
+.mp_staff_content_add .es_content_tool_popup
+    top: 1.8em
+    width: 10em
+
+// Show staff button highlights
+.mp_staff_active
+    color: $cWhite
+    background-color: rgba( $cOrange, 0.9 ) !important
+    background-image: var(--sheen_high)
+    box-shadow: $mp_shadow_staff
+
+// User view
+#mpuserview_on
+    font-size: 120%
+    color: $cGreen
+    padding: 0.2em 0.4em
+#mpuserview_off
+    position: absolute
+    z-index: 9999
+    top: 0.2em
+    right: 0.2em
+    color: $cGreen
+    opacity: 0.8
+    padding: 0.2em 0.4em
+    background: $bStaff_menu_back
+    border-radius: 4px
+    animation: pulsate 3s infinite

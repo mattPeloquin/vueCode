@@ -1,0 +1,26 @@
+{% extends '_base/pages/style.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Shown when call to proxy times out
+
+{% endcomment %}
+
+{% block page_body %}
+
+    <div class="es_theme_page">
+        <h1>
+            Service timeout
+            </h1>
+        <p>
+            The external service did not respond within {{ timeout }} seconds.
+            </p>
+        <p>
+            Please try again, if the problem continues, contact
+            <a class="es_button_flat"
+                href="mailto:{{ site.email_support }}?subject={{ site.name }}%20Service error"
+                >{{ site.email_support }}
+                </a>
+            </p>
+        </div>
+
+{% endblock %}

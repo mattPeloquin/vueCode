@@ -1,0 +1,22 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Overlay window for viewing content
+
+{%endcomment%}
+
+<div class="es_viewer es_viewer_overlay es_theme_root
+        mpp_viewer_overlay mp_print_hidden">
+    <div class="es_viewer_wrapper">
+
+        {% if sb_options.site.banner.viewer %}
+            {% include "_base/layout/banner.html" %}
+        {% endif %}
+
+        <div class="es_close es_button_text mpp_back">
+            </div>
+
+        <div class="es_viewer_box mpp_viewer_box mpp_viewer_width">
+            </div>
+
+        </div>
+    </div>

@@ -1,0 +1,31 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Login form errors
+
+    Parsley JS error handling is relied on for most error handling.
+
+{% endcomment %}
+
+<div class="es_login_error es_login_info mp_flex_column">
+    {% if throttled %}
+        Please try again in a few moments
+
+    {% elif auth_form.non_field_errors %}
+        {{ auth_form.non_field_errors }}
+    {% elif auth_form.errors %}
+        {% for field in auth_form %}
+            {% if field.errors %}
+                {{ field.errors }}
+            {% endif %}
+        {% endfor %}
+
+    {% elif create_form.non_field_errors %}
+       {{ create_form.non_field_errors }}
+    {% elif create_form.errors %}
+        {% for field in create_form %}
+            {% if field.errors %}
+                {{ field.errors }}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    </div>

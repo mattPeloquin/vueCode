@@ -1,0 +1,45 @@
+{% extends 'admin/mpcontent/change_list.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Override LMS add
+
+{%endcomment%}
+
+{% block page-no_cache_script %}
+    {{ block.super }}
+    {% include "admin/mpcontent/lmsitem/script_init_nocache.html.js" %}
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    $("#new_lms").click( function() {
+        const upload_dialog = mp.dialog_html( $("#new_lms_dialog") )
+        // TBD NOW Fix upload in subview dialog  mp.initialize_direct_upload( upload_dialog.contentEl )
+        })
+
+    {% if click_add_button %}
+        $("#new_lms").click()
+    {% endif %}
+
+{% endblock %}
+
+{% block mp_add_button %}
+
+    <input id="new_lms" class="mp_button" value="Add LMS package" />
+
+    <div id="new_lms_dialog" class="mp_template">
+        <h3>Add LMS Package</h3>
+        <form id="lms_add_form" class="mp_form" method="post"
+                enctype="multipart/form-data"
+                >
+            {% include "_/form.html" with form=lms_add_form %}
+
+            <input type="submit" class="mp_button" name="add_lms"
+                    value="Create LMS package" />
+
+            </form>
+        </div>
+
+{% endblock %}
+

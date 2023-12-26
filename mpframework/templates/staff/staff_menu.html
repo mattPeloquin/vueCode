@@ -1,0 +1,114 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Main staff menu items
+    This can be added where needed for display, but current assumption
+    is it will only be rendered once per page (because ids are used
+    to support automated testing).
+
+{%endcomment%}
+
+{#-- Root see providers, other have easy portal return  #}
+{% if user.logged_into_root %}
+    <div class="mp_menu_item root">
+        <a href="{% url 'root_admin:tenant_provider_changelist' %}">
+            Providers
+            </a>
+        </div>
+{% else %}
+    <div class="mp_menu_item portal mp_menu_header
+            {% if is_portal and not is_portal_content %}
+                mp_menu_active_staff
+            {% endif %}
+            ">
+        <a id="menu_portal" href="{% url 'portal_view' %}">
+            <span class="fa fa-refresh"></span>
+            <span class="mp_menu_text mpr_hide_med">Portal</span>
+            </a>
+        </div>
+{% endif %}
+
+<div class="mpr_collapse" data-collapse="topmenu_collapse">
+    <div class="fa fa-bars mpr_collapse_toggle"></div>
+    <div id="topmenu_collapse" class="mp_menu mp_flex_row
+            mpr_collapse_hide mpr_collapse_inline">
+
+        {#-- Placeholder for extensions to add menu items #}
+        {% mp_include_files "staff" "staff_menu_left" ".html" %}
+
+        {#-- Staff menu items  #}
+        {% if not is_portal_content %}
+            {% if user.sees_content %}
+                <div class="mp_menu_item content mp_menu_header">
+                    <a id="menu_content">
+                        <span class="fa fa-book"></span>
+                        <span class="mp_menu_text mpr_hide_med">Content</span>
+                        </a>
+                    <div class="mp_menu mp_menu_dropdown">
+                        {% mp_include_files "staff" "content" ".html" %}
+                        </div>
+                    </div>
+            {% endif %}
+            {% if user.sees_user %}
+                <div class="mp_menu_item user mp_menu_header">
+                    <a id="menu_users">
+                        <span class="fa fa-users"></span>
+                        <span class="mp_menu_text mpr_hide_med">Users</span>
+                        </a>
+                    <div class="mp_menu mp_menu_dropdown">
+                        {% mp_include_files "staff" "user" ".html" %}
+                        </div>
+                    </div>
+            {% endif %}
+        {% endif %}
+
+        {#-- Placeholder for extensions to add menu items #}
+        {% mp_include_files "staff" "staff_menu_mid" ".html" %}
+
+        {% if not is_portal_content %}
+            {% if user.sees_sandbox %}
+                <div class="mp_menu_item sandbox mp_menu_header">
+                    <a id="menu_sandbox">
+                        <span class="fa fa-cogs"></span>
+                        <span class="mp_menu_text mpr_hide_med">Site</span>
+                        </a>
+                    <div class="mp_menu mp_menu_dropdown">
+                        {% mp_include_files "staff" "sandbox" ".html" %}
+                        </div>
+                    </div>
+            {% endif %}
+            {% if user.access_high %}
+                <div class="mp_menu_item sitebuilder mp_menu_header" >
+                    <a id="menu_sitebuilder">
+                        <span class="fa fa-wrench"></span>
+                        <span class="mp_menu_text mpr_hide_med">SiteBuilder</span>
+                        </a>
+                    <div class="mp_menu mp_menu_dropdown">
+                        {% mp_include_files "staff" "sitebuilder" ".html" %}
+                        </div>
+                    </div>
+            {% endif %}
+        {% endif %}
+
+        {#-- Placeholder for extensions to add menu items #}
+        {% mp_include_files "staff" "staff_menu_right" ".html" %}
+
+        {#-- Root-only menu items  #}
+        {% if user.access_root_menu %}
+            <div class="mp_menu_item root mp_menu_header">
+                <a>Ops</a>
+                <div class="mp_menu mp_menu_dropdown">
+                    {% mp_include_files "root/ops" "menu" ".html" %}
+                    </div>
+                </div>
+            <div class="mp_menu_item root mp_menu_header">
+                <a>Test</a>
+                <div class="mp_menu mp_menu_dropdown">
+                    {% mp_include_files "root/test" "menu" ".html" %}
+                    </div>
+                </div>
+        {% endif %}
+
+    </div>
+</div>
+
+

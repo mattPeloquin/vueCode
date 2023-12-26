@@ -1,0 +1,21 @@
+{% extends 'user/login/frontporch_base.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Show login and create at same time
+
+{% endcomment %}
+
+{% block main_area %}
+    <div class="es_login_default">
+        {% include "user/login/error_messages.html" %}
+        <div class="es_login_panel mp_flex">
+            {% include "user/login/signup_form.html" %}
+            <div>
+                {% include "user/login/signin_form.html" %}
+                {% include "user/login/password_reset.html" %}
+                </div>
+            </div>
+        </div>
+    {% include "user/login/info_messages.html" %}
+    {% include "user/login/intro.html" %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Banner display at the top of the screen
+
+{%endcomment%}
+
+{% if sb_options.site.banner.show %}
+
+    <div class="es_top_banner mp_flex_line mp_top_banner">
+        <a href="{{ return_url }}" class="es_button_text">
+            {{ site.name }}
+            </a>
+        </div>
+
+{% endif %}

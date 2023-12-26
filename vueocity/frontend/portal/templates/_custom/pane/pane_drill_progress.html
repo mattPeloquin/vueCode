@@ -1,0 +1,45 @@
+{% mp_extends 'pane_drill' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display top collections on home page with drill down, organized into
+    groups based on progress.
+
+    Uses the same context and pane options as pane_drill, with the
+    exception of groups, which are fixed.
+
+{%endcomment%}
+
+{% block pane_name %} es_pane_drill_progress {% endblock %}
+
+{% block pane_home_nav %}
+    <!-- ko with: mpp.vm_trees() -->
+
+        {#-- User logged in, show their in-plan items in top section #}
+        {% if user.is_ready %}
+
+            <section class="es_progress_in">
+                <h2>In progress</h2>
+                {% mp_include "items" with items='tops_in_progress()' %}
+                </section>
+
+            <section class="es_progress_remaining">
+                <h2>Remaining</h2>
+                {% mp_include "items" with items='tops_remaining()' %}
+                </section>
+
+            <section class="es_progress_completed">
+                <h2>Completed</h2>
+                {% mp_include "items" with items='tops_completed()' %}
+                </section>
+
+        {% else %}
+
+            <section class="es_progress_logged_out">
+                <h2>Sign in to start using content</h2>
+                {% mp_include "items" with items='all_tops()' %}
+                </section>
+
+        {% endif %}
+
+    <!-- /ko -->
+{% endblock %}

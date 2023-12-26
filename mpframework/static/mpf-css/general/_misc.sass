@@ -1,0 +1,102 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Misc CSS across the platform
+ */
+
+
+.mp_textsmall
+    font-size: 75% !important;
+.mp_textxsmall
+    font-size: 50% !important;
+.mp_text_nowrap
+    white-space: nowrap !important
+
+// Visibility support used with scripting
+.mp_hidden
+    display: none !important
+.mp_hide_load
+    visibility: hidden !important
+.mp_invisible
+    opacity: 0 !important
+.mp_disabled
+    opacity: 0.66 !important
+
+.mp_ellipsis
+    display: block
+    text-overflow: ellipsis
+    overflow: hidden
+
+.mp_hide_empty
+    &:empty
+        display: none
+
+// Support more readable width inheritance in HTML
+.mp_width_full
+    width: 100%
+
+// Drive width to fit in different browsers
+.mp_width_intrinsic
+    display: table
+    width: fit-content
+    width: -moz-fit-content
+    width: -webkit-fit-content
+    width: -ms-fit-content
+    width: intrinsic
+
+// Provide declarative way to show relative positioning in HTML
+.mp_relative
+    position: relative
+
+.mp_inline
+    display: inline-block !important
+
+.mp_template
+    display: none
+
+.mp_select_off
+    user-select: none
+    -webkit-user-select: none
+.mp_select_text
+    user-select: text
+    -webkit-user-select: text
+
+// Common color-defined classes
+.error
+    color: $cYellow !important
+    background-color: $cRed !important
+    font-weight: bold
+    padding: 0.1em 0.3em
+.warning
+    color: $cRed !important
+.success
+    color: $cBlack !important
+    background-color: rgba( $cBlue, 0.4 ) !important
+.mp_mono
+    font-size: 80% !important
+    font-family: monospace
+    line-height: 1.2
+    padding: 0.8em
+    background: $bStaff_overlay
+    color: $cBlack
+
+// Anchor debug items at the bottom of page
+mpdebug > div
+    position: fixed
+    z-index: 800
+    left: 0
+    bottom: 0
+    width: 100%
+    max-height: 60%
+    overflow-y: auto
+.mpdebug
+    font-size: 75% !important
+    font-family: monospace
+    line-height: 1.1
+    padding: 0.8em
+    background: #EEE
+    color: #224
+    &.content
+        min-width: 240px
+        padding: 0.4em !important
+    span
+        padding-right: 2em

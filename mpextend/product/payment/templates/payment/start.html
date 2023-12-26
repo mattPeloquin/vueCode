@@ -1,0 +1,62 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Page to select payment option
+
+{% endcomment %}
+
+{% block head-no_cache %}
+    {{ block.super }}
+    <script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
+
+{% block panel_body %}
+    <div class="es_payment es_payment_start">
+
+        {% if pay_start %}
+            <h1>Connecting to {{ pay_start.name }}...</h1>
+        {% else %}
+            <h1>Select payment...</h1>
+        {% endif %}
+
+        <div class="es_item">
+            {{ apa.description }}
+            </div>
+
+        {% if pay_options %}
+            <div class="es_payments">
+                {% for option in pay_options %}
+                    <div class="es_button_text es_{{ option.service }}">
+                        <a href="{{ option.link }}">
+                            {{ option.name }}
+                            </a>
+                        </div>
+                {% endfor %}
+                </div>
+        {% endif %}
+
+    </div>
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    {% if pay_start.checkout_link %}
+        window.location.replace('{{ pay_start.checkout_link }}')
+    {% endif %}
+
+    {% if pay_start.stripe_session %}
+        const stripe = Stripe('{{ pay_start.public_key }}', {
+                    stripeAccount: '{{ pay_start.stripe_account }}',
+                    })
+        stripe.redirectToCheckout({
+                    sessionId: '{{ pay_start.stripe_session.id }}',
+                    })
+            .then( function(result) {
+                if( result.error ) {
+                    mp.dialog_error( result.error.message )
+                    }
+                })
+    {% endif %}
+
+{% endblock %}

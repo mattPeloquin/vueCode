@@ -1,0 +1,20 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Screen user is sent to after password process is complete
+
+{% endcomment %}
+
+{% block panel_body %}
+
+    <h1>Your password has been reset</h1>
+
+    {% if not is_popup %}
+
+        <a class="es_button_flat" href="{% url 'login' %}">
+            {{ sb_options.text.signin|default:"Sign in" }}
+            </a>
+
+    {% endif %}
+
+{% endblock %}

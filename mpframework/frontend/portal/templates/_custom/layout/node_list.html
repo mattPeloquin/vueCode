@@ -1,0 +1,17 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Default layout for child tree nodes, shows as flat list.
+
+{%endcomment%}
+
+
+<div class="es_node_list">
+    <h2 class="es_title1" data-bind="
+            html: sb('name'),
+            ">
+        </h2>
+    </div>
+
+<div class="es_node_list">
+    {% mp_include "collection_node" %}
+    </div>

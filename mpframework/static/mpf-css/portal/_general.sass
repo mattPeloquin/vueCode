@@ -1,0 +1,116 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Styles related to portal display
+ */
+
+.es_empty, .es_no_results
+    font-style: italic
+    opacity: 0.6
+.es_no_results
+    padding: 1em
+
+
+/*---------------------------------------------------------
+    Standard images sizes
+
+    Only use where images need to be constrained and are
+    not worth dynamic positioning.
+
+    The nominal version holds width and follows aspect
+    ratio, while the fixed versions also limit height
+    by the 1.6 golden ratio with object cover to center
+    any overlap.
+ */
+
+.es_image
+    width: 100%
+
+.es_image_user
+    width: 2em
+    height: 2em
+    border: none
+    border-radius: 50%
+    object-fit: cover
+
+.es_image_xsmall
+    max-width: 1.6em
+.es_image_xsmall_fixed
+    width: 1.6em
+    height: 1em
+    object-fit: cover
+
+.es_image_small
+    max-width: 4em
+.es_image_small_fixed
+    width: 4em
+    height: 2.5em
+    object-fit: cover
+
+.es_image_med
+    max-width: 8em
+.es_image_med_fixed
+    width: 8em
+    height: 5em
+    object-fit: cover
+
+.es_image_large
+    max-width: 21em
+.es_image_large_fixed
+    width: 21em
+    height: 13em
+    object-fit: cover
+
+.es_image_xlarge
+    max-width: 32em
+.es_image_xlarge_fixed
+    width: 32em
+    height: 20em
+    object-fit: cover
+
+/*
+    Setup breadcrumb base
+ */
+.es_breadcrumbs
+    font-size: 90%
+    .es_breadcrumb
+        position: relative
+        padding: 0 0.4em
+
+/*
+    Miscellaneous items
+ */
+
+.es_portal_loading
+    font-style: italic
+
+.es_portal_return
+    padding: 0.2em 0.4em
+
+.es_coming_soon
+    font-style: italic
+    opacity: 0.64
+
+.es_close
+    display: inline-block
+    font-family: FontAwesome !important
+    font-size: 130% !important
+    position: absolute
+    z-index: 9
+    top: 0
+    right: 0
+    padding: 0.1em 0.2em
+    &:before
+        content: "\f057"
+
+// Global text options
+.es_textcenter
+    text-align: center !important
+.es_textright
+    text-align: right !important
+.es_textleft
+    text-align: left !important
+.es_textfaded
+    font-size: 90%
+    font-style: italic
+    opacity: 0.6
+

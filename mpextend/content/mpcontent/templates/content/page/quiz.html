@@ -1,0 +1,27 @@
+{% extends '_base/page_bare.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Place quiz HTML content into bare page
+
+{% endcomment %}
+
+{% block page_head %}
+    {{ block.super }}
+
+    <script defer src="{{ static_url }}libs/vue_quiz.js"></script>
+
+{% endblock %}
+
+{% block page_body %}
+
+    <div class="es_quiz es_quiz_{{ item.pk }}">
+
+        </div>
+
+    <script> 'use strict';
+        {% if item %}
+            const quiz_content = {{ item.content | json }}
+        {% endif %}
+        </script>
+
+{% endblock %}

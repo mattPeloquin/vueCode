@@ -1,0 +1,18 @@
+{% extends 'admin/mpcontent/_tree_change_list.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Top-collection tree list, disable child drags
+
+{%endcomment%}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    mp.mptt_no_children = true;
+
+{% endblock %}
+
+{% block mp_special_filters %}
+    {% include "admin/mpcontent/_special_filters.html" %}
+{% endblock %}
+

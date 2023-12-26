@@ -1,0 +1,27 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Special DOM elements used with scripting that work better
+    to be created in HTML at load
+
+    FUTURE - may be able to create all DOM items without browser compatibility issues now
+
+{%endcomment%}
+
+
+{#-- Wait screen #}
+<div id="mp_wait_full"
+        class="mp_full mp_hidden mp_overflow_none">
+    </div>
+
+{#-- Uncovered if there is a problem #}
+<error id="mp_loading_error" style="display: none; width: 100%;">
+    <div style="position: absolute; left: 0px; top: 40px; width: 100%;
+            padding: 2em; background: rgba( 255,255,255,0.88 ); z-index: 9999"
+            >
+        <p style="font-weight: bold">There has been a problem loading...</p>
+        <p>Please try <a href='/' class='es_button_text'>refreshing {{ site.name }}</a></p>
+        <p>If the problem isn't resolved <a class='es_button_text'
+            href='mailto:{{ site.email_support }}?subject={{ site.name }}'
+            >click here to let us know</a></p>
+        </div>
+    </error>

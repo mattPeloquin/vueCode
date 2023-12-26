@@ -1,0 +1,52 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    List navigation element
+
+{%endcomment%}
+
+<div class="es_list es_content_full es_theme_list es_theme_content" data-bind="
+        style: {
+            '--es_item_font-size': sb_option('portal.item_font_size', $element),
+            '--es_list_height': sb_option('portal.list_height', $element),
+            '--es_list_min-height': sb_option('portal.list_height', $element),
+            '--es_list_max-height': sb_option('portal.list_height', $element),
+            '--es_list_image_aspect': sb_option('portal.list_image_aspect', $element),
+            },
+        ">
+    <a class="es_content_body es_content_highlight mp_nav_anchor mp_flex_line">
+
+        <!-- ko if: sb('image2') || sb('image1') -->
+            <div class="es_content_image">
+                <img class="es_style_hover es_image_small_fixed mp_inline" data-bind="
+                        attr: { src: sb('image2') || sb('image1') }
+                        "/>
+                </div>
+        <!-- /ko -->
+
+        <div class="es_content_text es_text_limit mp_flex_column">
+
+            <h3 class="es_item_title" data-bind="
+                    html: sb('name'),
+                    ">
+                </h3>
+            <!-- ko if: sb('text1') -->
+                <div class="es_item_text1" data-bind="
+                        html: sb('text1'),
+                        ">
+                    </div>
+            <!-- /ko -->
+            <!-- ko if: sb('text2') -->
+                <div class="es_item_text2" data-bind="
+                        html: sb('text2'),
+                        ">
+                    </div>
+            <!-- /ko -->
+
+            <!-- ko if: type_db == 'tree' && !sb('image1') -->
+                {% mp_include "content_progress" %}
+            <!-- /ko -->
+
+            </div>
+
+        </a>
+    </div>

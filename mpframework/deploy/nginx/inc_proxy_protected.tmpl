@@ -1,0 +1,30 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+   Shared config block for direct access of protected
+   content through nginx (not using Cloudfront)
+
+{%endcomment%}
+
+# FUTURE - Could add authentication here; (e.g, to S3 or proxy)
+# But since protected urls shouldn't be accessed externally, likely unnecessary
+proxy_set_header authorization '';
+
+{% if not s.DEBUG %}
+
+    # Hide Amazon headers
+    proxy_hide_header  x-amz-id-2;
+    proxy_hide_header  x-amz-request-id;
+    proxy_hide_header  x-amz-version-id;
+
+{% endif %}
+
+# Elements from the URL regex for the protected url
+# Break these out and rebuild the url vs. just grabbing the entire string to
+# ensure this location only matches specific protected URL cases and to
+# make the pieces of the URL available for other processing
+set $pprotocol $1;
+set $phost $2;
+set $puri $3;
+set $pfiletype $4;
+
+proxy_pass $pprotocol//$phost/$puri.$pfiletype;

@@ -1,0 +1,20 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Access options button shows purchase options
+
+{%endcomment%}
+
+<!-- ko if: !{{ site.options.hide_access_options | jsbool }} -->
+    <!-- ko with: mpp.vm_current.item() || vm.current.node() -->
+        <!-- ko if: $data && (
+                mp.user.access_staff ||
+                !$data.sb ||
+                !sb('access') ) -->
+            <div class="es_button_text {{ extra_class }} es_access_options" data-bind="
+                    click: $data.access_options,
+                    ">
+                <div class="fa fa-shopping-cart"></div>
+                </div>
+        <!-- /ko -->
+    <!-- /ko -->
+<!-- /ko -->

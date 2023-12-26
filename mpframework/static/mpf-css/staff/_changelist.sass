@@ -1,0 +1,156 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Staff changelist styling
+ */
+
+$HEAD_HEIGHT: 2em
+
+#mp_changelist_form
+
+    // Setup fixed header using fixed-positioned content inside th elements
+    // whose width is kept synced with the table columns
+    #mp_changelist
+        position: relative
+        background: $bStaff_overlay
+        padding-top: $HEAD_HEIGHT
+        width: fit-content
+        .mp_changelist-results
+            // HACK - keep size of scrollable results within page to
+            // support scrolling the list underneath the header bar
+            height: calc( 100vh - 13em )
+            background: $cWhite
+            .mp_admin_col_head
+                position: absolute
+                top: 0
+                height: calc( #{$HEAD_HEIGHT} + 0.6em )
+
+    // These are in form, but activated by JS
+    .mp_admin_buttons #mpsave
+        display: none
+
+    .mp_help_staff
+        font-weight: bold
+
+    .mp_changelist-results
+        // Setup changelist item row look
+        table
+            width: 100%
+            border-collapse: collapse
+            tbody > tr
+                &.mp_row-odd, &.mp_row-even
+                    border-bottom: 1px !important
+                > th, > td
+                    min-width: 3em
+                    padding: 0.2em 0.4em
+                    background: white
+                    vertical-align: middle
+                    text-align: left
+                > td
+                    font-size: 80%
+                .action-checkbox-column
+                    width: 1em
+                .mp_input
+                    width: 100% !important
+                    padding: 0.1em 0 0.2em 0.3em !important
+            // Changelist headings
+            thead th
+                font-size: 75%
+                font-weight: normal
+                line-height: 1
+                text-align: left
+                padding-left: 0.4em
+                padding-bottom: 0.2em
+                .mp_admin_col_head
+                    width: 4em
+                    display: flex
+                    flex-flow: column
+                    justify-content: center
+                &.sorted
+                    font-size: 60%
+                    .mp_sortoptions
+                        line-height: 1
+                        a, span
+                            color: rgba( $cBlue, 0.4 )
+                            &:hover
+                                color: rgba( $cOrange, 1 ) !important
+                    .mp_sortremove, .mp_ascending, .mp_descending
+                        font-size: 160%
+                        font-family: FontAwesome !important
+                    .mp_toggle:before
+                        line-height: 0
+                        padding-right: 0.3em
+                    .mp_descending:before
+                        content: "\f0dd"
+                        vertical-align: 0.1em
+                    .mp_ascending:before
+                        content: "\f0de"
+                        vertical-align: -0.35em
+                    .mp_sortremove:before
+                        content: "\f00d"
+                        font-size: 90%
+                        line-height: 0
+        // Fixup changelist links colors
+        a
+            color: $cBlue
+            &:hover
+                color: rgba( $cOrange, 1 )
+                text-shadow: 1px 1px 1px rgba( $cBlack, 0.2 )
+                transition: text-shadow 0.08s ease-out, color 0.08s ease-out
+            &.mp_button_flat
+                color: rgba( $cBlack, 0.6 ) !important
+                &:hover
+                    color: $cWhite !important
+                    background-color: rgba( $cOrange, 0.8 )
+
+    .field-list_actions
+        font-size: 80%
+        line-height: 1
+        padding: 0 0 0 0.4em
+
+.column-description
+    min-width: 6em
+.field-catalog_tags
+    text-align: center
+.mp_row.djn-add-item
+    padding: 0.6em 0 1.2em 0.6em
+
+.delete-handler, .remove-handler
+    font-size: 130%
+    padding: 0 0 0 0.4em
+    &:before
+        content: "\f056"
+.predelete .delete-handler
+    color: rgba( $cRed, 1 ) !important
+.djn-drag-handler:before
+    content: "\f0c9"
+
+#changelist-search-form
+    margin: 0
+    border: none !important
+    #changelist-search.mp_input
+        display: inline-block !important
+        width: 18em !important
+    .search-button
+        display: none !important
+
+// Hacks to keep filter box functional, but fit into style
+#mp_filters
+    position: relative
+    width: 4em
+    max-width: 16em
+    margin-left: 1.2em
+    margin-right: 0.8em
+    .mp_filters_menu
+        position: absolute
+        width: 16em
+        background: $bStaff_menu_back
+        padding: 0.6em
+    .mp_button_text
+        color: $cBlue
+    .mp_filters_item
+        display: flex
+        flex-flow: column
+        padding-bottom: 0.2em
+        label
+            font-size: 80%
+            color: rgba( $cBlack, 0.6 )

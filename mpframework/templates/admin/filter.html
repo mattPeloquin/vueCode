@@ -1,0 +1,18 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Use select box style filter items
+
+{% endcomment %}
+
+<div class="mp_filters_item">
+    <label>{{ title | capfirst }}</label>
+    <select>
+        {% for choice in choices %}
+            <option value="{{ choice.query_string|iriencode }}"
+                    {% if choice.selected %} selected='selected' {% endif %}
+                    >
+                {{ choice.display }}
+                </option>
+        {% endfor %}
+        </select>
+    </div>

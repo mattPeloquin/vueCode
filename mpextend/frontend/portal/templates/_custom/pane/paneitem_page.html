@@ -1,0 +1,22 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Single item page portal
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/macros.html" %}
+
+<pane class="{% block pane_name %} es_paneitem_page {% endblock %}"
+        {% usemacro add_pane_context pane %} data-bind="
+        with: mpp.vm_items().get_id( mp.request_content ),
+        ">
+    <!-- ko let: {
+        default_item_template: mpp.get_template_name(
+                mpp.pane_options( 'item_template', $element ) ||
+                mp.request.default_item
+                ),
+            } -->
+        {% mp_include "item_wrapper" %}
+    <!-- /ko -->
+    </pane>

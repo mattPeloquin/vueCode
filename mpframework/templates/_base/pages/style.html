@@ -1,0 +1,21 @@
+{% extends '_base/page_bare.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Bare style page
+
+    Stand-alone loading for page/iframe that preserves the
+    sandbox theme (e.g., display of content or HTML for wysiwyg editing).
+
+{% endcomment %}
+
+{% block page_head %}
+    {% with True as page_add_style %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+{% block page_classes %}
+    {% with True as page_add_style %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Front porch main sign in/up screen
+
+{% endcomment %}
+
+{% block page_ready_script %}
+
+    {#-- Hide the Honeypot, using js to fool robots that know hidden fields but not js #}
+    $("#code1").hide()
+
+    {#-- Get username that was typed in, check both new user and sign-in #}
+    function get_username() {
+        var username = false
+        if( $("#{{ create_form.email.auto_id }}").val() ) username = $("#{{ create_form.email.auto_id }}").val()
+        if( $("#{{ auth_form.email.auto_id }}").val() ) username = $("#{{ auth_form.email.auto_id }}").val()
+        return username
+        }
+
+    {#-- Add username to lost password url #}
+    $(".mp_login_forgot_password").click(function() {
+        var username = get_username()
+        if( username ) {
+            $(this).attr( "href", $(this).attr("href") + '?email=' + username )
+            }
+        })
+
+    {% block frontporch_script %}
+
+        mp.set_watermark("#{{ auth_form.email.auto_id }}", "Email")
+        mp.set_watermark("#{{ auth_form.password.auto_id }}", "Password")
+        mp.set_watermark("#{{ auth_form.login_code.auto_id }}", "Access code")
+
+        mp.set_watermark("#{{ create_form.email.auto_id }}", "New email")
+        mp.set_watermark("#{{ create_form.password1.auto_id }}", "Password")
+        mp.set_watermark("#{{ create_form.password2.auto_id }}", "Confirm")
+        mp.set_watermark("#{{ create_form.create_code.auto_id }}", "Access code")
+
+        mp.set_watermark("#{{ create_form.first_name.auto_id }}", "{{ create_form.first_name.label }}")
+        mp.set_watermark("#{{ create_form.last_name.auto_id }}", "{{ create_form.last_name.label }}")
+        mp.set_watermark("#{{ create_form.organization.auto_id }}", "{{ create_form.organization.label }}")
+        mp.set_watermark("#{{ create_form.title.auto_id }}", "{{ create_form.title.label }}")
+        mp.set_watermark("#{{ create_form.postal_code.auto_id }}", "{{ create_form.postal_code.label }}")
+        mp.set_watermark("#{{ create_form.country.auto_id }}", "{{ create_form.country.label }}")
+
+        {#-- Default to only showing login pane #}
+        $(".mp_user_auth").show()
+        $(".mp_user_create").hide()
+
+        {#-- Setup support for swapping create/login panes #}
+        if( !{{ signin | jsbool }} && (
+                sessionStorage.getItem('mp_login_create') === "true" ||
+                {{ sb_options.site.login_signup | jsbool }} ||
+                {{ signup | jsbool }} ) ) {
+            $(".mp_user_auth").hide()
+            $(".mp_user_create").show()
+            }
+        $(".mp_user_switch").click( function() {
+            $(".mp_user_create, .mp_user_auth").toggle()
+            if( $(".mp_user_create").is(":visible") ) {
+                sessionStorage.setItem( 'mp_login_create', true )
+                $("#{{ create_form.email.auto_id }}").change_val( $("#{{ auth_form.email.auto_id }}").val() )
+                }
+            else
+                {
+                sessionStorage.setItem( 'mp_login_create', false )
+                $("#{{ auth_form.email.auto_id }}").change_val( $("#{{ create_form.email.auto_id }}").val() )
+                }
+            })
+
+    {% endblock %}
+
+{% endblock %}
+
+{% block main_area %}
+
+    <div class="es_login_default"
+            {% if site.hero_image2 %}
+                style="background-image: url('{{ site.hero_image2.url }}')"
+            {% elif site.hero_image %}
+                style="background-image: url('{{ site.hero_image.url }}')"
+            {% endif %}
+            >
+        <div class="es_login_panels mp_flex_line">
+
+            {% include "user/login/signin_panel.html" %}
+            {% include "user/login/signup_panel.html" %}
+
+            <div class="es_theme_overlay mp_hide_empty mp_flex_column">
+                {% include "user/login/info_messages.html" %}
+                {% include "user/login/error_messages.html" %}
+                </div>
+            </div>
+        </div>
+
+    {% include "user/login/intro.html" %}
+
+{% endblock %}
+
+{% block page_debug %}
+    {% if auth_form.errors %}
+        <div class="mpdebug mpdev_display">
+            LOGIN ERRORS: {{ auth_form.errors }}
+            </div>
+    {% endif %}
+    {% if create_form.errors %}
+        <div class="mpdebug mpdev_display">
+            NEW USER ERRORS: {{ create_form.errors }}
+            </div>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}

@@ -1,0 +1,21 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Add item connection menu to staff menu
+
+{% endcomment %}
+
+
+<div class="es_content_tool mpp_tool_popup mp_staff_content_connect">
+    <div class="mp_button_text">Share</div>
+    <div class="es_content_tool_popup mp_hidden" data-bind="
+            lazy_bind_mphidden: $data,
+            ">
+        <div class="es_tool_popup" data-bind="
+                template: {
+                    name: 'template_content_staff_easylink',
+                    },
+                bind_display: $data,
+                ">
+            </div>
+        </div>
+    </div>

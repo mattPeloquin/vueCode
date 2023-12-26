@@ -1,0 +1,9 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Dynamic robots.txt provides link to per-sandbox sitemap
+
+{% endcomment %}
+
+User-agent: *
+Disallow: /api/
+SITEMAP: {{ site.main_host_url }}/sitemap.xml

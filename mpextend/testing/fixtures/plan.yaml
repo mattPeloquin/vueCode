@@ -1,0 +1,41 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Plan test data
+
+- fields:
+    sandbox: 20
+  model: plan.baseplan
+  pk: 1
+- fields:
+    _user: 20
+  model: plan.userplan
+  pk: 1
+
+- fields:
+    sandbox: 20
+    content:
+        top_ids: [ 1001 ]
+  model: plan.baseplan
+  pk: 2
+- fields:
+    _name: Plan for some Group Accont 30 users
+    group_account: 30
+    users: [ 20, 21 ]
+  model: plan.groupplan
+  pk: 2
+
+
+- fields:
+    name: Plan pages
+    frame_type: P
+    structure:
+      pane:
+        template: pane_drill_plan
+  model: sitebuilder.frame
+  pk: 4100
+- fields:
+    name: pane_drill_plan
+    template_type: P
+    orig_path: "_custom/pane/pane_drill_plan.html"
+  model: sitebuilder.templatecustom
+  pk: 4102

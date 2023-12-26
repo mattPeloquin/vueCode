@@ -1,0 +1,42 @@
+{% mp_extends 'panel_page' %}
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display horizontal scroll for each area and/or sub collection core items.
+
+{%endcomment%}
+
+{% block panel_class %} es_panel_horizontal {% endblock %}
+
+{% block panel_content %}
+
+    <section data-bind="
+            bind_content_panel: $data,
+            ">
+        {% to_list 'featured' 'core' 'custom1' 'custom2' 'custom3' 'support' as areas %}
+        {% for area in areas %}
+
+            <!-- ko if: ko.length( items_area('{{ area }}') ) -->
+                <h2 class="es_title2" data-bind="
+                    html: sbt('area_{{ area }}'),
+                    "></h2>
+                {% mp_include "items" with itemfn='items_area' arg1=area horizontal=True opt_template=area %}
+            <!-- /ko -->
+
+        {% endfor %}
+        {% include "portal/controls/content.html" %}
+        </section>
+
+    <!-- ko foreach: node_children() -->
+        <section data-bind="
+                bind_tree_node: $data,
+                class: css_classes(),
+                ">
+            <h2 class="es_title2" data-bind="
+                html: sb('name'),
+                "></h2>
+            {% mp_include "items" with items='items_core()' horizontal=True %}
+            {% include "portal/controls/content.html" with tooltip=True %}
+            </section>
+    <!-- /ko -->
+
+{% endblock %}

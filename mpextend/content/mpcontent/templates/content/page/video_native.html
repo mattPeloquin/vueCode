@@ -1,0 +1,20 @@
+{% extends '_base/pages/scripting.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display video or audio using the native browser player
+
+{% endcomment %}
+
+{% block page_body %}
+
+    <div class="es_{{ play_type }} es_{{ play_type }}_native
+                es_{{ play_type }}_{{ item.pk }}">
+
+        <{{ play_type }} id="video_native" autoplay controls controlsList="nodownload"
+                src="{{ compatibility_url }}"
+                >
+            </{{ play_type }}>
+
+        </div>
+
+{% endblock %}

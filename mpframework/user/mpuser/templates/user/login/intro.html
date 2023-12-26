@@ -1,0 +1,33 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Default introduction display
+
+{% endcomment %}
+
+
+<div class="es_login_intro">
+
+    {% if site.login_html %}
+
+        {{ site.login_html | safe }}
+
+    {% else %}
+
+        <h2>{{ site.name }}</h2>
+
+        {% if site.summary %}
+            {{ site.summary | safe }}
+        {% else %}
+            Please sign in or create a new account to access content
+        {% endif %}
+
+        <br><br>
+        {% if not site.policy.private_portal %}
+            <a class="es_button_text" href="{% url 'portal_view' %}">
+                Visit our site
+                </a>
+        {% endif %}
+
+    {% endif %}
+
+    </div>

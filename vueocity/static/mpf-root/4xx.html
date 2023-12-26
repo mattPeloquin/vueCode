@@ -1,0 +1,15 @@
+{% extends 'static/page.html' %}
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Vueocity default 400 page - used for both 403 and 404 to obfuscate fishing
+
+{%endcomment%}
+
+{% block static_title %}{{ settings.MP_UI_TEXT.root_name }}{% endblock %}
+
+{% block static_body %}
+
+    <h1>We are unable to complete your request...</h1>
+    <p>This address doesn't exist or your access has expired.</p>
+
+{% endblock %}

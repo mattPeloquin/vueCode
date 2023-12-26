@@ -1,0 +1,21 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Growing card/list hover
+
+{%endcomment%}
+
+<style>
+
+    .es_content_image, .es_theme_card .es_content_body {
+        overflow: hidden;
+        }
+    .es_theme_card .es_style_hover,
+    .es_theme_list .es_style_hover {
+        transition: transform {{ speed|default:'0.3' }}s ease-out;
+        }
+    .es_theme_card:hover .es_style_hover,
+    .es_theme_list:hover .es_style_hover {
+        transform: scale({{ growth|default:'1.2' }});
+        }
+
+</style>

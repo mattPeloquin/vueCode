@@ -1,0 +1,162 @@
+
+===== RDS Aurora / Instances/Serverless =======
+
+Setup RDS server name and user/pwd according to mpframework root settings.
+Database should not be publicly accessible.
+
+Use db_shell fab command to open shell to current mySQL server.
+
+There is NO ssh or file system access to RDS instances,
+which means problems with .frm or .ibd files cannot be resolved.
+
+To access DB through mySql command, run from server shell:
+
+To log into mySQL db
+    > mysql -h vuedbserverless.cluster-cbt3vzok9hts.us-west-2.rds.amazonaws.com -u vue -p prod
+
+To move schema and data between DBs when not possible by replication:
+
+    > mysqldump -h vuedb-cluster.cluster-ro-cbt3vzok9hts.us-west-2.rds.amazonaws.com -u vue -p prod > proddb.sql
+    > mysql -h vuedbserverless.cluster-cbt3vzok9hts.us-west-2.rds.amazonaws.com -u vue -p prod < proddb.sql
+
+Run query from command line:
+
+    > mysql -h vuedbserverless.cluster-cbt3vzok9hts.us-west-2.rds.amazonaws.com -p -u vue prod -e "show create table content_proxylink"
+
+Move rows between databases:
+
+    > mysqldump -h aux-cluster.cluster-cbt3vzok9hts.us-west-2.rds.amazonaws.com -p -u vue --complete-insert --no-create-info prod content_sharelink > move_proxy_link.sql
+    ...Edit table names if needed
+    > mysql -h vuedbserverless.cluster-cbt3vzok9hts.us-west-2.rds.amazonaws.com -p -u vue prod < move_proxy_link.sql
+
+
+===== DB shell commands  =======
+
+show databases;
+use prod;
+
+show processlist;
+show full processlist;
+kill xxx;
+
+show status;
+
+show tables;
+show create table xxx;
+show columns from tenant_sandbox;
+
+SHOW VARIABLES LIKE "max%";
+
+# List names of all column constraints
+SELECT ke.referenced_table_name parent, ke.table_name child, ke.constraint_name FROM information_schema.KEY_COLUMN_USAGE ke WHERE   ke.referenced_table_name IS NOT NULL ORDER BY ke.referenced_table_name;
+
+# Manipulate a table
+
+DROP TABLE xxx;
+
+RENAME TABLE xxx to yyy;
+
+CREATE TABLE account_gauser ( id int(11) NOT NULL AUTO_INCREMENT, PRIMARY KEY (`id`) );
+
+# COPY TABLE
+CREATE TABLE newtable LIKE oldtable;
+INSERT newtable SELECT * FROM oldtable;
+
+# If db-sync doesn't create table, create table with just ID, then use db-diff
+
+CREATE TABLE tbd ( `id` int(11) NOT NULL AUTO_INCREMENT, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+# Reporting examples
+
+SELECT a.id, a.sandbox_id, u.email, u.id, u.sandbox_id from account_baseaccount a JOIN user_mpuser u on a.pk = u.primary_account_id WHERE u.email LIKE '%matt%';
+
+SELECT * from account_baseaccount a WHERE a.pk not in ( SELECT u.primary_account_id from user_mpuser u WHERE u.primary_account_id = a.pk );
+
+# Update existing rows
+
+update content_baseitem SET workflow='P' WHERE id=1371;
+
+UPDATE table_name SET field = NOW();
+UPDATE lms_packageroot SET provider_id=11;
+UPDATE tenant_provider SET is_active=true;
+
+UPDATE django_content_type SET app_label='mpcontent' WHERE app_label='content';
+UPDATE content_proxylink SET link_type='aa_default' WHERE link_type='';
+
+UPDATE product_groupaccount t1
+  JOIN product_baseaccount t2 on t2.pk = t1.baseaccount_ptr_id
+  SET t1.name = t2.name WHERE t2._django_ctype_id = 37;
+
+DELETE FROM auth_permission;
+DELETE FROM django_content_type WHERE app_label='';
+DELETE FROM django_content_type WHERE app_label='usertracking' AND model='usertracking';
+DELETE FROM usercontent_useritem WHERE progress='N';
+
+# Add new rows
+
+INSERT INTO table1( c1_name, c2_name, c3_name ) VALUES ( c1, c2, 'c3' );
+INSERT INTO table1( c1_name, c2_name, c3_name ) SELECT c1, c2, 'constant' FROM table2
+
+# Add columns
+
+ALTER TABLE content_baseitem ADD COLUMN points integer;
+ALTER TABLE user_mpuser ADD COLUMN notes varchar(1024);
+ALTER TABLE user_mpuser ADD COLUMN pwd_changed datetime;
+ALTER TABLE tenant_provide ADD COLUMN is_active boolean;
+ALTER TABLE user_group ADD COLUMN new_col varchar(1) DEFAULT 'T';
+
+# Copy column data
+
+UPDATE table_name SET columnB = columnA;
+
+UPDATE mpcontent_baseitem b SET html2 = ( SELECT html1 FROM mpcontent_tree t WHERE b.id = t.baseitem_ptr_id );
+
+# Add foreign key
+
+ALTER TABLE app_table ADD COLUMN key_id int(11) NOT NULL;
+CREATE INDEX app_table_key_id ON app_table ( key_id );
+ALTER TABLE app_table ADD CONSTRAINT key_id_fk FOREIGN KEY (key_id) REFERENCES other_table (id);
+
+# Add indexes keys and constraints
+
+CREATE UNIQUE INDEX category_sandboxes ON content_category_sandboxes( sandbox_id, portalcategory_id );
+CREATE FULLTEXT INDEX apa_rules_text_index ON account_apa( rules );
+
+# Change column name (new name and/or type defined at end, need to repeat to not change)
+
+ALTER TABLE product_coupon CHANGE lifetime periods numeric(9, 2);
+ALTER TABLE product_coupon CHANGE date_expires coupon_expires datetime DEFAULT NULL;
+ALTER TABLE product_coupon CHANGE access_expires access_expires datetime DEFAULT NULL;
+
+# Delete an index, foreign key constraint
+
+ALTER TABLE product_product DROP FOREIGN KEY _content_type_id_refs_id_ff378371;
+ALTER TABLE product_product DROP KEY _content_type_id;
+
+# Rename a foreign key
+
+ALTER TABLE content_baseitem DROP FOREIGN KEY content_type_id_refs_id_98a72189;
+ALTER TABLE content_baseitem CHANGE content_type_id _content_type2_id int(11);
+ALTER TABLE content_baseitem ADD CONSTRAINT `_content_type_id_fk` FOREIGN KEY (`_content_type2_id`) REFERENCES `django_content_type` (`id`);
+
+# Check for crosslinked sandbox references
+
+SELECT bs.id, baseitem_id, sandbox_id FROM mpcontent_baseitem_sandboxes bs JOIN mpcontent_baseitem b ON bs.baseitem_id=b.id JO
+IN  tenant_sandbox s ON bs.sandbox_id=s.id WHERE s.provider_id != b.provider_id;
+
+#################
+
+SELECT table_name, table_rows FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'prod';
+
+# Byte sizes
+SELECT
+     table_schema as `Database`,
+     table_name AS `Table`,
+     round(((data_length + index_length) / 1024 / 1024), 2) `Size in MB`
+FROM information_schema.TABLES
+ORDER BY (data_length + index_length) DESC;
+
+
+SELECT TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME
+FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE
+REFERENCED_TABLE_NAME = 'table_name';

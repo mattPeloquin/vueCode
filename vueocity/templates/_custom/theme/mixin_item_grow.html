@@ -1,0 +1,16 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Remove constraints on item size for text and images
+
+{%endcomment%}
+
+{% mp_include "mixin_item_grow_text" %}
+
+<style>
+
+    :root {
+        --es_card_width: auto;
+        --es_card_image_height: auto;
+        }
+
+</style>

@@ -1,0 +1,41 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+	Vueocity marketing website home page
+
+{%endcomment%}
+
+
+<article id="vue_demo" class="demo mp_flex_column" data-bind="
+        with: get_tag('demo'),
+        ">
+    {% include "portal/controls/content.html" %}
+
+    <h1 data-bind="
+            html: sb('name'),
+            ">
+        </h1>
+    <p class="demo_desc1" data-bind="
+            html: sb('text1'),
+            ">
+        </p>
+    <p class="demo_desc2" data-bind="
+            html: sb('text2'),
+            ">
+        </p>
+
+    <div class="demo1" data-bind="
+            html: sb('html1'),
+            ">
+        </div>
+
+    <div class="demo2" data-bind="
+            html: sb('html2'),
+            ">
+        </div>
+
+    <div class="demo3" data-bind="
+            html: sb('html3'),
+            ">
+        </div>
+
+    </article>

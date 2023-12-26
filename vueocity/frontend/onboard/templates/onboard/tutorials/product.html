@@ -1,0 +1,51 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Startup tutorial for add product
+
+{% endcomment %}
+
+
+<div class="onboard_heading mp_flex mp_flex_between">
+    <div class="mp_button_text tutorial_toggle">
+        Create digital product
+        </div>
+    <div class="es_close tutorial_close mp_button_text">
+        </div>
+    </div>
+
+<div class="onboard_panel">
+
+    <div class="tp1 vuetool">
+        <div class="mp_viz_switch">
+            <h3>Upload content file</h3>
+            </div>
+        <div class="mp_viz_area mp_hidden">
+            Select file on your local machine, upload to Vueocity, and provide a
+            display name.
+            </div>
+        </div>
+
+    <div class="tp2 vuetool">
+        <div class="mp_viz_switch">
+            <h3>Purchase options</h3>
+            </div>
+        <div class="mp_viz_area mp_hidden">
+            Set a default price and subscription type for the product.
+            You can also add a free trial and coupon.
+            There are many additional options in the staff menu.
+            </div>
+        </div>
+
+    </div>
+
+<script> 'use strict';
+    mp.when_ui_loaded( function onboard_product() {
+
+        $("#tutorial_tool").addClass("right")
+
+        mp.set_highlight( ".tp1", ".mp_easy_content" )
+        mp.set_highlight( ".tp2", ".mp_easy_purchase" )
+
+        })
+    </script>
+

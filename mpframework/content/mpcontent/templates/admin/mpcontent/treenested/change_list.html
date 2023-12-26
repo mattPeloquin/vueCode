@@ -1,0 +1,46 @@
+{% extends 'admin/mpcontent/_tree_change_list.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Nested tree view change list
+
+{%endcomment%}
+
+{% block content-title %}
+    <div class="mp_admin_title">
+        {% if top_tree %}
+            {{ top_tree.name }} child collections
+        {% else %}
+            Collection trees
+        {% endif %}
+        </div>
+{% endblock %}
+
+{% block search %}
+{% endblock %}
+
+{% block mp_special_filters %}
+    {% include "admin/mpcontent/_special_filters.html" %}
+{% endblock %}
+
+{% block mp_add_button %}
+    {% if top_tree %}
+        <a class="mp_button" href="{% url 'staff_admin:mpcontent_treenested_add' top_tree.pk %}"
+            >Add child collection</a>
+    {% endif %}
+{% endblock %}
+
+{% block head-no_cache %}
+    {{ block.super }}
+    <style>
+        {% if top_tree %}
+            {#-- Hide tree controls on top tree in single-tree view #}
+            .mp_row:first-child :is( .drag-handle, .tree-children ) {
+                display: none;
+                }
+        {% endif %}
+        .field-list_actions {
+            max-width: 4em;
+            }
+        </style>
+{% endblock %}
+

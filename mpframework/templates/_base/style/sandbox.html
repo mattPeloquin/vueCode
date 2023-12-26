@@ -1,0 +1,47 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Load dynamic CSS links
+
+    PAGE TEMPLATE FRAGMENT CACHED
+
+{%endcomment%}
+
+{#-- Load font and style CSS and script links #}
+
+{% if request_skin.font %}
+    {% mp_include request_skin.font with template_option=CSS_LINKS_ONLY %}
+{% endif %}
+{% if request_skin.style %}
+    {% mp_include request_skin.style with template_option=CSS_LINKS_ONLY %}
+    {% mp_include request_skin.style with template_option=SCRIPT_LINKS_ONLY %}
+{% endif %}
+{% if is_portal %}
+    {% if request_skin.mixin %}
+        {% mp_include request_skin.mixin with template_option=CSS_LINKS_ONLY %}
+        {% mp_include request_skin.mixin with template_option=SCRIPT_LINKS_ONLY %}
+    {% endif %}
+    {% if request_skin.mixin2 %}
+        {% mp_include request_skin.mixin2 with template_option=CSS_LINKS_ONLY %}
+        {% mp_include request_skin.mixin2 with template_option=SCRIPT_LINKS_ONLY %}
+    {% endif %}
+    {% if request_skin.mixin3 %}
+        {% mp_include request_skin.mixin3 with template_option=CSS_LINKS_ONLY %}
+        {% mp_include request_skin.mixin3 with template_option=SCRIPT_LINKS_ONLY %}
+    {% endif %}
+{% endif %}
+
+{%comment%}
+    Load sandbox dynamic styles last to allow overrides
+    If portal tool is up, no caching, always add css directly,
+    otherwise use option for browser-cached no-host page.
+{%endcomment%}
+{% if not nohost_css_load or pt_current_names or user.logged_into_root %}
+    {% load compress_mp %}
+    {% compress_mp_inline css site %}
+        <style>
+            {% include "_base/style/sandbox.html.css" %}
+            </style>
+    {% endcompress %}
+{% else %}
+    <link rel="stylesheet" href="{{ url_sandbox_css }}" />
+{% endif %}

@@ -1,0 +1,39 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Vueocity 3D style with rounding
+
+{%endcomment%}
+
+{% mp_include "mixin_scroll_none" %}
+{% mp_include "mixin_card_polaroid" %}
+
+<style>
+
+    :root {
+        --es_theme_border-radius: 0.5em;
+        --es_theme_border-radius_content: 0.5em;
+        --es_theme_border-radius_control: 0.3em;
+        }
+
+    {#-- Provide contrast for UI elements #}
+    .mp_input {
+        background-image:
+            linear-gradient(var(--gradient),rgba(var(--shadow),0.08),rgba(var(--shadow),0.02));
+        }
+    .es_button, .mp_input, .es_theme_card {
+        box-shadow: 2px 2px 3px rgba(var(--shadow),0.4);
+        transition:
+            color 0.2s ease-out,
+            box-shadow 0.2s ease-out;
+        }
+        .es_button:is(:hover,:focus,:active),
+        .mp_input:is(:hover,:focus,:active),
+        .es_theme_card:is(:hover,:focus,:active) {
+            box-shadow: 3px 3px 5px rgba(var(--shadow),0.4), 3px 3px 6px rgba(var(--shadow),0.2);
+            }
+
+    .es_tabs .es_tabs_menu {
+        width: fit-content;
+        }
+
+</style>

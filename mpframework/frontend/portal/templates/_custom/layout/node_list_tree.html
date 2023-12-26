@@ -1,0 +1,22 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Shows tree nodes in an indented expandable hierarchy.
+
+{%endcomment%}
+
+
+<div class="es_node_list_tree mp_viz_switch" data-bind="
+        class: 'es_tree_depth' + $data.depth,
+        ">
+    <h2 class="es_title1" data-bind="
+            html: sb('name'),
+            ">
+        </h2>
+    </div>
+
+<div class="es_node_list_tree mp_viz_area" data-bind="
+        class: 'es_tree_depth' + $data.depth,
+        css: { 'mp_hidden': !sb_option('portal.expand_children') },
+        ">
+    {% mp_include "collection_node" %}
+    </div>

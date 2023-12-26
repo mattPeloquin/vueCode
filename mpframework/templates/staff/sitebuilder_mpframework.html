@@ -1,0 +1,34 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Sitebuilder admin menu
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% if not user.logged_into_root and user.access_high %}
+
+    {% usemacro menu_item "Themes" 'fa-paint-brush' 'staff_admin:sitebuilder_theme_changelist' %}
+    <div class="mp_menu_group_icons">
+        {% usemacro menu_item "Styles" 'fa-css3' 'staff_admin:sitebuilder_style_changelist' %}
+        {% usemacro menu_item "Colors" 'fa-tint' 'staff_admin:sitebuilder_color_changelist' %}
+        {% usemacro menu_item "Fonts" 'fa-font' 'staff_admin:sitebuilder_font_changelist' %}
+        </div>
+    <hr class="mp_menu_break">
+    {% usemacro menu_item "Portal layout" 'fa-edit' 'staff_admin:sitebuilder_layout_changelist' %}
+    {% usemacro menu_item "Emails, login, etc." 'fa-eye' 'staff_admin:sitebuilder_other_changelist' %}
+    {% if user.access_all %}
+        <hr class="mp_menu_break">
+        {% usemacro menu_item "VuePortals" 'fa-flask' 'staff_admin:sitebuilder_frame_changelist' %}
+        {% usemacro menu_item "All templates" 'fa-code-fork' 'staff_admin:sitebuilder_templatecustom_changelist' %}
+    {% endif %}
+
+{% endif %}
+
+{% if user.access_root_menu %}
+    <hr class="mp_menu_break">
+    <a class="mp_menu_item root"  href="{% url 'root_admin:sitebuilder_theme_changelist' %}">Themes</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:sitebuilder_frame_changelist' %}">Frames</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:sitebuilder_templatecustom_changelist' %}">Templates</a>
+{% endif %}

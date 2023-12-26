@@ -1,0 +1,21 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    User profile menu
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% mp_include_files "user/profile" "menu-profile-start" ".html" %}
+
+{% usemacro menu_user 'Profile' 'fa-edit' 'profile_manage' %}
+{% usemacro menu_user 'Security' 'fa-lock' 'profile_security' %}
+
+{% mp_include_files "user/profile" "menu-profile-end" ".html" %}
+
+<hr class="mp_menu_break">
+
+<div class="mp_menu_wrapper" onclick="mp.user_logout()">
+    {% usemacro menu_user 'Sign out' 'fa-sign-out' 'logout' %}
+    </div>

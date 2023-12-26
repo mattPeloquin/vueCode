@@ -1,0 +1,27 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Stripe test/dev screen
+
+{%endcomment%}
+
+
+{% block panel_body %}
+
+    <h1>Stripe test links</h1>
+    <div class="mpdebug">
+
+        <div style="padding-left: 1em">
+            <a href="{% url 'payment_finish' 'stripe_connect' %}" class="mp_button_flat">Payment finish</a>
+            </div>
+        <div style="padding-left: 1em">
+            <a href="{% url 'payment_cancel' 'stripe_connect' %}" class="mp_button_flat">Payment cancel</a>
+            </div>
+        <div style="padding-left: 1em">
+            <a href="{% url 'payment_error' 'stripe_connect' %}" class="mp_button_flat">Payment error</a>
+            </div>
+
+        </div>
+
+{% endblock %}
+

@@ -1,0 +1,44 @@
+{% mp_extends 'panel_tabs' %}
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Show collection child nodes under category tabs they belong to.
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/nav_macros.html" %}
+
+{% block panel_class %} es_panel_tabs_category {% endblock %}
+
+{% block panel_nav %}
+
+    <!-- ko foreach: categories() -->
+        {% usemacro nav_tab %}
+    <!-- /ko -->
+
+{% endblock %}
+
+{% block panel_content %}
+
+    <!-- ko foreach: { data: categories(), as: 'cat' } -->
+        <section {% usemacro nav_attr '' 'nested_nav' %} >
+
+            {#-- Render each child node that matches category under tab #}
+            <!-- ko foreach: $parent.node_children() -->
+                <!-- ko if: _.includes( categories(), cat ) -->
+                    <div class="mp_flex_column" data-bind="
+                            class: css_classes(),
+                            ">
+                        <h2 class="es_title1" data-bind="
+                                html: name,
+                                "></h2>
+                        {% mp_include "collection_node" %}
+                        {% include "portal/controls/content.html" %}
+                        </div>
+                <!-- /ko -->
+            <!-- /ko -->
+
+            </section>
+    <!-- /ko -->
+
+{% endblock %}

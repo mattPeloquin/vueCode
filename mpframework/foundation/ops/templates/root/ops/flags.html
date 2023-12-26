@@ -1,0 +1,23 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Feature flag pages
+
+{%endcomment%}
+
+{% block panel_body %}
+
+    <h1>{{ flag_scope }} feature flags</h1>
+
+    <div style="padding-left: 1em">
+        <form class="mp_form" method="post">
+
+            {% include "_/form.html" with form=form %}
+
+            <br>
+            <input class="mp_button" type="submit" value="Update flags" />
+            </form>
+        </div>
+
+{% endblock %}
+

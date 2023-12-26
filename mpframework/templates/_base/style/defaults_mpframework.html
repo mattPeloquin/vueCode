@@ -1,0 +1,20 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    MPF styles
+    COMPRESSED INTO CSS AT BUILD TIME
+
+{%endcomment%}
+
+{#-- Core style elements transpiled under mpf-css #}
+<link rel="stylesheet" href="{{ static_url }}mpf-css/main-{{ code_rev }}.css" />
+
+<style>
+    @font-face {
+        font-family: 'FontAwesome';
+        src: local('FontAwesome'),
+            url('{{ static_url }}fonts/font-awesome.woff2') format('woff2');
+        font-display: block;
+        font-weight: normal;
+        font-style: normal;
+        }
+    </style>

@@ -1,0 +1,18 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Run local server with close to production settings
+#
+#   This profile is hardcoded into the run_prod fab command
+#
+
+# Share the same DB as the normal local profile
+MP_PLAYPEN_NAME: local
+
+DEBUG: False
+MP_FLAGS:
+  DEV_show_page_tools: False
+
+# Turn on JS compression
+MP_COMPRESS:
+    CSS: True
+    JS: True

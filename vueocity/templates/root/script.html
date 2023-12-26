@@ -1,0 +1,65 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Vueocity-specific global script additions
+
+    AUTH TEMPLATE FRAGMENT CACHED
+
+{%endcomment%}
+
+{#-- ZenDesk help widget #}
+{% if user.access_staff and not sb_options.site.hide_help %}
+<script> 'use strict';
+if( !mp.is_iframe ) {
+    mp.when_ui_loaded( function stage_zen_widget() {
+        function load_zen_widget() {
+            window.zESettings = {
+                webWidget: {
+                    contactForm: {
+                        tags: [ mp.sandbox.name, mp.user.email, mp.url_current ],
+                        }
+                    }
+                }
+            mp.load_script( 'https://static.zdassets.com/ekr/snippet.js?key=b48db7a0-bf31-45a2-9d53-de6728404bee', {
+                    'id': 'ze-snippet',
+                    })
+
+            {#-- Fixup launcher and widget after load #}
+            mp.run_when_ready(
+                function() { return !!$("#launcher")[0] },
+                function zen_update() {
+                    try {
+                        {#-- Modify button #}
+                        const launcher = $("#launcher")[0]
+                        $( launcher ).parent().addClass('mp_zen_launcher')
+                        $( launcher ).attr( 'style', '' )
+                        if( launcher.contentDocument.body ) {
+                            $( launcher.contentDocument.head ).html("<style>"
+                                + "#Embed button { width: 4.8rem; height: 2rem; font-size: 0.8em; padding: 0.2em 0.4em; }"
+                                + "</style>" )
+                            }
+                        {#-- Modify search box #}
+                        const observer = new MutationObserver( function( mutations ) {
+                            mutations.forEach( function( mutation ) {
+                                const embed = mutation.target
+                                $( embed ).find("#Embed footer a").each( function() {
+                                    $(this).attr( 'href', 'https://vueocity.zendesk.com' )
+                                    $(this).html("Visit Help Center")
+                                    })
+                                })
+                            })
+                        $(".mp_zen_launcher").each( function() {
+                            observer.observe( this, {
+                                childList: true,
+                                })
+                            })
+                    } catch( e )  {
+                        mp.log_error("Error setting up Zen widget: ", e)
+                        }
+                    },
+                { interval: 400 })
+            }
+        setTimeout( load_zen_widget, 1200 )
+        })
+    }
+    </script>
+{% endif %}

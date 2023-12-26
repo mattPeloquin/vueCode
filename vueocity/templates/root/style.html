@@ -1,0 +1,31 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Vueocity-specific global style updates
+
+    PAGE TEMPLATE FRAGMENT CACHED
+
+{%endcomment%}
+
+<style>
+
+    {#-- Helper classes for script to override ZenDesk help widget #}
+    {#-- Coordinate these with styles injected into launcher iframe #}
+    #launcher {
+        display: None;
+        }
+    div.mp_zen_launcher > #launcher {
+        display: initial;
+        position: fixed;
+        right: 0px !important;
+        bottom: 0px !important;
+        z-index: 9999;
+        background: transparent;
+        opacity: 0.3 !important;
+        height: 2em;
+        margin: 1.5em !important;
+        }
+    div.mp_zen_launcher > #launcher:hover {
+        opacity: 1 !important;
+        }
+
+    </style>

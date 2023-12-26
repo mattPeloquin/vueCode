@@ -1,0 +1,54 @@
+{% extends 'admin/mpcontent/change_form.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Add HTML to the LMS admin form
+
+{%endcomment%}
+
+{% block page-no_cache %}
+    {{ block.super }}
+    {{ package_update_form.media }}
+{% endblock %}
+
+{% block page-no_cache_script %}
+    {{ block.super }}
+    {% include "admin/mpcontent/lmsitem/script_init_nocache.html.js" %}
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    $("#package_update").click( function() {
+        {#-- Place the item ID into the form and open #}
+        $("#package_update_dialog #update_lms_id").change_val( {{ original.pk }} )
+        const upload_dialog = mp.dialog_html( $("#package_update_dialog") )
+        // TBD NOW Fix LMS direct upload mp.initialize_direct_upload( upload_dialog.contentEl )
+        })
+
+    $("#package_metrics").click( function() {
+        {#-- Display dict output from call to package metrics #}
+        mp.fetch({
+            url: mpurl.api_package_metrics,
+            data: { lms_id: '{{ original.pk }}' },
+            finished: function( values ) {
+                const metrics = JSON.parse( values['package_metrics_dict'] )
+                $("#package_display").html( mp.html_obj(metrics) )
+                mp.dialog_html( $("#package_dialog") )
+                }
+            })
+        })
+
+    $("#package_force").click( function() {
+        mp.fetch({
+            url: mpurl.api_update_version,
+            method: 'POST',
+            data: { item_id: '{{ original.pk }}' },
+            finished: function( values ) {
+                const updated = values['users_updated']
+                $("#package_display").html( "Users updated: " + updated )
+                mp.dialog_html( $("#package_dialog") )
+                }
+            })
+        })
+
+{% endblock %}

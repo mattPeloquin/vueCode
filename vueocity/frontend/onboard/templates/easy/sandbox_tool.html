@@ -1,0 +1,121 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    EasyVue floating sandbox edit tool
+
+    Sandbox admin floating tool for changing frames/styles/colors
+    for any provider level. This IS the sanbox admin for EasyVue.
+
+{% endcomment %}
+
+<tool id="sandbox_tool" class="es_tool">
+
+    {# Enctype setting necessary for supporting image upload #}
+    <form enctype='multipart/form-data' method="post" class="mp_form"
+            action="{{ submit_url }}" data-parsley-validate>
+        {% csrf_token %}
+
+        <h2 class="si_heading mp_button_text">
+            Hero image or video
+            </h2>
+        <div class="si_settings mp_hidden">
+            <div>
+                <h4>Hero image</h4>
+                {{ sandbox_tool.hero_image }}
+                </div>
+            <div>
+                <h4>Hero video</h4>
+                <div class="mp_textsmall">Small (less than 10mb) video loops work best</div>
+                {{ sandbox_tool.hero_video }}
+                </div>
+            </div>
+
+        <h2 class="sl_heading mp_button_text">
+            Look and feel
+            </h2>
+        <div class="sl_settings mp_hidden">
+            <div class="mp_flex mp_flex_vcenter">
+                <h4>Site theme</h4>
+                <span class="mp_info" title="Set the site's base theme."
+                    ></span>
+                {{ sandbox_tool.theme }}
+                </div>
+            <div class="mp_flex mp_flex_vcenter">
+                <h4>Color</h4>
+                <span class="mp_info" title="Change colors from the theme default.
+                        Create new color palettes with SiteBuilder."
+                    ></span>
+                {{ sandbox_tool|get:'_color' }}
+                </div>
+            <div class="mp_flex mp_flex_vcenter">
+                <h4>Font</h4>
+                <span class="mp_info" title="Change the site's fonts.
+                    Create new font schemes with SiteBuilder."
+                    ></span>
+                {{ sandbox_tool|get:'_font' }}
+                </div>
+            <div class="mp_flex mp_flex_vcenter">
+                <h4>Style</h4>
+                <span class="mp_info" title="Change the site's style.
+                    Create new styes with SiteBuilder."
+                    ></span>
+                {{ sandbox_tool|get:'_style' }}
+                </div>
+            </div>
+
+        <h2 class="ss_heading mp_button_text">
+            Site setup
+            </h2>
+        <div class="ss_settings mp_hidden">
+            <div>
+                {{ sandbox_tool.name }}
+                </div>
+            <div>
+                {{ sandbox_tool.summary }}
+                </div>
+            <div>
+                {{ sandbox_tool.email_support }}
+                {{ sandbox_tool.timezone }}
+                </div>
+            </div>
+
+        <input type="submit" class="mp_button"
+                value="Apply changes" />
+        <input type="submit" class="mp_button_flat" name="done_sandbox"
+                value="I'm finished" />
+
+        <div class="mp_textsmall">
+            Everyone sees these changes.
+            </div>
+        <div class="mp_textsmall">
+            Use the <a class="mp_button_text" href="{% url 'easy_portal_all' %}"><b>Theme builder</b></a>
+               to experiment.
+            </div>
+        <div class="mp_textsmall">
+            See more options in
+            <a class="mp_button_text" href="{% url 'staff_admin:tenant_sandboxcustom_change' site.pk %}">
+                <b>Site customization</b>
+                </a>
+            </div>
+
+        </form>
+    </tool>
+
+<script> 'use strict';
+    mp.when_ui_loaded( function sand_tool() {
+
+        {% include "_/field_errors.html" with form=form %}
+
+        mp.viz_set_toggle( '.sl_heading', '.sl_settings' )
+        mp.viz_set_toggle( '.si_heading', '.si_settings' )
+        mp.viz_set_toggle( '.ss_heading', '.ss_settings' )
+
+        mp.set_watermark("#{{ sandbox_tool.name.auto_id }}", "Site name")
+        mp.set_watermark("#{{ sandbox_tool.email_support.auto_id }}", "Customer support email")
+        mp.set_watermark("#{{ sandbox_tool.summary.auto_id }}", "Site description")
+
+        mp.ajax_submit_form_images('#sandbox_tool > form')
+
+        setTimeout( () => $("#sandbox_tool").addClass('es_tool_fade'), 4000 )
+        })
+</script>
+

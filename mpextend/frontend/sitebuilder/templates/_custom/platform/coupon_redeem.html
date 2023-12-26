@@ -1,0 +1,20 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Coupon redemption widget
+
+    Needs coupon_pas JS variable set to display access dialog for
+    general coupons.
+
+{%endcomment%}
+
+
+<div class="es_coupon">
+
+    <input type="text" id="redeem_coupon" placeholder="Coupon code"
+        value="" class="mp_input">
+
+    <input class="button btn-primary" type="button" value="Redeem"
+            onclick="mp.access_coupon( $('#redeem_coupon')[0].value, mp.coupon_pas )"
+            >
+
+    </div>

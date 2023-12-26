@@ -1,0 +1,20 @@
+{% extends '_base/page_normal.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Default base for most NON-PORTAL Django screens
+
+{%endcomment%}
+
+{% block script_first-cache %}
+    {{ block.super }}
+    {% include "_base/script/standard.chtml" %}
+{% endblock %}
+
+{% block main_area %}
+
+    <div class="es_theme_panel">
+        {% block panel_body %}
+        {% endblock %}
+        </div>
+
+{% endblock %}

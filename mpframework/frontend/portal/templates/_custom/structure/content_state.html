@@ -1,0 +1,20 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Represent content state
+
+{% endcomment %}
+
+<!-- ko ifnot: mpp.sb_option( 'portal.content_hide_state', $element ) -->
+
+    <div class="es_item_state {% if add_css %} {{ add_css }} {% endif %}">
+        <div class="mp_hover_off" data-bind="
+                class: state_icon(),
+                ">
+            </div>
+        <div class="mp_hover_on" data-bind="
+                class: action_icon(),
+                ">
+            </div>
+        </div>
+
+<!-- /ko -->

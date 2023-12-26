@@ -1,0 +1,34 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Default "prod" profile Production Settings
+#
+#   MPF default doesn't have any AWS resources, so this is a placeholder.
+#   These will be extended by root instances to set up their
+#   production and cluster test environments.
+#
+
+MP_CLOUD: True
+
+# Override the playpen group to force "prod", to allow dervied profiles
+# to extend these settings while sharing resources (e.g., a single debug prod server)
+MP_PLAYPEN_NAME: prod
+
+# Override the storage location to force production items in top-level of bucket
+MP_PLAYPEN_STORAGE: ''
+
+MP_PLAYPEN_SQS:
+    NAME: prod
+    VERSION: v1
+
+# Turn JS/CSS compression on
+MP_COMPRESS:
+    CSS: True
+    JS: True
+
+# Turn dev support off
+DEBUG: False
+MP_FLAGS:
+  DEV_show_page_tools: False
+
+# Prevent test fixtures aren't loaded on migration or initial setup
+MP_TEST_USE_FIXTURES: False

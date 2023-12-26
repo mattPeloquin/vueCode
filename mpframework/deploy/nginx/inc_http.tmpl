@@ -1,0 +1,148 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+   nginx include file for http block
+
+{%endcomment%}
+
+# Setup mime types
+include  /etc/nginx/mime.types;
+
+# Force explicitly download for default types
+default_type  application/octet-stream;
+
+# Use long keep alives to optimize SSL connections with ELB
+# Make sure the connection timeout is longer than ELB idle timeout to
+# avoid ELB from trying to reuse closed nginx connection
+# Allow a large number of requests over one connection from ELB
+keepalive_timeout   {{ s.MP_NGINX.CONNECTION_TIMEOUT }}s;
+keepalive_requests  {{ s.MP_NGINX.KEEP_ALIVE_REQUESTS }};
+
+# These settings modify how files are loaded into packet frames
+tcp_nodelay on;     # Don't wait before sending small TCP packets
+sendfile    on;     # Use kernel send file to avoid memory copies
+tcp_nopush  on;     # For large op, wait for sendfile packets to file
+
+# Don't show server version
+server_tokens off;
+
+# Break out sandbox and user session from cookie
+map $http_cookie $mp_sandbox {
+    default "";
+    "~*{{ s.MP_PLATFORMS_ROOT }}(?<sandbox>[0-9]+)_[^;]+" $sandbox;
+    }
+map $http_cookie $mp_user {
+    default "";
+    "~*{{ s.MP_PLATFORMS_ROOT }}[0-9]+_[^=;]+=(?<session>[^;]+)" $session;
+    }
+
+{%comment%}-------------------------------------------------------------------
+
+    Caching
+    Caching blocks are set up here, and must be activated in locations
+    by using proxy_cache/proxy_cache_valid or uwsgi_cache/uwsgi_cache_valid.
+    Memory for cache metadata, 1MB = 8K keys
+
+{%endcomment%}
+
+# uWSGI Public mini-cache
+# For potentially high-volume public urls whose content can lag updates slightly
+# Intended primarily for attack prevention and possibly performance spikes,
+# but since can't be invalidated, don't set very long
+uwsgi_cache_path  {{ path_nginx_temp }}/cache_uwsgi_mini
+        keys_zone=uwsgi_mini_cache:{{ s.MP_NGINX.MINI_CACHE.KEYS }}k
+        levels=1:2 use_temp_path=off
+        max_size={{ s.MP_NGINX.MINI_CACHE.MAX }}m
+        inactive={{ s.MP_NGINX.MINI_CACHE.AGE }}s;
+
+# uWSGI micro-cache
+# Used to protect uWsgi processing from attacks and short spikes;
+# overrides all other system caching so should be very short in length.
+uwsgi_cache_path  {{ path_nginx_temp }}/cache_uwsgi_micro
+        keys_zone=uwsgi_micro_cache:{{ s.MP_NGINX.MICRO_CACHE.KEYS }}k
+        levels=1:2 use_temp_path=off
+        max_size={{ s.MP_NGINX.MICRO_CACHE.MAX }}m
+        inactive={{ s.MP_NGINX.MICRO_CACHE.AGE }}s;
+
+
+# Content caching
+# For protected content items, which are uploaded by users and whose path will
+# change based on the upload (so don't need to worry about invalidation)
+# Only use on locations that are either internal (xaccel redirects) or are
+# public, since Django will not be called for approval
+proxy_cache_path  {{ path_nginx_temp }}/cache_content
+        levels=1:2 use_temp_path=off
+        keys_zone=content_cache:{{ s.MP_NGINX.CONTENT.KEYS }}k
+        max_size={{ s.MP_NGINX.CONTENT.MAX }}m
+        inactive={{ s.MP_NGINX.CONTENT.AGE }}s;
+proxy_cache_path  {{ path_nginx }}/cache_video  levels=1:2
+        keys_zone=video_cache:{{ s.MP_NGINX.VIDEO.KEYS }}k
+        max_size={{ s.MP_NGINX.VIDEO.MAX }}m
+        inactive={{ s.MP_NGINX.VIDEO.AGE }}s;
+
+# Static content caching
+# For rare static items not served through CF, such as error pages that could get
+# hammered in problem situations
+proxy_cache_path  {{ path_nginx_temp }}/cache_static
+        levels=1:2 use_temp_path=off
+        keys_zone=static_cache:16k
+        max_size=10m
+        inactive=1h;
+
+{%comment%}-------------------------------------------------------------------
+
+    Compression
+    Using nginx to compress both static content and uwsgi proxy, based on type.
+    TEST NOTE - anti-virus, firewall, etc. may unzip responses, so it can
+    look like gzip did not occur.
+
+{%endcomment%}
+
+gzip                on;
+gzip_comp_level     4;
+gzip_min_length     1024;
+gzip_vary           on;
+gzip_proxied        any;
+
+# NOTE - text/html is set by default for gzip; setting again will generate a warning
+gzip_types          text/plain
+                    text/css
+                    text/xml
+                    text/javascript
+                    application/json
+                    application/javascript
+                    application/x-javascript
+                    application/xml
+                    ;
+
+#----------------------------------------------------------------
+# Logging format
+
+log_format  default_format
+    '$request_time s$mp_sandbox $http_x_forwarded_for $pid $mp_location'
+        ' $request_method $status $upstream_cache_status'
+        ' "$http_x_forwarded_proto://$host$request_uri"'
+        ' $upstream_http_mpf_result $upstream_http_mpf_tag'
+        ' $body_bytes_sent'
+    {% if s.DEBUG %}
+            ' (up:$upstream_response_time, p:$pipe, conn:$connection-$connection_requests)'
+            ' $time_local user:$mp_user elb:$remote_addr $server_protocol'
+        '\n-> referer: $http_referer << $http_x_requested_with'
+            ' ($http_connection $http_cache_control $http_pragma $http_accept $http_accept_encoding)'
+            ' agent: $http_user_agent'
+            ' content: $sent_http_content_type'
+            ' cookie: $sent_http_set_cookie'
+            ' response: $sent_http_cache_control $sent_http_content_length $sent_http_content_range'
+            ' $sent_http_x_frame_options $sent_http_connection $sent_http_keep_alive'
+            ' $sent_http_transfer_encoding $sent_http_accept_ranges'
+        '\n'
+    {% endif %}
+    ;
+
+# Setup default access logging based on settings
+access_log {{ access_log }};
+
+# Add header information
+{% if s.DEBUG %}
+    add_header mpf-nginx
+            '$http_x_forwarded_for $mp_location-$upstream_cache_status $mp_sandbox-$mp_user';
+{% endif %}

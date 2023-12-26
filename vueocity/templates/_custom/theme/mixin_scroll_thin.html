@@ -1,0 +1,21 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Setup thin scrollbars
+
+{%endcomment%}
+
+<style>
+
+    .es_portal {
+        scrollbar-width: thin;
+        }
+    .es_portal::-webkit-scrollbar {
+        width: {{ width | default:'0.66rem' }};
+        height: {{ width | default:'0.66rem' }};
+        }
+    .es_portal::-webkit-scrollbar-track {
+        }
+    .es_portal::-webkit-scrollbar-thumb {
+        }
+
+</style>

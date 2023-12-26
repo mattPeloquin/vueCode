@@ -1,0 +1,44 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Emulate material design style
+
+{%endcomment%}
+
+{% mp_include "mixin_scroll_thin" %}
+
+<style>
+    {#-- General style tweaks towards material look #}
+    :root {
+        --es_theme_border-radius: 4px;
+        --es_theme_border-radius_control: 2px;
+        }
+
+    .es_button, .es_button_flat {
+        padding: 0.2em 0.4em;
+        }
+    .es_theme_overlay {
+        padding: 0.4em 0.6em;
+        }
+
+    {#-- Provide contrast for UI elements #}
+    .es_button, .es_theme_card {
+        box-shadow: 1px 2px 4px rgba(var(--shadow),0.16), 0 2px 4px rgba(var(--shadow),0.24);
+        transition: box-shadow 0.2s ease-out;
+        }
+        .es_button:is(:hover,:focus,:active),
+        .es_theme_card:is(:hover,:focus,:active) {
+            box-shadow: 1px 2px 8px 1px rgba(var(--shadow),0.20), 1px 4px 4px rgba(var(--shadow),0.28);
+            }
+    .mp_input {
+        box-shadow: 1px 2px 6px rgba(var(--shadow),0.26);
+        background-image:
+            linear-gradient( var(--gradient), rgba(var(--light),0.4), rgba(var(--light),0) );
+        }
+        .mp_input:is(:hover,:focus,:active) {
+            background-image:
+                linear-gradient( to bottom, rgba(var(--light),0.4), rgba(var(--light),0) );
+            box-shadow:
+                2px 4px 8px 2px rgba(var(--shadow),0.26);
+            }
+
+</style>

@@ -1,0 +1,32 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Override S3 widget to support different look, file name update with no link,
+    and scripting for Selenium testing.
+
+{%endcomment%}
+
+<div class="mp_upload {{ element_id }} {{ upload_class }}">
+    <div class="s3direct"
+            data-policy-url="{{ policy_url }}"
+            data-signing-url="{{ signing_url }}">
+        <input class="csrf-cookie-name" type="hidden" value="{{ csrf_cookie_name }}">
+
+        {#-- file-dest is NOT USED #}
+        <input class="file-dest" type="hidden" value="{{ dest }}">
+
+        <div class="mp_file_name file-link">{{ file_name }}</div>
+        <a class="mp_file_remove file-remove" href="#remove">
+            Change file</a>
+
+        <input class="mp_file_url file-url" type="hidden" value="{{ file_url }}"
+                        id="{{ element_id }}" name="{{ name }}" />
+        <input class="mp_file_input file-input" type="file"
+                        style="{{ style }}" />
+
+        <div class="progress active">
+            <div class="bar mp_progress_bar"></div>
+            <a href="#cancel" class="cancel-button">&times;</a>
+            </div>
+
+        </div>
+    </div>

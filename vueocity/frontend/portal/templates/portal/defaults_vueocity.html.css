@@ -1,0 +1,35 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Vueocity portal style defaults that need to override
+    defaults from base platforms or use server variables.
+
+{% endcomment %}
+
+:root {
+    --es_panel_viewer_padding: 0em;
+    }
+
+{#-- Panels layout #}
+
+.es_panel_viewer {
+    padding: var(--es_panel_viewer_padding);
+    --es_viewer_items_width: 33%;
+    }
+
+{#-- Item specializations #}
+
+.es_cardview.es_theme_list {
+    }
+
+.es_listview.es_theme_list {
+    --es_item_font-size: 1.1em;
+    }
+
+.es_listexpand.es_theme_list {
+    --es_item_font-size: 1.2em;
+    }
+
+.es_listslide.es_theme_list {
+    --es_item_font-size: 1.4em;
+    }
+

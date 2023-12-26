@@ -1,0 +1,26 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Script loading for admin screens
+
+    THIS FILE NEEDS TO BE SAVED WITH UNIX STYLE LINE TERMINATIONS
+    FOR USE IN WINDOWS/LINUX ENVIRONMENT WITH django-compressor
+
+{%endcomment%}
+
+{% load static compress_mp %}
+
+{% compress_mp js admin %}
+    <script defer src="{{ static_url }}_comment.js"></script>
+
+    <script>
+        mp._loaded_admin = false
+        </script>
+
+    {% include "admin/script/codemirror.html" %}
+
+    <script defer src="{% static "mpf-js/staff/init_complete.js" %}"></script>
+
+{% endcompress %}
+
+{# MPF jsi18n.js #}
+<script src="{% static "mpf-js/staff/jsi18n.js" %}"></script>

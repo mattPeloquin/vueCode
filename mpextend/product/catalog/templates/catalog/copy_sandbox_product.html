@@ -1,0 +1,33 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Provider admin for copying product between sandboxes
+
+{%endcomment%}
+
+
+{% block panel_body %}
+    <form class="mp_form" method="post">
+        {% csrf_token %}
+
+        <input name="sandbox_name" type="text" />
+        <p>Enter name of destination site
+            </p>
+        <br>
+
+        <input type="submit" class="mp_button" name="copy_product"
+                value="Copy product information to destination site" />
+
+        </form>
+
+    {% if output %}
+        <div>
+            {% for item in output %}
+                <ul>
+                    {{ item }}
+                    </ul>
+            {% endfor %}
+            </div>
+    {% endif %}
+
+{% endblock %}

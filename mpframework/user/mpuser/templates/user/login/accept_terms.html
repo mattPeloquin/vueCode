@@ -1,0 +1,38 @@
+{% extends '_base/pages/style.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Screen shown on first time into system to memorialize terms acceptance
+
+{%endcomment%}
+
+{% block page_body %}
+
+    <div class="es_terms_accept es_theme_panel">
+
+        <form id="accept_terms" data-parsley-validate
+        		method="post" action="{{ accept_terms_url }}">
+            {% csrf_token %}
+            <div>
+                {% mp_include "user_terms_preamble" %}
+                </div>
+            <br>
+            <div class="mp_flex_line">
+ 	            <div>
+	                <label for="{{ form.accepted.auto_id }}" style="padding-right: 0.6em">
+                        <b>I agree to these terms</b>
+                        </label>
+	                {{ form.accepted }}
+	                </div>
+                <div style="padding-left: 2.4em">
+                    <input type="submit" class="es_button" name="accept"
+                            value="Accept"
+                            />
+                    </div>
+                </div>
+            <br>
+            <div>
+                {% mp_include "user_terms" %}
+                </div>
+        </div>
+
+{% endblock %}

@@ -1,0 +1,175 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Client template for staff controls to provide quick
+    access to access options and additional info.
+
+{% endcomment %}
+
+<script id="template_content_staff_info" type="text/template">
+    <div><span data-bind="html: sb('name')"></span>
+        </div>
+    <div data-bind="if: sb('slug')">
+        <span class="es_textfaded">Slug:</span>
+        <span data-bind="html: sb('slug')"></span>
+        </div>
+    <div data-bind="if: sb('tag')">
+        <span class="es_textfaded">License tag:</span>
+        <span data-bind="html: sb('tag')"></span>
+        </div>
+    <div><span class="es_textfaded">Content type:</span>
+        <span data-bind="html: type_name"></span>
+        </div>
+    <div><span class="es_textfaded">Workflow:</span>
+        <span data-bind="html: workflow()"></span>
+        </div>
+    <!-- ko if: item_content -->
+        <div><span class="es_textfaded">Access type:</span>
+            <span data-bind="html: action()"></span>
+            </div>
+        <div class="mp_button_flat" data-bind="click: $data.access_options">
+            Access options
+            </div>
+        <!-- ko ifnot: sb('content_rev') -->
+            <div><span class="es_textfaded">MISSING CONTENT!</span>
+                </div>
+        <!-- /ko -->
+    <!-- /ko -->
+    {% if user.access_high %}
+        <div data-bind="if: sb('item_template')">
+            <span class="es_textfaded">Item layout:</span>
+            <span data-bind="html: sb('item_template')"></span>
+            </div>
+        <!-- ko if: type_db == 'tree' -->
+            <!-- ko if: is_top -->
+                <div data-bind="if: sb('panel')">
+                    <span class="es_textfaded">Page:</span>
+                    <span data-bind="html: sb('panel')"></span>
+                    </div>
+            <!-- /ko -->
+            <div data-bind="if: sb('node_template')">
+                <span class="es_textfaded">Node:</span>
+                <span data-bind="html: sb('node_template')"></span>
+                </div>
+            <div data-bind="if: sb('viewer')">
+                <span class="es_textfaded">Viewer:</span>
+                <span data-bind="html: sb('viewer')"></span>
+                </div>
+        <!-- /ko -->
+    {% endif %}
+    {% if user.access_all %}
+        <div data-bind="if: sb('search_tags')">
+            <span class="es_textfaded">Search tags:</span>
+            <span data-bind="html: sb('search_tags')"></span>
+            </div>
+        <!-- ko ifnot: _.includes( ['portalitem','portaltype','portalcategory'], type_db ) -->
+            <div data-bind="if: sb('portal_type')">
+                <span class="es_textfaded">Portal type:</span>
+                <span data-bind="html: sb('portal_type')"></span>
+                </div>
+            <div data-bind="if: sb('portal_group')">
+                <span class="es_textfaded">Portal group:</span>
+                <span data-bind="html: sb('portal_group')"></span>
+                </div>
+            <div data-bind="if: portal_groups().length">
+                <span class="es_textfaded">Portal groups:</span>
+                <span data-bind="html: portal_groups()"></span>
+                </div>
+        <!-- /ko -->
+        <div><span class="es_textfaded">Points:</span>
+            <span data-bind="html: sb('points')"></span>
+            </div>
+        <div data-bind="if: sb('size')">
+            <span class="es_textfaded">Size:</span>
+            <span data-bind="html: sb('size')"></span>
+            </div>
+        <div><span class="es_textfaded">Exclude trials:</span>
+            <span data-bind="html: sb_option('portal.no_trials') ? 'on' : 'off' "></span>
+            </div>
+        <div><span class="es_textfaded">Coming soon:</span>
+            <span data-bind="html: sb_option('portal.coming_soon') ? 'on' : 'off' "></span>
+            </div>
+        <div><span class="es_textfaded">Hide if no access:</span>
+            <span data-bind="html: sb_option('portal.hide_if_no_access') ? 'on' : 'off' "></span>
+            </div>
+        <div><span class="es_textfaded">User level:</span>
+            <span data-bind="html: sb_option('portal.user_level') || 'all' "></span>
+            </div>
+        <!-- ko if: type_db == 'tree' -->
+            <div><span class="es_textfaded">Item order:</span>
+                <span data-bind="html: sb_option('portal.item_order')"></span>
+                </div>
+            <div><span class="es_textfaded">Show progress:</span>
+                <span data-bind="html: sb_option('portal.show_progress') ? 'on' : 'off' "></span>
+                </div>
+            <div><span class="es_textfaded">Hide header:</span>
+                <span data-bind="html: sb_option('portal.collection_no_top') ? 'on' : 'off' "></span>
+                </div>
+            <div><span class="es_textfaded">Hide if empty:</span>
+                <span data-bind="html: sb_option('portal.hide_empty') ? 'on' : 'off' "></span>
+                </div>
+        <!-- /ko -->
+        <div><span class="es_textfaded">ID:</span>
+            <span data-bind="html: id"></span>
+            </div>
+    {% endif %}
+    {% if user.access_high %}
+        <div class="mp_button_flat" data-bind="
+                click: mpp.click_render_template('content_staff_info_extra'),
+                ">
+            See more details
+            </div>
+    {% endif %}
+    </script>
+
+<script id="template_content_staff_info_extra" type="text/template">
+    <div><span class="es_textfaded">Text1:</span>
+        <span><%= text1 %></span>
+        </div>
+    <div><span class="es_textfaded">Text2:</span>
+        <span><%= text2 %></span>
+        </div>
+    <div><span class="es_textfaded">Tooltip:</span>
+        <span><%= tooltip %></span>
+        </div>
+    <div><span class="es_textfaded">Text3:</span>
+        <span><%= text3 %></span>
+        </div>
+    <div><span class="es_textfaded">Text4:</span>
+        <span><%= text4 %></span>
+        </div>
+    <div><h2 class="es_textfaded">Html1</h2>
+        <div><%= html1 %></div>
+        </div>
+    <div><h2 class="es_textfaded">Html2</h2>
+        <div><%= html2 %></div>
+        </div>
+    <div><h2 class="es_textfaded">Html3</h2>
+        <div><%= html3 %></div>
+        </div>
+    <% if( type_db == 'tree' ) { %>
+        <div><h2 class="es_textfaded">BG image</h2>
+            <div><%= bg_image %></div>
+            </div>
+    <% } else { %>
+        <div><span class="es_textfaded">View type:</span>
+            <span><%= type_view %></span>
+            </div>
+        <div><span class="es_textfaded">Content revision</span>
+            <span><%= content_rev %></span>
+            </div>
+        <div><h2 class="es_textfaded">Progress data</h2>
+            <div><%= progress_data %></div>
+            </div>
+    <% } %>
+    <div><span class="es_textfaded">Revision</span>
+        <span><%= hist_rev %></span>
+        </div>
+    <div><span class="es_textfaded">Last modified</span>
+        <span><%= hist_modified %></span>
+        </div>
+    <div><h2 class="es_textfaded">Sitebuilder data</h2>
+        <% _.each( options, function( item ) { %>
+            <div><%= item.name %>: <%= item.value %></div>
+        <% }) %>
+        </div>
+    </script>

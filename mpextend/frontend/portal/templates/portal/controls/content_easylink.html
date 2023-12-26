@@ -1,0 +1,83 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    EasyLink connection popup
+
+{% endcomment %}
+
+<script id="template_content_staff_easylink" type="text/template">
+
+    <h3>Invite Link<span class="mp_help_staff">
+        &nbsp;highlight on sign-up page
+        </span></h3>
+    <div class="mp_clipboard">
+        <div class="mp_easylink mp_ellipsis" data-bind="
+                html: mp.easylink.invite_link( sb('slug'), sb('name') )"
+                >
+            </div>
+        </div>
+    <h3>Social Media</h3>
+        <div class="social_buttons mp_flex">
+            <div data-bind="html: mp.easylink.facebook( sb('slug') )">
+                </div>
+            <div data-bind="html: mp.easylink.twitter( sb('slug') )">
+                </div>
+            <div data-bind="html: mp.easylink.linkedin( sb('slug') )">
+                </div>
+            </div>
+    <h3>Page Link<span class="mp_help_staff">
+        &nbsp;opens dedicated page
+        </span></h3>
+    <div class="mp_clipboard">
+        <div class="mp_easylink_url mp_ellipsis" data-bind="
+                html: mp.easylink.page( sb('slug'), sb('name') )"
+                >
+            </div>
+        </div>
+    {% if user.access_high %}
+        <div class="mp_clipboard">
+            <div class="mp_clipboard_display">
+                <h3>Access Button <span class="mp_help_staff">
+                    open in popup window
+                    </span></h3>
+                </div>
+            <textarea class="mp_hidden mp_clipboard_target" data-bind="
+                    html: mp.easylink.access_button( sb('slug') )">
+                </textarea>
+            </div>
+        <div class="mp_clipboard">
+            <div class="mp_clipboard_display">
+                <h3>Page Button <span class="mp_help_staff">
+                    open in new page
+                    </span></h3>
+                </div>
+            <textarea class="mp_hidden mp_clipboard_target" data-bind="
+                    html: mp.easylink.page_button( sb('slug') )">
+                </textarea>
+            </div>
+    {% endif %}
+    {% if user.access_all %}
+        <!-- ko ifnot: type_db == 'tree' -->
+            <div class="mp_clipboard">
+                <div class="mp_clipboard_display">
+                    <h3>Small Widget <span class="mp_help_staff">
+                        small widget with popup
+                        </span></h3>
+                    </div>
+                <textarea class="mp_hidden mp_clipboard_target" data-bind="
+                        html: mp.easylink.widget_small( sb('slug') )">
+                    </textarea>
+                </div>
+        <!-- /ko -->
+        <div class="mp_clipboard">
+            <div class="mp_clipboard_display">
+                <h3>Large Widget <span class="mp_help_staff">
+                    large in-place widget
+                    </span></h3>
+                </div>
+            <textarea class="mp_hidden mp_clipboard_target" data-bind="
+                    html: mp.easylink.widget_large( sb('slug') )">
+                </textarea>
+            </div>
+    {% endif %}
+
+    </script>

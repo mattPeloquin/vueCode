@@ -1,0 +1,24 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Content progress bars.
+    If completed_percent is present for content, progress bar is displayed
+    within full width of parent depending on options.
+
+{%endcomment%}
+
+<!-- ko if: completed_percent && sb_option('portal.progress_show') -->
+    <div class="es_progress" data-bind="
+            visible: completed_percent() > 0 || sb_option('portal.progress_always'),
+            ">
+        <div class="es_progress_bar es_theme_overlay">
+            <div class="es_progress_bar_front es_theme_current" data-bind="
+                    style: { width: completed_percent() + '%' }
+                    ">
+                </div>
+            <div class="es_progress_bar_text" data-bind="
+                    text: completed_percent() + '%  complete'
+                    ">
+                </div>
+            </div>
+        </div>
+<!-- /ko -->

@@ -1,0 +1,16 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Vueocity branding in lower corner
+
+{%endcomment%}
+
+{% if not user.access_staff %}
+
+    <div class="vue_brand">
+        <a href="https://www.vueocity.com/{{ url_portal }}/home" target="_">
+            Vueocity<br>Powered
+            <img src="{{ static_url_resource }}/site_icon.png">
+            </a>
+        </div>
+
+{% endif %}

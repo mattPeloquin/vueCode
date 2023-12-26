@@ -1,0 +1,82 @@
+Content-Type: multipart/mixed; boundary="===============MPF_USER_DATA=="
+MIME-Version: 1.0
+
+#
+#   Cloud-init bootstrap shell script
+#
+#   UPDATE PROFILE INFO and place in launch template cloud-init User Data.
+#
+#   EXPECTS TO RUN WITH ROOT PRIVILEGES
+#   ASSUMES PREVIOUS VERSION OF CODE IS BAKED INTO AMI
+#
+#   Bootstrap logs: /var/log/cloud-init-output.log
+#       fab show-bootstrap
+#
+
+--===============MPF_USER_DATA==
+Content-Type: text/cloud-config
+
+    # Log all cloud-init process output (info & errors) to a logfile
+    output: { all : '| tee -a /var/log/cloud-init-output.log' }
+    final_message: "Framework Server boot completed after $UPTIME seconds. Finished at $TIMESTAMP"
+
+--===============MPF_USER_DATA==
+Content-Type: text/x-shellscript
+
+echo -e "\n--------------------------------------------------------------------"
+echo "MPF BOOTSTRAP"
+
+# Import the current set of environment variables
+# Since this runs as root these are not loaded automatically
+echo "Reading AMI setenv from: /etc/profile.d/mpframework_env.sh"
+source /etc/profile.d/mpframework_env.sh
+
+# Setup environment by creating new mpframework_env.sh
+
+# ADD REQUIRED ENV INFO HERE
+# Manually update or use as template for script/Terraform creation
+# Remove or use blank entries that do not already exist in AMI
+# ------------------------------------
+
+export MP_PROFILE={ profile }
+export MP_PROFILE_TAG={ profile_tag }
+export MP_CODE_REV={ code_rev }
+export MP_PLATFORMS={ platforms }
+
+# ------------------------------------
+
+$MP_HOME/mpframework/deploy/shell/setenv.sh "" "$MP_PROFILE" "$MP_PROFILE_TAG" "$MP_CODE_REV" "$MP_PLATFORMS"
+
+echo "Home: "$MP_HOME
+echo "Profile: "$MP_PROFILE
+echo "Tag: "$MP_PROFILE_TAG
+echo "Code revision: "$MP_CODE_REV
+echo "Platforms and Root: "$MP_PLATFORMS
+
+# Check for required items
+if [[ "$MP_HOME" == "" ]]; then echo "BOOTSTRAP REQUIRES MP_HOME to be in env!"
+    exit 1 ; fi
+if [[ "$MP_PROFILE" == "" ]]; then echo "BOOTSTRAP REQUIRES MP_PROFILE!"
+    exit 1 ; fi
+if [[ "$MP_PLATFORMS" == "" ]]; then echo "MP_PLATFORMS is NOT SET"
+    echo -e "Only local dev servers can run -- this is probably an ERROR!\n\n" ; fi
+
+echo -e "\nSetting up environment, virtual environment, and fabric"
+
+# Loading shell support framework
+source $MP_HOME/mpframework/deploy/shell/inc_common.sh
+echo "Is production: "$prod_profile
+echo "mpFramework: "$mp_folder
+
+. $venv_folder/bin/activate
+cd $home_folder
+
+# Run as ec2user for permissions, and no prompt for prod warning
+
+echo -e "\nMake sure newest code is in place for update commands\n"
+su ec2-user -p -c "$venv_folder/bin/fab no-prod-warn update-code"
+
+echo -e "\nRefresh server to config and start\n"
+su ec2-user -p -c "$venv_folder/bin/fab no-prod-warn refresh --config"
+
+--===============MPF_USER_DATA==--

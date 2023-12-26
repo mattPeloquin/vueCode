@@ -1,0 +1,52 @@
+
+AWS Redis notes
+
+http://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/GettingStarted.ConnectToCacheNode.Redis.html
+
+
+To connect to redis on Elasticache, ensure redis command line client is installed
+(should be on debug and dev machines, see fab update-server code for details.
+
+    redis/src/redis-cli -h vueredis.cgr1a3.ng.0001.usw2.cache.amazonaws.com
+
+To work with redis
+
+    http://redis.io/commands
+    http://lzone.de/cheat-sheet/Redis#CLI
+
+    See MP_ROOT_CACHE for final cache sub-number
+    Default cache is 0
+    Version: 1
+    Persist: 2
+    Template: 3
+    Session: 4
+    Request: 5
+    User: 8
+
+    > select [DbNum]
+    redis DB number to MPF cache.
+
+    > keys *
+    > scan 0 match *exp* count 100
+    > get [key]
+
+See realtime events
+
+    > monitor
+    > client list
+
+Query key demographics
+
+    > dbsize
+    > info
+    > info keyspace
+
+Kill keys with a given pattern
+
+    EVAL "return redis.call('DEL', unpack(redis.call('KEYS', ARGV[1] .. '*')))" 0 *xyz*
+
+    flushdb  # Kills keys in the CURRENT db
+
+Others
+
+    slowlog get 25

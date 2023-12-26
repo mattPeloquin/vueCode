@@ -1,0 +1,10 @@
+#--- Vueocity Platform, Copyright 2021 Vueocity, LLC
+#
+#   Run a local development environment
+#
+
+# Make shorter name for bench testing
+MP_PLAYPEN_NAME: vuebench
+
+MP_UI_OPTIONS:
+  MULT_CHOICE_THRESHOLD: 2

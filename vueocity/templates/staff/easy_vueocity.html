@@ -1,0 +1,23 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    EasyVue Admin Menu
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% if user.has_test_access %}
+    {% usemacro menu_item 'Add product' 'fa-cloud-upload' 'easy_add_product' %}
+    {% usemacro menu_item 'Color builder' 'fa-tint' 'easy_portal_color' %}
+{% endif %}
+
+<hr class="mp_menu_break">
+<span class="mp_menu_title">Tutorials...</span>
+<div class="mp_menu_group_icons">
+    {% usemacro menu_link 'Get started' 'fa-history' '/' url_portal|concat:'?mpf_tutorial&#61;onboard'|query_string %}
+    {% usemacro menu_link 'Customize site' 'fa-sliders' onboard_tutorial_sandbox|concat:'?mpf_tutorial&#61;onboard'|query_string %}
+    {% if user.has_test_access %}
+        {% usemacro menu_link 'Sell products' 'fa-usd' onboard_tutorial_product|concat:'?mpf_tutorial&#61;onboard'|query_string %}
+    {% endif %}
+</div>

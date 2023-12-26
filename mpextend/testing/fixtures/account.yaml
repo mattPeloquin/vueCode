@@ -1,0 +1,108 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Account and payment fixtures
+
+- fields:
+    sandbox: 20
+    name: P1UserAccount
+  model: account.account
+  pk: 10
+- fields:
+    sandbox: 20
+    user: 20
+    primary_account: 10
+  model: account.accountuser
+  pk: 10
+- fields:
+    sandbox: 20
+    name: P1GroupAccount
+    group_account: 20
+  model: account.account
+  pk: 20
+- fields:
+    sandbox: 20
+    invite_code: 'mptest'
+    users: [ 21 ]
+    admins: [ 21 ]
+  model: account.groupaccount
+  pk: 20
+- fields:
+    sandbox: 20
+    user: 21
+    primary_account: 20
+  model: account.accountuser
+  pk: 21
+
+- fields:
+    sandbox: 20
+    postal_code: AAAS-666
+  model: account.account
+  pk: 22
+- fields:
+    sandbox: 20
+    user: 22
+    primary_account: 22
+  model: account.accountuser
+  pk: 22
+
+- fields:
+    sandbox: 30
+    name: P2 Group Account
+    group_account: 30
+  model: account.account
+  pk: 30
+- fields:
+    sandbox: 30
+    invite_code: 'mptest'
+    users: [ 30 ]
+    admins: []
+  model: account.groupaccount
+  pk: 30
+- fields:
+    sandbox: 30
+    user: 30
+    primary_account: 30
+  model: account.accountuser
+  pk: 30
+
+# Mostly want APAs created during testing
+
+- fields:
+    sandbox: 20
+    account: 20
+    pa: 12
+    period_start: "2020-01-01T01:01:01+01:00"
+    _unit_price: 100.0
+    is_activated: True
+    ga_license: False
+    data:
+      history: GROUP TEST
+  model: account.apa
+  pk: 20
+
+- fields:
+    sandbox: 20
+    account: 22
+    pa: 10
+    is_activated: True
+    _is_active: False
+    data:
+      history: INDIVIDUAL TEST
+  model: account.apa
+  pk: 22
+
+
+- fields:
+    _provider: 11
+    sandbox: 20
+    payment_type: paypal_nvp
+    service_account: PAYPAL_TEST_ACCOUNT
+  model: payment.payto
+  pk: 20
+- fields:
+    _provider: 11
+    sandbox: 20
+    payment_type: stripe_connect
+    service_account: STRIPE_TEST_ACCOUNT
+  model: payment.payto
+  pk: 21

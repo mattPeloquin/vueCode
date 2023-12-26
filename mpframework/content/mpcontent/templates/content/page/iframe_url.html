@@ -1,0 +1,27 @@
+{% extends '_base/page_bare.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display link to external URL in an iframe embedded in the viewer
+
+{% endcomment %}
+
+{% block page_body %}
+
+   <div class="es_{{ content_mptype }}_{{ content_id }} es_{{ content_mptype }}
+            mp_{{ content_mptype }}">
+        <iframe id="mp_{{ content_mptype }}" class="es_{{ content_mptype }}_iframe">
+            </iframe>
+        </div>
+
+    <script> 'use strict';
+        {# Delay iframe loading until viewer DOM in place for better layout flow #}
+        let loaded = false
+        window.addEventListener('DOMContentLoaded', function(){
+            if( !loaded ) {
+                document.getElementById('mp_{{ content_mptype }}').src = '{{ content_url }}'
+                loaded = true
+                }
+            })
+    </script>
+
+{% endblock %}

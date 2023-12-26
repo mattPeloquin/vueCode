@@ -1,0 +1,11 @@
+#--- Copyright 2021 Vueocity, LLC
+#
+#   Testing cluster
+#
+
+#MP_ROOT:
+#  HOST: 'recovery.cbt3vzok9hts.us-west-2.rds.amazonaws.com'
+
+# Email addresses server sends from via Django
+DEFAULT_FROM_EMAIL: 'prod-test@vueocity.com'
+ADMINS: [['Admin', 'prod-test@vueocity.com']]

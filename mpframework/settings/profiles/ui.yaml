@@ -1,0 +1,93 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   UI config settings imported by shared.yaml
+
+
+MP_UI_TEXT:
+  root_name: 'MPF'
+  root_script_name: 'mpf'
+  help_easy_style: ''
+  help_sb_options: ''
+  help_site_options: ''
+  help_site_taxes: ''
+  help_license_tags: ''
+  help_license_period: ''
+  help_license_pricing: ''
+  help_license_subscription: ''
+  help_license_metering: ''
+  help_license_rules: ''
+  help_templates: ''
+  help_proxy_options: ''
+
+MP_SANDBOX_EVENTS:
+
+  content_collection_new:
+    scope: DS
+    level: 20
+    title: "New collection"
+    message: "%s has added a new collection: %s"
+  content_collection_workflow:
+    scope: DS
+    level: 20
+    title: "Collection workflow update"
+    message: "%s has updated workflow for collection %s to %s, %s items modified"
+  content_collection_sites:
+    scope: DS
+    level: 20
+    title: "Collection site update"
+    message: "%s has updated sites for collection %s, %s items modified"
+
+  user_signup:
+    scope: DS
+    level: 0
+    title: "New user sign-up: {email}"
+    message: "%s has joined %s"
+  user_login:
+    scope: DS
+    level: 90
+    title: "Sign-in: {email}"
+    message: "%s has logged into %s"
+
+  user_license_purchase:
+    scope: DS
+    level: 10
+    title: "Purchase"
+    message: "%s has activated a paid license: %s"
+  user_license_free:
+    scope: DS
+    level: 10
+    title: "Free license"
+    message: "%s has activated a free license: %s"
+
+  user_complete_collection:
+    scope: DSG
+    level: 50
+    title: "Collection completion: {email}"
+    message: "%s has completed %s"
+  user_complete_item:
+    scope: DSG
+    level: 60
+    title: "Content completion: {email}"
+    message: "%s has completed %s"
+
+  user_content_access:
+    scope: DSG
+    level: 70
+    title: "Content access: {email}"
+    message: "%s has accessed %s with %s"
+  user_content_denied:
+    scope: DSG
+    level: 70
+    title: "Content denied: {email}"
+    message: "%s was denied access to %s"
+
+  visitor_content_access:
+    scope: DS
+    level: 80
+    title: "Visitor content access: {email}"
+    message: "%s has accessed %s"
+  visitor_content_denied:
+    scope: DS
+    level: 80
+    title: "Visitor content denied: {email}"
+    message: "%s was denied access to %s"

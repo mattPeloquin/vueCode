@@ -1,0 +1,12 @@
+{% extends 'portal/page.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display single content item in frame
+
+{%endcomment%}
+
+{% block portal_area-cache %}
+
+    {% mp_include request_frame.pane.template with pane=request_frame.pane %}
+
+{% endblock %}

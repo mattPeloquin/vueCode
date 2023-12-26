@@ -1,0 +1,14 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Ops menu extensions
+
+{%endcomment%}
+
+<hr class="mp_menu_break">
+<a class="mp_menu_item root"  href="{% url 'ops_caching' %}">Caching</a>
+<a class="mp_menu_item root"  href="{% url 'ops_events' %}">Events</a>
+<a class="mp_menu_item root"  href="{% url 'root_admin:admin_logentry_changelist' %}">Log entries</a>
+<a class="mp_menu_item root"  href="{% url 'root_admin:ops_fieldchange_changelist' %}">Field changes</a>
+<hr class="mp_menu_break">
+<a class="mp_menu_item root"  href="{% url 'ops_fixups' %}">Fixups</a>
+<a class="mp_menu_item root"  href="{% url 'ops_cleanups' %}">Cleanups</a>

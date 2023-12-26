@@ -1,0 +1,74 @@
+{% extends 'portal/frames/default.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Frame that organizes top-level collections by category tabs in header.
+    Unlike the category panes, this does not place nav_panels for each
+    top level collection under the category, which allows them to
+    be shared across categories and removes tree navigation semantics.
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/macros.html" %}
+
+{% block portal_top_left-cache %}
+    <nav class="es_tabs">
+
+        {#-- Add top tabs based on categories #}
+        <div class="mpr_collapse" data-collapse="mppane_menu">
+            <div class="fa fa-bars mpr_collapse_toggle"></div>
+            <nav id="mppane_menu" class="es_tabs_menu mpr_collapse_hide" data-bind="
+                    foreach: mpp.vm_main.categories(),
+                    ">
+                <nav class="es_portal_tab mp_nav_link">
+                    <a class="es_nav_anchor mp_nav_anchor" data-bind="
+                            class: 'es_tab_' + sb('slug'),
+                            html: sb('name'),
+                            attr: { href: sb('slug') },
+                            ">
+                        </a>
+                    </nav>
+                </nav>
+            </div>
+
+        </nav>
+{% endblock %}
+
+{% block portal_area-cache %}
+
+    <pane class="es_pane_tab_category"
+            {% usemacro add_pane_context pane %}
+            >
+        {#-- Add nav panels for each category #}
+        <!-- ko foreach: mpp.vm_main.categories() -->
+            <panel class="es_panel_category" data-bind="
+                    bind_nav_panel: $data,
+                    class: css_classes(),
+                    ">
+                {#-- Overlay title if image present #}
+                <header class="es_hero_container mp_flex_column">
+                    <!-- ko if: sb('image1') -->
+                        <div class="es_hero_image mp_image" data-bind="
+                                style: { backgroundImage:
+                                    'url(\'' + ( sb('image1') ) + '\')' },
+                                ">
+                            </div>
+                    <!-- /ko -->
+                    <div class="es_hero_overlay mpr_width_half mp_overlay">
+                        <div class="es_theme_overlay" data-bind="
+                                html: sb('name'),
+                                ">
+                            </div>
+                        </div>
+                    </header>
+                {% mp_include "items" with items='all_tops()' %}
+                </panel>
+        <!-- /ko -->
+
+        {#-- Nav panels for each top-level collection #}
+        <!-- ko foreach: mpp.vm_main.all_tops() -->
+            {% mp_include "collection_panel" %}
+        <!-- /ko -->
+        </pane>
+
+{% endblock %}

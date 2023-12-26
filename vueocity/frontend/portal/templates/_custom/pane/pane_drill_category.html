@@ -1,0 +1,46 @@
+{% mp_extends 'pane_drill' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Present category drill down to scroll of tops
+
+{%endcomment%}
+
+{% block pane_name %} es_pane_drill_category {% endblock %}
+
+{% block pane_home_nav %}
+
+    {% mp_include "items" with items='mpp.vm_main.categories()' %}
+
+{% endblock %}
+
+{% block pane_panels %}
+
+    <!-- ko foreach: mpp.vm_main.categories() -->
+        <article class="es_content es_category_header" data-bind="
+                lazy_bind_pane: $data,
+                class: css_classes(),
+                ">
+            <div class="es_content_panel es_theme_panel">
+                <h2 class="es_category_title" data-bind="
+                        visible: !!sb('text1'),
+                        html: sb('text1'),
+                        "></h2>
+
+                <!-- ko let: {
+                        itemfn: { name: 'items_core' },
+                        } -->
+                    <!-- ko template: {
+                        name: 'template_collection_nodes',
+                        data: {
+                            nodes: {{ pane.collections|default:'all_tops()' | safe }},
+                            },
+                        } -->
+                    <!-- /ko -->
+                <!-- /ko -->
+
+                </div>
+            {% include "portal/controls/content.html" %}
+            </article>
+    <!-- /ko -->
+
+{% endblock %}

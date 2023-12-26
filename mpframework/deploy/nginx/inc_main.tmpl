@@ -1,0 +1,21 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+   nginx main context - use defaults for pid and most items
+
+{%endcomment%}
+
+
+# Running under default user
+user  ec2-user;
+
+# Worker process config
+worker_processes {{ s.MP_NGINX.PROCESSES }};
+{% if s.MP_NGINX.MAX_FILES %}
+	worker_rlimit_nofile {{ s.MP_NGINX.MAX_FILES }};
+{% endif %}
+events {
+	worker_connections {{ s.MP_NGINX.CONNECTIONS }};
+	}
+
+# Main global error log
+error_log  {{ error_log }};

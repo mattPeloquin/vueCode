@@ -1,0 +1,28 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Coupon redemption screen
+
+{%endcomment%}
+
+{% block panel_body %}
+
+    <h2>Apply a coupon to your account</h2>
+    <p>Free coupons are applied automatically,
+        discount coupons will prompt for a purchase.</p>
+    <div>
+        {% mp_include "coupon_redeem" %}
+        </div>
+
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    mp.coupon_pas = [
+        {% for pa in portal_skus %}
+            {{ pa.json | safe }},
+        {% endfor %}
+        ]
+
+{% endblock %}

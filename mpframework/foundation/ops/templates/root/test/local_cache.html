@@ -1,0 +1,22 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Dump local dev cache
+
+{%endcomment%}
+
+{% block panel_body %}
+
+    <h1>Local cache</h1>
+    <div class="mpdebug">
+        {% for row in cache_items|dictsort:'key' %}
+            <div onclick="$(this).find('.mp_hidden').removeClass('mp_hidden')">
+                <div>{{ row.key }}</div>
+                <div class="mp_hidden mp_textsmall">
+                    {{ row.value }}
+                    </div>
+                </div>
+        {% endfor %}
+        </div>
+
+{% endblock %}

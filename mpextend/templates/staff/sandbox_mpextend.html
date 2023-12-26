@@ -1,0 +1,34 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Add extended items to site menu
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% if not user.logged_into_root %}
+
+    {% if user.sees_sandboxes and user.access_all %}
+        {% usemacro menu_item 'Manage sites' 'fa-sitemap' 'staff_admin:tenant_sandbox_changelist' %}
+        {% if user.has_test_access %}
+            {% usemacro menu_item 'All users across sites' 'fa-users' 'staff_admin:mpuser_mpuser_changelist' %}
+            {% usemacro menu_item 'Copy site products' 'fa fa-clone' 'copy_sandbox_product' %}
+        {% endif %}
+    {% endif %}
+
+    {% if user.access_high %}
+        <hr class="mp_menu_break">
+        <span class="mp_menu_title">EasyLinks...</span>
+        <div class="mp_menu_group">
+            {% usemacro menu_item 'Coupons' '' 'coupon_links' %}
+            {% usemacro menu_item 'Purchases' '' 'sku_links' %}
+            {% usemacro menu_item 'Items' '' 'content_item_links' %}
+            {% usemacro menu_item 'Collections' '' 'content_tree_links' %}
+            </div>
+        {% if user.access_all %}
+            {% usemacro menu_item 'Content APIs' 'fa-microchip' 'content_apis' %}
+        {% endif %}
+    {% endif %}
+
+{% endif %}

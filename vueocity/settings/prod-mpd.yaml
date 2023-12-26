@@ -1,0 +1,111 @@
+#--- Copyright 2021 Vueocity, LLC
+#
+#   Vueocity specific items for dev server on prod db
+#
+
+MP_ROOT:
+  HOST: 'mpd.vueocity.com'
+  HOST_DB: 'vueocity.com'
+  URL_PREFIX_NO_HOST: 'nhd'
+
+  #DB:
+    #MAIN_HOST: 'vuedb-test1-cluster.cluster-cbt3vzok9hts.us-west-2.rds.amazonaws.com'
+    #MAIN_READ: ''
+    # NOT NORMALLY ACTIVE - must be activated on AWS to use
+    # AUX_HOST: 'aux-cluster.cluster-cbt3vzok9hts.us-west-2.rds.amazonaws.com'
+
+  SYSLOG:
+    host: 'logs3.papertrailapp.com'
+    port: '46253'
+    ca_file: '/etc/papertrail-bundle.pem'
+    permitted_peer: '*.papertrailapp.com'
+
+  # ADd back test support for payments
+  PAYMENT:
+    paypal_nvp:
+      url_api: 'https://api-3t.sandbox.paypal.com/nvp'
+      url_interactive: 'https://www.sandbox.paypal.com'
+      username: 'mattp_api1.vueocity.com'
+      password: 'GWVLJ6E8U3SSEPLD'
+      signature: 'A0GBYfNat8ofXMq.Yv2qPBS0VIqRAqsITyPEStuHenRpqVSXN4ZOPfyx'
+      timeout: 4
+    stripe_connect:
+      client_id: ca_COxFwUdYRQRbXi64b2Bj7o7mfDrUjmu2
+      secret_key: sk_test_pqYHdaRdU0AKyEdrS7im26DD
+      public_key: pk_test_HFCOXwNZJz6TmsSL6Xh4NShu
+      oauth_url: https://connect.stripe.com/oauth/authorize
+      max_network_retries: 1
+      timeout: 2
+
+MP_ROOT_AWS:
+    ELB_TARGET_GROUP: 'Dev'
+
+# Shorten user sessions for testing
+MP_USER_SESSION_AGE_SHORT: 600
+MP_USER_SESSION_AGE_LONG: 21600
+
+# Maximum time for external proxy endpoint to respond
+MP_PROXY:
+  MAX_TIMEOUT: 40
+
+MP_NGINX:
+    # Use 2 nginx to flush out any issue
+    PROCESSES: 2
+    MAX_FILES: 300
+    # Crank up caching to look for issues
+    MICRO_CACHE:
+      AGE: 5
+      MIN_USES: 1
+      LOCK_TIMEOUT: 20
+      MAX: 16
+      KEYS: 64
+    MINI_CACHE:
+      AGE: 60
+      BODY_MAX: 2
+      LOCK_TIMEOUT: 20
+      MAX: 16
+      KEYS: 64
+
+MP_UWSGI:
+    # Use both processes and threads
+    PROCESSES: 4
+    THREADS: 2
+    SPOOL_PROCESSES: 2
+    # Lower cache size and enable full warning to detect issues
+    CACHE_SMALL_OPTIONS: "items=2048"
+    CACHE_MEDIUM_OPTIONS: "items=4096"
+    CACHE_LARGE_OPTIONS: "items=4096,blocks=8192,blocksize=2048"
+    HARAKIRI: 45
+    LIMITAS: 1200
+    #MAX_REQUESTS: 150000
+    #SPOOL_MAX_TASKS: 150000
+    #MAX_REQUESTS: 5
+    LOG_EVENTS: True
+
+MP_CACHE_AGE:
+    # Lower caching to free resources, but long enough for invalidation problems
+    VERSION: 3600
+    DEFAULT: 3600
+    TEMPLATE: 3600
+    PERSIST: 3600
+    SESSION: 3600
+    REQUEST: 3600
+    TIMEWIN_USER: 3600
+    TIMEWIN_CONTENT: 3600
+
+MP_ROOT_URLS:
+
+    # Use uncached CF for static to ensure pickup of changed JS
+    URL_STATIC: 'vuedev.vueocity.com'
+    URL_STATIC_COMP: 'd3girp28njtpd9.cloudfront.net'
+
+    # Turn off edge caching for debugging public/no-host; shouldn't be necessary as
+    # any urls using these endpoints should change with code rev or invalidation
+    #URL_PUBLIC: 'vuedev.vueocity.com'
+    #URL_PUBLIC_COMP: 'd3girp28njtpd9.cloudfront.net'
+
+# Email addresses server sends from via Django
+DEFAULT_FROM_EMAIL: 'prod-mpd@vueocity.com'
+
+ADMINS: [['MpdAdmin', 'prod-mpd@vueocity.com']]
+

@@ -1,0 +1,32 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Base for the top bar segment of the screen
+
+{%endcomment%}
+
+{% if not is_popup and not no_page_top %}
+
+    {% if user.access_staff %}
+
+        {#-- Show staff menu always for staff #}
+        {% include "staff/top_menu.html" %}
+
+    {% elif not is_portal %}
+
+        {#-- Show portal return for all user screens not in the portal #}
+        <div class="es_user_bar mp_top_bar mp_flex_line mp_flex_between">
+
+            <a id="portal_return" class="es_portal_return" href="{{ referrer }}">
+                </a>
+            <script>
+                mp.add_onload( () =>
+                    document.getElementById('portal_return').innerHTML = mpt.back )
+                </script>
+
+            {% mp_include "user_menus" %}
+
+            </div>
+
+    {% endif %}
+
+{% endif %}

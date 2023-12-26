@@ -1,0 +1,16 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Email sent to new owners after they've logged in
+
+{% endcomment %}
+
+
+{% if email_subject %}
+
+    Welcome to {{ root_name }}
+
+{% else %}
+
+    {% include "root/email_owner_welcome.html" %}
+
+{% endif %}

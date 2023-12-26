@@ -1,0 +1,223 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   User-related test data
+
+
+- fields:
+    name: login_default
+    template_type: L
+    orig_path: _custom/login/default.html
+  model: sitebuilder.templatecustom
+  pk: 900
+- fields:
+    name: login_basic
+    template_type: L
+    orig_path: _custom/login/basic.html
+  model: sitebuilder.templatecustom
+  pk: 901
+
+#--------------------------------------------------------------------
+# Users
+
+# Test staff used in unit tests
+- fields:
+    email: staff@p1.com
+    image: HoratioStaffP1.png
+    _provider: 11
+    _sandbox: 20
+    first_name: Staff1
+    last_name: Provider1
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    _staff_level: 30
+    is_superuser: true
+    email_verified: true
+    init_terms: true
+    init_activation: TESTUSER
+  model: mpuser.mpuser
+  pk: 11
+
+- fields:
+    email: owner@p1.com
+    _provider: 11
+    sandboxes_level: 1
+    first_name: Owner
+    last_name: Provider1
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    _staff_level: 50
+    _is_owner: true
+    is_superuser: true
+    email_verified: true
+    init_terms: true
+    init_activation: TESTUSER
+  model: mpuser.mpuser
+  pk: 12
+
+- fields:
+    email: owner@p2.com
+    _provider: 12
+    sandboxes_level: 1
+    staff_areas: CL
+    first_name: Owner
+    last_name: Provider2
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    _staff_level: 30
+    _is_owner: true
+    email_verified: true
+    init_terms: true
+    init_activation: TESTUSER
+  model: mpuser.mpuser
+  pk: 15
+
+# Test access in main manual test sandbox
+- fields:
+    email: read@p1.com
+    _provider: 11
+    _sandbox: 20
+    first_name: StaffRead
+    last_name: Prov1
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    _staff_level: 1
+  model: mpuser.mpuser
+  pk: 100
+
+- fields:
+    email: ev1@p1.com
+    _provider: 11
+    _sandbox: 20
+    staff_areas: C
+    first_name: StaffB1
+    last_name: Prov1
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    _staff_level: 10
+    init_terms: true
+    init_activation: TESTUSER
+  model: mpuser.mpuser
+  pk: 101
+
+- fields:
+    email: ev2@p1.com
+    _provider: 11
+    _sandbox: 20
+    staff_areas: CUG
+    first_name: StaffB2
+    last_name: Prov1
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    _staff_level: 20
+  model: mpuser.mpuser
+  pk: 102
+
+- fields:
+    email: bv1@p1.com
+    _provider: 11
+    _sandbox: 20
+    first_name: StaffC1
+    last_name: Prov1
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    _staff_level: 30
+  model: mpuser.mpuser
+  pk: 103
+
+- fields:
+    email: bv2@p1.com
+    _provider: 11
+    _sandbox: 20
+    first_name: StaffC2
+    last_name: Prov1
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    sandboxes_level: 1
+    _staff_level: 40
+  model: mpuser.mpuser
+  pk: 104
+
+- fields:
+    email: sb1@p1.com
+    _provider: 11
+    _sandbox: 20
+    first_name: StaffSB1
+    last_name: Prov1
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    sandboxes_level: 1
+    _staff_level: 60
+  model: mpuser.mpuser
+  pk: 106
+
+# Test default high-privilege staff
+- fields:
+    email: sb2@p1.com
+    _provider: 11
+    _sandbox: 20
+    first_name: StaffSB2
+    last_name: Provider1
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    email_verified: true
+    is_superuser: true
+    _staff_level: 70
+  model: mpuser.mpuser
+  pk: 107
+
+# Test users
+- fields:
+    email: user@acme.com
+    _provider: 11
+    _sandbox: 20
+    first_name: User20_Èÿç
+    last_name: DefaultUnitTester
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    init_activation: TEST ACTIVATION
+    init_terms: TEST TERMS ACCEPTED
+    # Some unit tests assume this staff member can see development items
+    workflow_level: 2
+  model: mpuser.mpuser
+  pk: 20
+- fields:
+    email: ga@acme.com
+    _provider: 11
+    _sandbox: 20
+    first_name: User21
+    last_name: Group Account Admin
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    init_activation: TEST ACTIVATION
+    init_terms: TEST TERMS ACCEPTED
+  model: mpuser.mpuser
+  pk: 21
+- fields:
+    email: nogroup@acme.com
+    _provider: 11
+    _sandbox: 20
+    first_name: User22
+    last_name: NoGroupAccount
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    init_activation: TEST ACTIVATION
+    init_terms: TEST TERMS ACCEPTED
+  model: mpuser.mpuser
+  pk: 22
+- fields:
+    email: notready@acme.com
+    _provider: 11
+    _sandbox: 20
+    first_name: User23
+    last_name: NotReady
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+  model: mpuser.mpuser
+  pk: 23
+
+- fields:
+    email: user@acme.com
+    _provider: 12
+    _sandbox: 30
+    first_name: User30
+    last_name: sand30Prov2
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    email_verified: true
+  model: mpuser.mpuser
+  pk: 30
+
+- fields:
+    email: user@acme.com
+    _provider: 12
+    _sandbox: 40
+    first_name: User40
+    last_name: sand40Prov2
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+  model: mpuser.mpuser
+  pk: 40

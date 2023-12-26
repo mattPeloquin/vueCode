@@ -1,0 +1,81 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Core requirements needed on dev machines and servers
+#
+
+# Local and remote deployment scripting
+fabric==2.6.0
+
+#--------------------------------------------------------------
+# Python Extensions and libraries
+
+# Interfacing with AWS
+boto3==1.17.101
+rsa==4.7.2
+
+# Support for YAML
+PyYAML==5.4.1
+
+# Provide more robust serialization than Pickle
+dill==0.3.4
+
+# Needed for image field
+Pillow==8.2.0
+
+# Python interface redis
+redis==3.5.3
+
+# Support server HTTP calls (and used by GIS)
+requests==2.25.1
+
+# Useful date boundaries, also used by storages, boto
+python-dateutil==2.8.1
+
+# Optional Django dependency (and toolbar, extensions)
+sqlparse==0.4.1
+
+# Clean injected text for HTML use
+bleach==3.3.0
+
+# Utils for IP manipulation, adds IP range support to Django
+iptools==0.7.0
+
+#--------------------------------------------------------------
+# Django and Django items
+
+django==3.2.4
+
+# Admin add-ons
+django-nested-admin==3.3.3
+
+# Ties django file handling to AWS
+django-storages==1.11.1
+
+# Integrate redis into Django caching
+django-redis==5.0.0
+
+# Static file support
+django-compressor==2.4.1
+django-sass-processor==1.0.1
+libsass==0.21.0
+
+# Upload direct to S3
+django-s3direct==1.1.8
+
+# Tree models
+django-mptt==0.12.0
+
+# Utilities
+django-model-utils==4.1.1
+django-extensions==3.1.3
+django-timezone-field==4.1.2
+
+#--------------------------------------------------------------
+# ITEMS BELOW INSTALL LAST SINCE MAY FAIL ON WINDOWS
+
+# Python mySQL client
+# This isn't used for normal DB interaction on dev machines; local dev can't easily
+# connect to AWS RDS outside of EC2 so sqllite is used.
+# However, to run some fab commands remotely on Linux boxes, MySQL client module
+# needs to be around, even though the DB won't be accessed directly.
+mysqlclient==2.0.3

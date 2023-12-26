@@ -1,0 +1,132 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Vueocity default customization for videojs player
+ */
+
+@import "../../../mpframework/static/mpf-css/constants"
+
+.mp_videojs_fill
+    height: 100%
+    .mp_videojs_player
+        height: 100%
+.mp_videojs_fluid
+    height: auto
+    .mp_videojs_player
+        height: auto
+
+.video-js
+    overflow: hidden
+    font-size: inherit
+
+    // Make video take up container height to fill fluid
+    .vjs-tech
+        height: auto
+
+    // Don't show black box by default for video load
+    background-color: transparent
+
+    // Make player use sandbox font
+    // Override buttons with symbol font so MPF font doesn't kill
+    font-family: inherit
+    .vjs-icon-play,
+    .vjs-big-play-button,
+    .vjs-fullscreen-control,
+    .vjs-play-control,
+    .vjs-resolution-button
+        font-family: VideoJS !important
+
+    // Make control color more muted
+    .vjs-control-bar
+        width: auto
+        height: 3em
+        left: 3em
+        right: 3em
+        bottom: 0
+        background-color: rgba( $cBlack, 0.3 )
+        justify-content: space-between
+    .vjs-control,
+    .vjs-menu-button,
+    .vjs-play-progress
+        color: #ddd
+
+    // Removed pop-up for speed change; not needed and confusing
+    .vjs-playback-rate ul.vjs-menu-content
+        display: none
+
+    // Place progress bar up top
+    .vjs-progress-control
+        position: absolute
+        top: -2.2em
+        width: 100%
+    .vjs-play-progress:before
+        font-size: inherit
+        top: -0.2em
+    .vjs-progress-holder
+        height: 0.6em
+
+    // Time items
+    .vjs-current-time, .vjs-duration, .vjs-time-divider
+        display: block
+        flex-grow: 0
+    .vjs-remaining-time
+        display: none
+
+    .vjs-volume-panel, .vjs-playback-rate
+        flex-grow: 1
+
+    // Don't show the Live control
+    .vjs-seek-to-live-control
+        display: none !important
+
+    // Videojs-resolution-switcher
+    .vjs-resolution-button
+        &:before
+            content: '\f110'
+            font-size: 160%
+            line-height: 1.6
+        ul.vjs-menu-content
+            width: 6em !important
+        .vjs-menu
+            left: 0
+            li
+                text-transform: none
+                font-size: 100%
+
+    // Show poster at end
+    &.vjs-ended .vjs-poster
+        display: block !important
+
+    .vjs-load-progress div,
+    &.vjs-ended .vjs-loading-spinner
+        display: block !important
+
+    // When to hide/show big button
+    .vjs-seeking .vjs-big-play-button,
+    .vjs-waiting .vjs-big-play-button,
+    &.vjs-paused.vjs-has-started .vjs-big-play-button
+        display: none !important
+    &.vjs-paused .vjs-big-play-button
+    &.vjs-ended .vjs-big-play-button
+        display: block !important
+    .vjs-big-play-button
+        top: 50%
+        left: 50%
+        margin-left: -1em
+        margin-top: -1em
+        width: 2em
+        height: 2em
+        line-height: 2
+        border: none
+        border-radius: 50%
+        font-size: 400%
+        background-color: rgba( $cWhite, .4 )
+        transition: border-color .4s,outline .4s,background-color .4s
+
+// Hide the X in error dialog
+.vjs-error .vjs-error-display
+    &:before
+        content: ''
+
+body:is( .es_width_small, .es_height_small, es_width_medium )
+    .video-js
+        font-size: 90% !important

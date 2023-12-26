@@ -1,0 +1,25 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+	VueWeb image row
+
+{%endcomment%}
+
+<item class="vue_widget row mp_flex_column mp_flex_vcenter" data-bind="
+        class: css_classes(),
+        ">
+    <div class="vue_widget_name" data-bind="html: sb('text1')">
+        </div>
+
+    <div class="vue_widget_desc mp_flex mp_flex_center">
+        <div class="image">
+            <img class="row_image" data-bind="attr: { src: sb('image1') }">
+                </img>
+            </div>
+        <div class="text mp_flex_column">
+            <div data-bind="html: sb('text2')">
+                </div>
+            </div>
+        </div>
+
+    {% include "portal/controls/content.html" %}
+    </item>

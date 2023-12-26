@@ -1,0 +1,28 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Admin cancel button
+
+{%endcomment%}
+
+{% if is_popup %}
+
+    <div class="mp_admin_cancel mp_button_flat mp_button_warn"
+            onclick="window.close()"
+        >Cancel
+        </div>
+
+{% else %}
+    {% if cl or admin_copy_new or sees_sandboxes_required and not user.sees_sandboxes %}
+
+        <a class="mp_admin_cancel mp_button mp_button_warn"
+                href="{% url 'portal_view' %}"
+            >Cancel</a>
+
+    {% else %}
+
+        <a class="mp_admin_cancel mp_button mp_button_warn"
+                href="javascript: window.history.back()"
+            >Cancel</a>
+
+    {% endif %}
+{% endif %}

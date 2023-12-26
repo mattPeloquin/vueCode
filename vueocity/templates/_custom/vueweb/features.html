@@ -1,0 +1,52 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Features page
+
+{%endcomment%}
+
+<article id="vue_features">
+
+    <section class="f1 mp_flex_column" data-bind="
+            with: get_tag('f1'),
+            ">
+        <h1 class="features_head" data-bind="
+                html: sb('name'),
+                ">
+            </h1>
+        <div class="features_desc" data-bind="
+                html: sb('html2'),
+                ">
+            </div>
+
+        <div class="vue_f1" data-bind="
+                template: {
+                    name: 'template_et_card',
+                    foreach: items_core(),
+                    }
+                ">
+            </div>
+        {% include "portal/controls/content.html" %}
+        </section>
+
+    <section class="f2 mp_flex_column" data-bind="
+            with: get_tag('f2'),
+            ">
+        <h1 class="features_head" data-bind="
+                html: sb('name'),
+                ">
+            </h1>
+        <div class="features_desc" data-bind="
+                html: sb('html2'),
+                ">
+            </div>
+
+        <div class="vue_f2" data-bind="
+                template: {
+                    name: 'template_et_card',
+                    foreach: items_core(),
+                    }
+                ">
+            </div>
+        {% include "portal/controls/content.html" %}
+        </section>
+    </article>

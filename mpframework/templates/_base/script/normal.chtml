@@ -1,0 +1,24 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Scripts loaded in all "normal", non-bare pages (portal and non-portal)
+
+    THIS FILE IS TEMPLATE FRAGMENT CACHED
+
+    THIS FILE NEEDS TO BE SAVED WITH UNIX STYLE LINE TERMINATIONS
+    FOR USE IN WINDOWS/LINUX ENVIRONMENT WITH django-compressor
+
+{%endcomment%}
+
+{% load compress_mp %}
+
+{% compress_mp js main %}
+
+    {#-- External shared dependencies #}
+
+    <script defer src="{{ static_url }}libs/popper.js"></script>
+    <script defer src="{{ static_url }}libs/tippy.js"></script>
+    <script defer src="{{ static_url }}libs/list.js"></script>
+
+    {% mp_include_files "_base/script" "normal" ".html" %}
+
+{% endcompress %}

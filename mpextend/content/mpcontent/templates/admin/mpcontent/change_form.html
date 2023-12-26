@@ -1,0 +1,28 @@
+{% extends 'admin/change_form.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Add EasyLink support to content forms
+
+{%endcomment%}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    mp.update_url( mp.easylink.invite_link, '#id__slug', '#easylink_invite_link',
+                '{{ original.pk }}', '#id__name', mp.sbt('access_signup') )
+    mp.update_url( mp.easylink.page, '#id__slug', '#easylink_page', '{{ original.pk }}' )
+    mp.update_url( mp.easylink.facebook, '#id__slug', '#easylink_facebook', '{{ original.pk }}' )
+    mp.update_url( mp.easylink.twitter, '#id__slug', '#easylink_twitter', '{{ original.pk }}' )
+    mp.update_url( mp.easylink.linkedin, '#id__slug', '#easylink_linkedin', '{{ original.pk }}' )
+    mp.update_url( mp.easylink.access_button, '#id__slug', '#easylink_access_button', '{{ original.pk }}' )
+    mp.update_url( mp.easylink.page_button, '#id__slug', '#easylink_page_button', '{{ original.pk }}' )
+    mp.update_url( mp.easylink.widget_small, '#id__slug', '#easylink_widget_small', '{{ original.pk }}' )
+    mp.update_url( mp.easylink.widget_large, '#id__slug', '#easylink_widget_large', '{{ original.pk }}' )
+
+{% endblock %}
+
+{% block admin_bar %}
+    {% if change %}
+        {% include 'admin/_/easylink_content.html' %}
+    {% endif %}
+{% endblock %}

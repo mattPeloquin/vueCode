@@ -1,0 +1,22 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Per-item access button display in some item layouts
+
+{%endcomment%}
+
+<!-- ko if: action_text() && !sb_option('portal.content_access_hide') -->
+    <!-- ko if: sb_option('portal.content_access_url') -->
+    <a class="es_item_access es_button" data-bind="
+            attr: { href: sb_option('portal.content_access_url') },
+            html: action_text() + ' ' + type_name,
+            ">
+        </a>
+    <!-- /ko -->
+    <!-- ko ifnot: sb_option('portal.content_access_url') -->
+        <div class="es_item_access es_button" data-bind="
+                click: user_access,
+                html: action_text() + ' ' + type_name,
+                ">
+            </div>
+    <!-- /ko -->
+<!-- /ko -->

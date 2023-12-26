@@ -1,0 +1,56 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+	Customer solutions page with tabs for each solution that show panels,
+    based on the Customers collection
+
+{%endcomment%}
+
+<section id="vue_customers" class="mp_flex mp_flex_nowrap" data-bind="
+    	with: get_tag('customers'),
+        ">
+    <nav id="customers_menu" class="es_tabs">
+        <!-- ko foreach: node_children() -->
+            <nav class="es_portal_tab mp_nav_link es_button_text">
+                <a class="es_nav_anchor mp_nav_anchor" data-bind="
+                        html: sb('name'),
+                        attr: { href: '{{ url_portal }}/customers/' + sb('slug') },
+                        ">
+                    </a>
+                </nav>
+        <!-- /ko -->
+        </nav>
+
+    <!-- ko foreach: node_children() -->
+        <div class="customer_solution"  data-bind="
+                bind_nav_panel: $data,
+                class: css_classes(),
+                ">
+            {% include "portal/controls/content.html" %}
+            <article class="mp_flex_column">
+
+                <div class="customer_top mp_flex" data-bind="
+                    style: { backgroundImage:
+                        'linear-gradient( var(--gradient), rgba(0,0,0,0.5), rgba(255,255,255,0.1) ), ' +
+                        'url(\'' + sb('image1') + '\')'
+                        }">
+                    <div data-bind="
+                        html: sb('text1'),
+                        ">
+                        </div>
+                    </div>
+
+                <h1 class="customer_head" data-bind="
+                        html: sb('text2'),
+                        ">
+                    </h1>
+                <div class="customer_body" data-bind="
+                        html: sb('html2'),
+                        ">
+                    </div>
+
+                </article>
+
+            </div>
+    <!-- /ko -->
+
+    </section>

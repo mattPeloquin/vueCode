@@ -1,0 +1,49 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Override Django changelist results structure
+
+{%endcomment%}
+
+{% load i18n static %}
+{% if result_hidden_fields %}
+    <div class="hiddenfields"> {# DIV for HTML validation #}
+        {% for item in result_hidden_fields %}{{ item }}{% endfor %}
+    </div>
+{% endif %}
+
+{% if results %}
+    <div class="mp_module mp_changelist-results">
+        <table id="result_list" cellspacing="0" class="mp_admin_table mp_sortable">
+            <thead>
+                <tr>
+                    {% for header in result_headers %}
+                        <th scope="col" {{ header.class_attrib }}>
+                            <div class="mp_admin_col_head">
+                                {% if header.sortable %}
+                                    {% if header.sort_priority > 0 %}
+                                        <div class="mp_sortoptions">
+                                            <a href="{{ header.url_toggle }}" class="mp_toggle {% if header.ascending %}mp_ascending{% else %}mp_descending{% endif %}" title="{% trans "Toggle sorting" %}"></a>
+                                            {% if num_sorted_fields > 1 %}<span class="mp_sortpriority" title="{% blocktrans with priority_number=header.sort_priority %}Sorting priority: {{ priority_number }}{% endblocktrans %}">{{ header.sort_priority }}</span>{% endif %}
+                                            <a class="mp_sortremove" href="{{ header.url_remove }}" title="{% trans "Remove from sorting" %}"></a>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                                <div class="mp_text">{% if header.sortable %}<a href="{{ header.url_primary }}">{{ header.text|capfirst }}</a>{% else %}<span>{{ header.text|capfirst }}</span>{% endif %}</div>
+                            </div>
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    {% if result.form.non_field_errors %}
+                        <tr class="mp_errors"><td colspan="{{ result|length }}">
+                            {{ result.form.non_field_errors }}</td></tr>
+                    {% endif %}
+                    <tr class="mp_row {% cycle 'mp_row-even' 'mp_row-odd' %}">
+                        {% for item in result %}{{ item }}{% endfor %}</tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}

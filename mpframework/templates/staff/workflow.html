@@ -1,0 +1,52 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Staff workflow buttons to hide/show content in portal
+
+    Some ugly server/client script code here, to keep the code
+    contained within this file
+
+{% endcomment %}
+
+
+{% if "root" not in url_current and user.access_low %}
+
+    <div id="mpworkflow" class="mp_menu_item mp_flex mp_flex_right mp_tooltip"
+            title="Show portal content based on workflow level">
+        <a class="mp_button_flat" id="mpworkflow_prod"
+                href="{% url 'portal_user_options' options='{"workflow_level":0}' %}">
+            Prod
+            </a>
+        <a class="mp_button_flat" id="mpworkflow_beta"
+                href="{% url 'portal_user_options' options='{"workflow_level":1}' %}">
+            Beta
+            </a>
+        <a class="mp_button_flat" id="mpworkflow_dev"
+                href="{% url 'portal_user_options' options='{"workflow_level":2}' %}">
+            Dev
+            </a>
+        </div>
+
+    <script> 'use strict';
+        mp.when_ui_loaded( function workflow() {
+
+            {#-- Highlight active button #}
+            if( _.includes( mp.user.workflow, 'D' ) ) {
+                mp.style_make_active( $("#mpworkflow_dev"),
+                                      $("#mpworkflow_beta, #mpworkflow_prod"),
+                                      'mp_staff_active' )
+                }
+            else if( _.includes( mp.user.workflow, 'B' ) ) {
+                mp.style_make_active( $("#mpworkflow_beta"),
+                                      $("#mpworkflow_dev, #mpworkflow_prod"),
+                                      'mp_staff_active' )
+                }
+            else {
+                mp.style_make_active( $("#mpworkflow_prod"),
+                                      $("#mpworkflow_beta, #mpworkflow_dev"),
+                                      'mp_staff_active' )
+                }
+
+        	})
+        </script>
+
+{% endif %}

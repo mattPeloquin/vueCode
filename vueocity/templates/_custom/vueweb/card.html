@@ -1,0 +1,51 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+	VueWeb card
+
+{%endcomment%}
+
+<item class="vue_widget card mp_flex_column" data-bind="
+        class: css_classes(),
+        ">
+    <!-- ko if: sb('html2') -->
+    <div data-bind="event: { click: dialog('html2') }"
+            class="es_pointer"
+            >More...</div>
+    <!-- /ko -->
+
+    {#-- URLs stored in site data, icon name stored in text2 #}
+    <div class="vue_widget_title mp_flex_line">
+        <!-- ko if: sb('options').url -->
+            <a class="mp_flex_line" data-bind="
+                    attr: { href: sb('options').url,
+                        target: sb('options').url_internal ? '' : '_' },
+                    css: { 'mp_nav_anchor': sb('options').url_internal },
+                    ">
+            <!-- ko if: sb('text2') -->
+                <div class="et" data-bind="class: sb('text2')">
+                    </div>
+            <!-- /ko -->
+            <div class="vue_widget_name" data-bind="html: sb('name')">
+                </div>
+            </a>
+        <!-- /ko -->
+        <!-- ko ifnot: sb('options').url -->
+            <!-- ko if: sb('text2') -->
+                <div class="et" data-bind="class: sb('text2')">
+                    </div>
+            <!-- /ko -->
+            <div class="vue_widget_name" data-bind="html: sb('name')">
+                </div>
+        <!-- /ko -->
+        </div>
+
+    <div class="vue_widget_desc">
+        <div data-bind="
+                html: sb('text1'),
+                click: dialog('html2'),
+                ">
+            </div>
+        </div>
+
+    {% include "portal/controls/content.html" %}
+    </item>

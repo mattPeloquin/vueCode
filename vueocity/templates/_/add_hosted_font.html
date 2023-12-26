@@ -1,0 +1,32 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Add a font hosted by Vueocity
+
+    Loads font using name and url variables and then apply as theme default.
+
+    If different imports are needed add directly or create use a custom template by
+    copying this one. Also use a custom template to change @font-face,
+    use multiple fonts, or apply fonts with more granularity.
+
+{%endcomment%}
+
+<style>
+
+    @font-face {
+        font-family: '{{ name }}';
+        src: local('{{ name }}'), url('{{ static_url | concat:url }}');
+        font-display: swap;
+        font-weight: normal;
+        font-style: normal;
+        }
+
+    {% if not no_set %}
+        body {
+            font-family: '{{ name }}', sans-serif;
+            {% if settings %}
+                font-feature-settings: {{ settings }};
+            {% endif %}
+            }
+    {% endif %}
+
+</style>

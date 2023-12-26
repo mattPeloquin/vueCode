@@ -1,0 +1,227 @@
+{% load strip_spaces %}{% strip_spaces compress_on %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Base template used for most UI pages
+    This is specialized by the portal page and for used in
+    standard non-portal pages (most admin and non-portal screens).
+
+{%endcomment%}
+
+{% load cache %}
+
+<!DOCTYPE html>
+<!-- Powered by Vueocity's Mesa Platform, Copyright 2021 Vueocity LLC -->
+<html lang="{{ site.language_code }}">
+    <head>
+        {#-- Head script for error handling and starting requests #}
+        {% block script_first-no_cache %}
+            {% include "_base/script/first_nocache.html" %}
+        {% endblock %}
+
+        {% include "_/meta.html" %}
+        <link rel="manifest" href="{% url 'sandbox_pwa_manifest' %}" />
+
+{% end_strip_spaces %}
+{% cache ttime head-page template_cache_page %}{#++++++++#}{% strip_spaces compress_on %}
+
+        {#-- Directly load early script and start defer loading of the rest #}
+        {% block script_first-cache %}
+            {% include "_base/script/first_cache.chtml" %}
+            {% include "_base/script/normal.chtml" %}
+        {% endblock %}
+
+        {% if not is_page_staff %}
+
+            {#-- Sandbox snippets for head html #}
+            {% if site.snippet_head %}
+                {{ site.snippet_head | safe }}
+            {% endif %}
+
+            {#-- Load Google after sandbox HTML in case page-load tags are pushed #}
+            {% include "_/google_head.html" %}
+
+        {% endif %}
+
+        {% include "_base/style/main.chtml" %}
+
+        {#-- Inject theme CSS last to allow overrides #}
+        <style>
+            {% if request_skin.css_head %}
+                {{ request_skin.css_head | safe }}
+            {% endif %}
+            </style>
+
+{% end_strip_spaces %}{#+++++++++++++++++++++++++++++++++++++++#}{% endcache %}
+{% strip_spaces compress_on %}
+
+        {% block head-no_cache %}
+        {% endblock %}
+        </head>
+
+    <body {% block body_attr %}
+               {% include "_base/style/body_attr.html" %}
+          {% endblock %}>
+        <welcome>
+            {% block script_early-no_cache %}
+            {% endblock %}
+
+{% end_strip_spaces %}
+{% cache ttime body-top-user template_cache_staff %}{#++++++#}{% strip_spaces compress_on %}
+
+            {% if not is_page_staff %}
+                {% include "_/loading.html" %}
+                {% include "_/google_body.html" %}
+            {% endif %}
+            </welcome>
+
+        {#-- Main page holds portal, admin, or other page content #}
+        <main_page class="mp_hide_load
+                {% if is_portal %} es_portal_{{ request_frame.name }}
+                    mp_hide_portal {% endif %}
+                ">
+            {#-- Top bar holds menu, tabs, or other info depending on screen  #}
+            <header class="es_top mp_print_hidden">
+                {% block top_banner-cache %}
+                    {% include "_base/layout/top_banner.html" %}
+                {% endblock %}
+                {% block top-cache %}
+                    {% include "_base/layout/top.html" %}
+                {% endblock %}
+
+{% end_strip_spaces %}{#+++++++++++++++++++++++++++++++++++++++#}{% endcache %}
+{% strip_spaces %} {#-- No spaces compression to avoid issues with textareas #}
+
+                {% block top-nocache %}
+                {% endblock %}
+                </header>
+
+            {#-- Floating tool support, not cached as activation is per-session #}
+            <mptools>
+                {% mp_include_files "_" "mptools" ".html" %}
+                </mptools>
+
+            {#-- No caching of main page, for admin and per-request frames #}
+            {% block main %}
+                <main class="es_main mp_main
+                        {% if not is_page_staff %} es_theme_root {% endif %}
+                        ">
+                    {% block main_area %}
+                        <p>ERROR - Base template main_area/panel not overridden</p>
+                    {% endblock %}
+                    </main>
+            {% endblock %}
+
+{% end_strip_spaces %}
+{% cache ttime body-bottom-auth template_cache_auth %}{#+++#}{% strip_spaces compress_on %}
+
+            <footer class="mp_bottom mp_print_hidden">
+                {% block footer %}
+                    {% include "_base/layout/bottom.html" %}
+                {% endblock %}
+                </footer>
+
+            {% include "_/script_dom.html" %}
+            </main_page>
+
+        <scripting_cached>
+            <script> 'use_strict';
+
+                {% block script_load-cache_auth %}
+                {% endblock %}
+
+                {#-- UI initialization #}
+                {% include "_base/script/init_cache.html.js" %}
+                mp.when_script_loaded( function script_loaded_page_cache() {
+                    mp.log_time_start('PAGE_INIT')
+                    mp.show_wait_overlay( true )
+                    mp.init_ui()
+                    {% block script_loaded-cache_auth %}
+                    {% endblock %}
+                    })
+
+                </script>
+
+            {#-- Any root global additions to script #}
+            {% include "root/script.html" %}
+
+            {#-- Sandbox custom scripting #}
+            {% if site.snippet_body %}
+                {{ site.snippet_body | safe }}
+            {% endif %}
+
+            {#-- Script overrides from styles - must be before templates to override #}
+            {% if request_skin.style %}
+                {% mp_include request_skin.style with template_option=SCRIPT_ONLY %}
+            {% endif %}
+            {% if request_skin.mixin %}
+                {% mp_include request_skin.mixin with template_option=SCRIPT_ONLY %}
+            {% endif %}
+            {% if request_skin.mixin2 %}
+                {% mp_include request_skin.mixin2 with template_option=SCRIPT_ONLY %}
+            {% endif %}
+            {% if request_skin.mixin3 %}
+                {% mp_include request_skin.mixin3 with template_option=SCRIPT_ONLY %}
+            {% endif %}
+
+            {% block client_templates-cache_auth %}
+                {% mp_include_files "_base/script" "templates" ".html" %}
+            {% endblock %}
+
+            </scripting_cached>
+{% end_strip_spaces %}{#+++++++++++++++++++++++++++++++++++++++#}{% endcache %}
+{% strip_spaces compress_on %}
+
+        {% block page-no_cache %}
+        {% endblock %}
+
+        <script> 'use_strict';
+            {% include "_base/script/init_nocache.html.js" %}
+            mp.when_script_loaded( function script_loaded_page_nocache() {
+                try {
+                    {% block page-no_cache_script %}
+                    {% endblock %}
+                    }
+                catch( e ) {
+                    mp.log_error("Page no-cache script exception: ", e)
+                    }
+                {#-- Most template JS should be in this block #}
+                mp.when_ui_loaded( function page_ready_script() {
+                    try {
+                        {% block page_ready_script %}
+                        {% endblock %}
+                        }
+                    catch( e ) {
+                        mp.log_error("Page script exception: ", e)
+                        }
+                    mp.show_wait_overlay( false )
+                    mp.log_time_mark('PAGE_INIT')
+                    })
+
+                mp.log_highlight("SCRIPT LOADED")
+                })
+            mp.log_highlight("PAGE LOADED")
+            </script>
+
+        {#-- Debug and Test Support ------------------------------------------------ #}
+
+        {% if mp_testing %}
+            {% include "root/test/page_testing.html" %}
+        {% endif %}
+
+        {% if dev_page_tools %}
+            <mpdebug>
+                <div>
+                    {% block page_debug %}
+                        {% include "root/test/page_debug.html" %}
+                    {% endblock %}
+                    </div>
+
+                {#-- Placeholder for injection Django toolbar #}
+                <djtoolbar></djtoolbar>
+
+                </mpdebug>
+        {% endif %}
+
+        </body>
+    </html>
+{% end_strip_spaces %}

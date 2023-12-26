@@ -1,0 +1,27 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Shown when a CSRF error occurs
+
+{% endcomment %}
+
+{% block panel_body %}
+
+    <div class="es_theme_page">
+        <h1>
+            Session expired
+            </h1>
+        <p>
+            It looks like your session has expired or was ended (e.g., logging in from another device)
+            </p>
+        <p>
+            <a class="es_button_flat"
+                    style="padding-left: 0"
+                    href="{% url 'logout' %}"
+                    >
+                Click here to log into a new session
+                </a>
+            </p>
+        </div>
+
+{% endblock %}

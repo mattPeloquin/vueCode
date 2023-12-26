@@ -1,0 +1,68 @@
+/*--- Copyright 2021 Vueocity LLC
+
+    mpExtend control styling
+ */
+
+.mp_easylink, .mp_easylink_url
+    font-size: 80%
+    font-style: normal
+    font-weight: bold
+    color: $cBlue
+.mp_easylink
+    &:is(:hover,:focus,:active)
+        cursor: pointer
+        color: rgba( $cOrange, 0.9 ) !important
+
+.mp_easylinks
+    margin: 0 1em 0.5em 0.5em
+    h3
+        font-size: 90%
+        span
+            margin-left: 0.5em
+    .mp_help_staff
+        margin: 0.2em
+    section
+        margin: 0.5em 0
+    .mp_viz_area
+        width: 22em
+        margin: 0.2em
+        padding: 0 1em 0.5em 1em
+        background: rgba( $cBlack, 0.08 )
+        border-radius: $cStaff_border-radius
+        .mp_clipboard_display .mp_clipboard_button
+            top: 0.5em
+        .social_buttons
+            display: flex
+            justify-content: space-around
+            width: 90%
+            margin-top: 0.3em
+            padding: 0.5em
+            background: white
+            border-radius: $cStaff_border-radius
+            img
+                width: 5em
+                height: 1.5em
+        textarea
+            font-family: monospace
+            font-size: 66%
+            margin-top: 0.3em
+            width: 30em
+            height: 3em
+            padding: 0.1em 0.2em
+            border: 1px solid
+            &.small
+                height: 3em
+
+.mp_staff_content_connect .es_content_tool_popup
+    top: 1.8em
+    left: -8em !important
+    width: 22em
+    .es_tool_popup
+        padding: 0.3em 0.5em 0.5em 0.5em
+        h3
+            margin-top: 0.5em
+        .social_buttons
+            img
+                padding: 0.5em
+                width: 6em
+                height: 2.5em

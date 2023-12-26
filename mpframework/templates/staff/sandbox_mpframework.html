@@ -1,0 +1,29 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Site admin menu
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% if not user.logged_into_root %}
+
+    {% usemacro menu_item 'Setup' 'fa-cog' 'staff_admin:tenant_sandbox_change' site.pk %}
+    {% if user.access_med %}
+        {% usemacro menu_item 'Customization' 'fa-sliders' 'staff_admin:tenant_sandboxcustom_change' site.pk %}
+    {% endif %}
+    {% if user.access_high %}
+        {% usemacro menu_item 'CSS and HTML' 'fa fa-code' 'staff_admin:tenant_sandboxsitebuilder_change' site.pk %}
+        <hr class="mp_menu_break">
+        {% usemacro menu_item 'Changed values' 'fa-undo' 'staff_admin:ops_fieldchange_changelist' %}
+    {% endif %}
+
+{% endif %}
+
+{% if user.access_root_menu %}
+    <hr class="mp_menu_break">
+    <a class="mp_menu_item root"  href="{% url 'root_admin:tenant_provider_change' site|get:'_provider_id' %}">Provider</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:tenant_sandbox_changelist' %}">Sandboxes</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:tenant_sandboxhost_changelist' %}">Sandbox hosts</a>
+{% endif %}

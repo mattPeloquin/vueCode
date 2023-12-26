@@ -1,0 +1,41 @@
+{% extends '_base/pages/style.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Payment failed landing page
+
+{%endcomment%}
+
+{% block page_body %}
+
+    <div class="es_theme_page">
+        <h2>Payment could not be completed</h2>
+        <p>
+            {% if reason == 'CONFIG' %}
+                Payment processing is not yet configured for this site
+            {% elif reason == 'DETAILS' %}
+                An error occurred finalizing details
+            {% elif reason == 'PAYMENT' %}
+                An error occurred processing payment
+            {% else %}
+                An error occurred during the transaction
+            {% endif %}
+            </p>
+
+        <a class="es_button_text" href="{{ site.portal_url }}">
+            Return to {{ site.name }}.
+            </a>
+
+        </div>
+
+    {% if response %}
+
+        <p>The following response was received from the payment processor:
+            </p>
+
+        <div class="mp_mono">
+            {{ response }}
+            </div>
+
+    {% endif %}
+
+{% endblock %}

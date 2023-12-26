@@ -1,0 +1,207 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    set_colors sets up theme color layout based on CSS vars.
+    Include this in color templates after setting CSS vars,
+    see color templates for examples.
+    Theme colors do not affect staff menus or areas.
+
+    Headings assume the following:
+        h1 - Page / site/ pane titles
+        h2 - Collection headers and section titles
+        h3 - Item titles
+        h4 - Other titles
+
+    Minimum CSS var colors:
+
+        --text              (default text color)
+        --back              (primary background color)
+        --highlight         (like Material primary, mostly highlighted background)
+        --overlay           (like Material secondary, mostly overlay background)
+        --variant           (like Material variant, mostly for selected items)
+
+    Optional items to provide more control:
+
+        --icon_color        (default color for icons in user areas)
+        --heading_text      (change text color for most h1, h2, h3, h4)
+        --highlight_text    (text in highlight background areas)
+        --action_text       (flat button text)
+
+        --card_text, --card_back, --card_title  (content card displays)
+        --list_text, --list_back, --list_title  (content list displays)
+        --current, --current_text               (back and text for selected content)
+        --card_hover, --card_hover_text         (override highlight back and text on hover)
+        --list_hover, --list_hover_text
+
+        --overlay_text, --overlay_title         (text for overlays)
+        --popup_text, --popup_back, --popup_title (text in dialogs and popup viewer)
+        --bar_text, --bar_back                  (header and tab bars)
+        --tab_text, --tab_back                  (tabbed menus visible to users)
+        --menu_text, --menu_back                (menus visible to users)
+        --input_text, --input_back              (input fields in user areas)
+        --breadcrumb_text, --breadcrumb_back    (breadcrumb items)
+        --tooltip_text, --tooltip_back          (Tooltips for portal content)
+        --scroll_thumb, --scroll_track          (Scrollbard colors)
+
+    Highlight/effects used in some styles:
+
+        --shadow_overlay, --shadow_highlight    (shadow color for overlay or highlight text)
+        --sheen_low, --sheen_high, --sheen      (3D lighting overlay for elements)
+        --gradient                              (Default direction for linear-gradients)
+        --light, --shadow                       (RGB values for highlights and shadows)
+
+    Define guaranteed defaults as root vars here, which can be
+    overridden in color specializations.
+
+{% endcomment %}
+
+{#-- Key theme areas #}
+
+.es_theme_root, .es_theme_popup, .es_theme_bar {
+    color: var(--text);
+    }
+.es_theme_background {
+    color: var(--text);
+    background: var(--back);
+    }
+:root {
+    --highlight_text: var(--variant);
+    --heading_text: var(--variant);
+    --overlay_text: var(--highlight_text);
+    --overlay_title: var(--overlay_text);
+    --current: var(--highlight);
+    --current_text: var(--highlight_text);
+    --icon_color: var(--highlight);
+
+    --card_back: var(--back);
+    --card_hover: var(--card_back);
+
+    --popup_back: var(--back);
+    --popup_text: var(--text);
+    --popup_title: var(--popup_text);
+    --bar_text: var(--text);
+    --bar_back: var(--back);
+
+    --input_text: var(--text);
+    --input_back: var(--back);
+
+    --shadow: 0,0,0;
+    --gradient: to bottom right;
+    --light: 255,255,255;
+    --sheen: linear-gradient( var(--gradient), rgba(var(--light),0.2), rgba(var(--light),0.0) );
+    --sheen_low: linear-gradient( var(--gradient), transparent, transparent );
+    --sheen_high: linear-gradient( var(--gradient), rgba(var(--light),0.35), rgba(var(--light),0.05) );
+    }
+{% include "_/add_color.html.css" with class=' .es_theme_overlay, .es_button_overlay ' text='var(--overlay_text)' back='var(--overlay)' sheen='var(--sheen_low)' shadow='var(--shadow_overlay,transparent)' %}
+{% include "_/add_color.html.css" with class=' .es_theme_popup ' text='var(--popup_text)' back='var(--popup_back)' sheen='var(--sheen_low)' %}
+{% include "_/add_color.html.css" with class=' .es_theme_bar ' text='var(--bar_text)' back='var(--bar_back)' sheen='var(--sheen_low)' %}
+{% include "_/add_color.html.css" with class=' :is(.es_theme_root,.es_theme_popup,.es_theme_bar) :is(.mp_input,textarea,select) ' text='var(--input_text)' back='var(--input_back)' %}
+{% include "_/add_color.html.css" with class=' :is(.es_theme_root,.es_theme_popup,.es_theme_bar) :is(.es_button_flat,.es_button_text) ' text='var(--action_text)' back='transparent' %}
+{% include "_/add_color.html.css" with class=' .es_theme_bar :is(.fa,.es_button_flat,.es_button_text) ' text='var(--bar_text)' back='transparent' %}
+
+:is( .es_theme_root, .es_theme_popup, .es_theme_overlay, .es_theme_bar ) .fa {
+    color: var(--icon_color) !important;
+    }
+.es_theme_bar .fa {
+    color: var(--bar_icon_color) !important;
+    }
+
+:is( .es_theme_root, .es_theme_bar ) :is( h1, h2, h3, h4, .es_viz_icon ) {
+    color: var(--heading_text);
+    }
+.es_theme_overlay :is( h1, h2, h3, h4, .es_viz_icon ) {
+    color: var(--overlay_title) !important;
+    }
+.es_theme_popup :is( h1, h2, h3, h4, .es_viz_icon ) {
+    color: var(--popup_title) !important;
+    }
+
+{% include "_/add_color.html.css" with class=' .es_theme_current, .es_theme_current a ' important='true' text='var(--current_text)' %}
+{% include "_/add_color.html.css" with class=' .es_theme_current ' back='var(--current)' sheen='var(--sheen_high)' %}
+{% include "_/add_color.html.css" with class=' .es_current :is( .es_theme_card, .es_theme_list ) ' important='true' back='var(--current)' text='var(--current_text)' sheen='var(--sheen_high)' %}
+
+{% include "_/add_color.html.css" with class=' .es_theme_root .tippy-box ' back='var(--tooltip_back,var(--overlay))' sheen='var(--sheen_low)' %}
+{% include "_/add_color.html.css" with class=' .es_theme_root .tippy-box *' important='true' text='var(--tooltip_text,var(--overlay_text))' %}
+{% include "_/add_color.html.css" with class=' .es_theme_root .tippy-arrow ' important='true' text='var(--tooltip_back,var(--overlay))' %}
+
+{% include "_/add_color.html.css" with class=' .es_menu ' text='var(--menu_text,var(--highlight))' back='var(--menu_back,var(--overlay))' sheen='var(--sheen_high)' %}
+.es_menu .fa {
+    color: var(--menu_text,var(--highlight));
+    }
+{% include "_/add_color.html.css" with class=' .es_tabs_menu ' text='var(--tab_text,var(--text))' back='var(--tab_back,var(--back))' %}
+body:not(.es_width_small) .es_theme_bar .es_tabs_menu:not(.mpr_collapse_inline) {
+    color: inherit;
+    background-color: inherit;
+    }
+
+{#-- Content specific  #}
+
+:root {
+    --card_title: var(--heading_text);
+    --card_text: var(--text);
+    --list_title: var(--heading_text);
+    --list_text: var(--text);
+    --list_hover: var(--highlight);
+    --list_hover_text: var(--highlight_text);
+    }
+{% include "_/add_color.html.css" with class=' .es_theme_card ' text='var(--card_text)' back='var(--card_back)' sheen='var(--sheen_low)' %}
+{% include "_/add_color.html.css" with class=' .es_theme_list ' text='var(--list_text)' back='var(--list_back)' sheen='var(--sheen_low)' %}
+.es_theme_card .es_item_title { color: var(--card_title); }
+.es_theme_list .es_item_title { color: var(--list_title); }
+.es_sidebar {
+    background: var(--sidebar_overlay,transparent);
+    }
+
+{#-- Highlighting theme items #}
+
+.es_theme_highlight,
+:is( .es_button, .es_button_flat ):is(:hover,:focus,:active) {
+    color: var(--highlight_text);
+    background: var(--highlight);
+    background-image: var(--sheen);
+    }
+:is( .es_portal_tab, .es_nav_anchor, .es_button_text, .es_button_overlay ):is(:hover,:focus,:active),
+.es_menu_highlight .es_menu_text {
+    color: var(--hover_text,var(--highlight));
+    }
+:is( .es_portal_tab, .es_nav_anchor, .es_button_text, .es_button_overlay ):is(:hover,:focus,:active) .fa,
+a.es_menu_highlight .fa, .es_current .fa {
+    color: var(--hover_text,var(--highlight)) !important;
+    }
+:is( .es_portal_tab, .es_nav_anchor, .es_button_text ):is(:hover,:focus,:active),
+.es_menu_highlight .es_menu_text, a.es_menu_highlight .fa {
+    text-shadow: 1px 1px 2px var(--shadow_highlight,transparent);
+    }
+
+:is( nav, item ).es_content:is(:hover,:focus,:active) .es_theme_card {
+    color: var(--card_hover_text);
+    background: var(--card_hover);
+    background-image: var(--sheen_low);
+    }
+:is( nav, item ).es_content:is(:hover,:focus,:active) .es_theme_list
+        .es_content_highlight {
+    color: var(--list_hover_text);
+    background: var(--list_hover);
+    background-image: var(--sheen);
+    }
+:is( nav, item ).es_content:is(:hover,:focus,:active) .es_theme_list
+        .es_content_highlight :is( h1, h2, h3, h4 ) {
+    color: var(--list_hover_text);
+    }
+
+{#-- Other color areas #}
+
+.es_portal {
+    scrollbar-color: var(--scroll_thumb,var(--overlay)) var(--scroll_track,var(--back));
+    }
+.es_portal::-webkit-scrollbar-thumb {
+    background: var(--scroll_thumb,var(--overlay));
+    }
+.es_portal::-webkit-scrollbar-track {
+    background: var(--scroll_track,var(--back));
+    }
+
+.es_breadcrumb {
+    color: var(--breadcrumb_text);
+    border-color: var(--breadcrumb_back);
+    background: var(--breadcrumb_back);
+    }

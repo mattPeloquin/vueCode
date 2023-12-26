@@ -1,0 +1,26 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    First MPF scripting (not including deferred loads)
+    This non-cached block keeps user-specific info out server template logic,
+    making caching template fragments easier.
+
+{%endcomment%}
+
+<script> 'use_strict';
+    window.mp = {
+        url_current: '{{ url_current }}',
+        load_urls: [],
+        csrf: '{{ csrf_token }}',
+        request_content: {{ request_content | json }},
+        request_info: {{ request_info | json }},
+        log_debug_level: {{ user.options.client_debug | default:log_debug_level }},
+        is_iframe: window.top !== window.self,
+        user: {
+            id: '{% if user.pk %}{{ user.pk }}{% else %}A{% endif %}',
+            tag: '{{ user.email | default:request_ip }}',
+            },
+        debug: {{ user.options.client_debug | default:debug | jsbool }},
+        }
+    window.mpp = {}
+    window.mpt = {}
+</script>

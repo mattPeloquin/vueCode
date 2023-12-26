@@ -1,0 +1,97 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    EasyLink connections for content items.
+    Requires adding:
+
+    mp.update_url() calls in page_ready_script to update link values.
+
+{%endcomment%}
+
+<div class="mp_flex_column mp_easylinks">
+
+    <h2 class="mp_viz_switch mp_button">
+        <div>EasyLinks...</div>
+        </h2>
+    <div class="mp_help_staff">
+        Share content on social media, email, texts, and web
+        </div>
+    <div class="mp_viz_area mp_hidden">
+        <section>
+            <h3>Invite Link <span class="mp_help_staff">
+                highlight content on sign-up page
+                </span></h3>
+            <div class="mp_clipboard">
+                <div id="easylink_invite_link" class="mp_easylink mp_ellipsis">
+                    </div>
+                </div>
+            </section>
+        <section class="social">
+            <h3>Social Media <span class="mp_help_staff">
+                use these buttons to post content
+                </span></h3>
+            <div class="social_buttons mp_flex">
+                <div id="easylink_facebook">
+                    </div>
+                <div id="easylink_twitter">
+                    </div>
+                <div id="easylink_linkedin">
+                    </div>
+                </div>
+            </section>
+        <section>
+            <h3>Page Link <span class="mp_help_staff">
+                open dedicated content page
+                </span></h3>
+            <div class="mp_clipboard">
+                <div id="easylink_page" class="mp_easylink_url mp_ellipsis">
+                    </div>
+                </div>
+            </section>
+        {% if user.access_high %}
+            <section class="button mp_clipboard">
+                <div class="mp_clipboard_display">
+                    <h3>Access Button <span class="mp_help_staff">
+                        code for open in popup window
+                        </span></h3>
+                    </div>
+                <textarea id="easylink_access_button" class="mp_clipboard_target mp_input_no">
+                    </textarea>
+                </section>
+            <section class="button mp_clipboard">
+                <div class="mp_clipboard_display">
+                    <h3>Page Button <span class="mp_help_staff">
+                        code for open in a new page
+                        </span></h3>
+                    </div>
+                <textarea id="easylink_page_button"
+                            class="mp_clipboard_target mp_input_no">
+                    </textarea>
+                </section>
+        {% endif %}
+        {% if user.access_all %}
+            {% if not original.is_collection %}
+                <section class="widget mp_clipboard">
+                    <div class="mp_clipboard_display">
+                        <h3>Small Widget <span class="mp_help_staff">
+                            code for small widget with popup
+                            </span></h3>
+                        </div>
+                    <textarea id="easylink_widget_small"
+                                class="mp_clipboard_target mp_input_no">
+                        </textarea>
+                    </section>
+            {% endif %}
+            <section class="widget mp_clipboard">
+                <div class="mp_clipboard_display">
+                    <h3>Large Widget <span class="mp_help_staff">
+                        code for large in-place widget
+                        </span></h3>
+                    </div>
+                <textarea id="easylink_widget_large"
+                            class="mp_clipboard_target mp_input_no">
+                    </textarea>
+                </section>
+        {% endif %}
+        </div>
+
+    </div>

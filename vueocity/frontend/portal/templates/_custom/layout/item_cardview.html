@@ -1,0 +1,46 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Layout for content item cards.
+
+{%endcomment%}
+
+<div class="es_cardview es_itemview es_theme_card es_theme_content" data-bind="
+        style: {
+            '--es_item_font-size': sb_option('portal.item_font_size', $element),
+            },
+        ">
+    <div class="es_content_body">
+        {% mp_include "content_state" %}
+
+        <!-- ko if: !!sb('image1') -->
+            <div class="es_content_image">
+                <img class="es_style_hover" data-bind="
+                        attr: { src: sb('image1') },
+                        "/>
+                </div>
+        <!-- /ko -->
+
+        <div class="es_content_text" data-bind="
+                css: {
+                    es_item_text_image: !!sb('image1'),
+                    es_style_hover: !sb('image1'),
+                    },
+                ">
+            <h3 class="es_item_title" data-bind="
+                    html: sb('name'),
+                    ">
+                </h3>
+            <div class="es_item_text1" data-bind="
+                    html: sb('text1'),
+                    ">
+                </div>
+            <div class="es_item_text2" data-bind="
+                    html: sb('text2'),
+                    ">
+                </div>
+
+            {% mp_include "content_access" %}
+
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,33 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display a collection on one page with optional
+    side, top, and bottom panels.
+    The base implementation shows core node items, which can
+    be extended in custom templates.
+
+     1) Expects VM for tree node for KO $data context
+
+{%endcomment%}
+
+<panel class="{% block panel_class %} es_panel_page {% endblock %}
+        es_content es_fullwidth mp_flex_column" data-bind="
+            bind_content_panel: $data
+            ">
+    <div class="mp_flex_item_grow mp_flex_column">
+        {% mp_include "collection_header" %}
+        <div class="mp_flex_item_grow mp_flex mp_flex_nowrap mp_flex_stretch">
+            <!-- ko if: sb_option( 'portal.collection_left', $element ) -->
+                {% mp_include "collection_side" with side='left' %}
+            <!-- /ko -->
+            <div class="es_content_panel es_theme_panel">
+                {% block panel_content %}
+                    {% mp_include "collection_root" %}
+                {% endblock %}
+                </div>
+            <!-- ko if: sb_option( 'portal.collection_right', $element ) -->
+                {% mp_include "collection_side" with side='right' %}
+            <!-- /ko -->
+            </div>
+        {% mp_include "collection_footer" %}
+        </div>
+    </panel>

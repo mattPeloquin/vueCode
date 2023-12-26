@@ -1,0 +1,445 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Base content test data
+#
+#   Content items (inherited from BaseItem) use multi-table inheritance, so
+#   their data is split between the baseitem table and their specialized
+#   table. To make management of this easier keep primary id keys
+#   synced between the baseitem table and the children, and break the id
+#   values into the following namespaces for fixture data:
+#
+#       files       1200
+#       collections 1000
+
+#--------------------------------------------------------------------
+# Portal content
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Category Ⅰ
+    text1: 'One Example of filter type'
+  model: mpcontent.portalcategory
+  pk: 1
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Category ⅢⅣⅤ
+  model: mpcontent.portalcategory
+  pk: 2
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: 'Cat3-with a long name'
+    workflow: B
+  model: mpcontent.portalcategory
+  pk: 3
+- fields:
+    _provider: 11
+    sandboxes: []
+    _name: 'Cat4-No assigned sandbox'
+  model: mpcontent.portalcategory
+  pk: 4
+- fields:
+    _provider: 12
+    sandboxes: [30, 40]
+    _name: 'Cat5-Sandbox30,40 Prov12'
+    workflow: D
+  model: mpcontent.portalcategory
+  pk: 5
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Type1 (items)
+    scope: I
+  model: mpcontent.portaltype
+  pk: 10
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Type2
+  model: mpcontent.portaltype
+  pk: 11
+
+- fields:
+    _name: Featured collections
+    _script_name: home_collections
+    nav_template: 275
+    scope: C
+    html: |
+      <h3>Featured collections</h3>
+      <p style"font-size: 60%">This is some small text to describe the group</p>
+  model: mpcontent.portalgroup
+  pk: 11
+- fields:
+    provider_optional: 11
+    sandboxes: [20]
+    _name: Group1 (items)
+    scope: I
+  model: mpcontent.portalgroup
+  pk: 20
+
+#--------------------------------------------------------------------
+# Files
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: PPT-S20
+    _slug: PPT-S20
+    _name: PPT file for S20 Ⅺ
+    portal_type: 10
+    search_tags: 'text file'
+    notes: 'Test PPT'
+    content_rev: 9999999
+    tooltip: Tooltip for PPT-S20<br>Line two
+  model: mpcontent.baseitem
+  pk: 1201
+- fields: { content_file: File.pptx }
+  model: mpcontent.protectedfile
+  pk: 1201
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Test public attachment download
+    _action: action_download
+    sb_options:
+      access:
+        free_public: True
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1202
+- fields: { content_file: File.xlsx }
+  model: mpcontent.protectedfile
+  pk: 1202
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: WordS20free
+    text1: WordS20 free to any logged in user
+    workflow: B
+    portal_type: 11
+    sb_options:
+      access:
+        free_user: True
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1203
+- fields:
+    content_file: File2 À Á Â Ã Ä Å Æ Ç È É Ê Ë  .docx
+  model: mpcontent.protectedfile
+  pk: 1203
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Protected file (PDF) for S20
+    portal_type: 10
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1205
+- fields: { content_file: 'File.pdf' }
+  model: mpcontent.protectedfile
+  pk: 1205
+
+#--------------------------------------------------------------------
+# Collections
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: 'TESTTAG'
+    _slug: TESTTAG
+    _name: A Test Collection
+    text1: Container for content developers to upload items
+    tooltip: Tooltip for test collection!!!
+    image1: P1BuddyLax.jpg
+    sb_options: |
+      special_text: foo
+      special_items: [ 'bar', '  ', 12345 ]
+  model: mpcontent.baseitem
+  pk: 1001
+- fields:
+    mptt_id: 10
+    parent: null
+    mptt_level: 0
+    mptt_left: 1
+    mptt_right: 2
+  model: mpcontent.tree
+  pk: 1001
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: TC1
+    _name: TestCollection1
+    portal_type: 11
+  model: mpcontent.baseitem
+  pk: 1002
+- fields:
+    mptt_id: 20
+    parent: null
+    mptt_level: 0
+    mptt_left: 1
+    mptt_right: 4
+    portal_categories: [1]
+    html1: |
+        <h1>Test Collection 1</h1>
+        <p style="color: blue">This is an example of an HTML description for content</p>
+    html2: |
+        <h1>About Test Collection 1</h1>
+        <p style="color: blue">This is an example of a long 'about' description for content</p>
+        <iframe type="text/html" width="320" height="400" frameborder="0"
+              src="//www.youtube.com/embed/uz47UMnyysQ"
+              >
+            </iframe>
+  model: mpcontent.tree
+  pk: 1002
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: TC1-1
+    _name: TestCollection1-1
+  model: mpcontent.baseitem
+  pk: 1003
+- fields:
+    mptt_id: 20
+    parent: 1002
+    mptt_level: 1
+    mptt_left: 2
+    mptt_right: 3
+  model: mpcontent.tree
+  pk: 1003
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: P01
+    _name: Test course
+  model: mpcontent.baseitem
+  pk: 1005
+- fields:
+    mptt_id: 40
+    parent: null
+    mptt_level: 0
+    mptt_left: 1
+    mptt_right: 4
+    portal_categories: [1, 2, 3]
+  model: mpcontent.tree
+  pk: 1005
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Item collection
+    tag: P01-1
+  model: mpcontent.baseitem
+  pk: 1006
+- fields:
+    mptt_id: 40
+    parent: 1005
+    mptt_level: 1
+    mptt_left: 2
+    mptt_right: 3
+  model: mpcontent.tree
+  pk: 1006
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: C02
+    _name: Test Collection 2
+    text1: Help description for TC2
+    portal_type: 11
+    sb_options:
+      portal:
+        expandable: true
+  model: mpcontent.baseitem
+  pk: 1007
+- fields:
+    mptt_id: 50
+    parent: null
+    mptt_level: 0
+    mptt_left: 1
+    mptt_right: 12
+    portal_categories: [2, 3]
+    node_template: 232
+  model: mpcontent.tree
+  pk: 1007
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Collection 2a
+    text1: TEXT1 - this is a longer text block with <b>HTML</b>
+    text2: TEXT2 - this is a longer text block with <b>HTML</b>
+    text3: TEXT3 - this is a longer text block with <b>HTML</b>
+    text4: TEXT4 - this is a longer text block with <b>HTML</b>
+  model: mpcontent.baseitem
+  pk: 1008
+- fields:
+    mptt_id: 50
+    parent: 1007
+    mptt_level: 1
+    mptt_right: 9
+    mptt_left: 2
+  model: mpcontent.tree
+  pk: 1008
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: C02
+    _name: Collection2aa
+    notes: |
+        Collection 2aa is marked for production, but since parents are
+        not it should not be visible and will be updated if it is saved
+  model: mpcontent.baseitem
+  pk: 1009
+- fields:
+    mptt_id: 50
+    parent: 1008
+    mptt_level: 2
+    mptt_left: 3
+    mptt_right: 4
+  model: mpcontent.tree
+  pk: 1009
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: C02ab
+    _name: Collection2ab
+    workflow: B
+  model: mpcontent.baseitem
+  pk: 1010
+- fields:
+    mptt_id: 50
+    parent: 1008
+    mptt_level: 2
+    mptt_left: 5
+    mptt_right: 6
+  model: mpcontent.tree
+  pk: 1010
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: C02ac
+    _name: Collection2ac
+    workflow: Q
+  model: mpcontent.baseitem
+  pk: 1011
+- fields:
+    mptt_id: 50
+    parent: 1008
+    mptt_right: 8
+    mptt_level: 2
+    mptt_left: 7
+  model: mpcontent.tree
+  pk: 1011
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: C02
+    _name: Collection2b
+    workflow: D
+    text1: Test of collection with no content, but categories and and materials.
+  model: mpcontent.baseitem
+  pk: 1012
+- fields:
+    mptt_id: 50
+    parent: 1007
+    mptt_level: 1
+    mptt_left: 10
+    mptt_right: 11
+    portal_categories: [1, 2, 3, 4, 5]
+  model: mpcontent.tree
+  pk: 1012
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: C03
+    _name: Collection3
+    workflow: R
+    text1: Collection3 Text1
+    text2: Collection3 Text2
+    text3: Collection3 Text3
+    text4: Collection3 Text4
+  model: mpcontent.baseitem
+  pk: 1013
+- fields:
+    mptt_id: 60
+    parent: null
+    mptt_right: 2
+    mptt_level: 0
+    mptt_left: 1
+  model: mpcontent.tree
+  pk: 1013
+
+- fields:
+    _provider: 12
+    sandboxes: []
+    tag: TestP12
+    _name: P12 Unassigned
+    workflow: D
+  model: mpcontent.baseitem
+  pk: 1014
+- fields:
+    mptt_id: 70
+    parent: null
+    mptt_level: 0
+    mptt_left: 1
+    mptt_right: 2
+  model: mpcontent.tree
+  pk: 1014
+
+#--------------------------------------------------------------------
+# Tree to item links
+
+- fields:
+    item: 1201
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 201
+- fields:
+    item: 1201
+    tree: 1001
+    area: S
+  model: mpcontent.treebaseitem
+  pk: 202
+
+- fields:
+    item: 1203
+    tree: 1003
+  model: mpcontent.treebaseitem
+  pk: 205
+
+- fields:
+    item: 1201
+    tree: 1007
+  model: mpcontent.treebaseitem
+  pk: 210
+- fields:
+    item: 1201
+    tree: 1007
+    area: S
+  model: mpcontent.treebaseitem
+  pk: 211
+
+- fields:
+    item: 1201
+    tree: 1008
+  model: mpcontent.treebaseitem
+  pk: 220
+- fields:
+    item: 1202
+    drag_order: 2
+    tree: 1008
+  model: mpcontent.treebaseitem
+  pk: 221
+- fields:
+    item: 1203
+    drag_order: 1
+    tree: 1008
+  model: mpcontent.treebaseitem
+  pk: 222

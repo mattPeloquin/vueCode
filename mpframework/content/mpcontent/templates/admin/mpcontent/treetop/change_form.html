@@ -1,0 +1,16 @@
+{% extends 'admin/mpcontent/_tree_change_form.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Add tree-specific buttons
+
+{%endcomment%}
+
+{% block admin_corner %}
+    {% if change and not is_popup %}
+        <div class="mp_flex" style="padding-right: 1em;">
+            <a class="mp_button"
+                href="{% url 'staff_admin:mpcontent_treenested_changelist_top' original.pk %}"
+                >Edit children</a>
+            </div>
+    {% endif %}
+{% endblock %}

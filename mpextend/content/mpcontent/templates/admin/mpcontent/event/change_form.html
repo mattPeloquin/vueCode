@@ -1,0 +1,21 @@
+{% extends 'admin/change_form.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Manage the hide/show of fields based on event type
+
+{%endcomment%}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    {#-- Setup toggle for all sandboxes checkbox #}
+    function _sandboxes_toggle() {
+            $('.mp_cell._sandboxes')
+            .toggleClass( 'mp_hidden', $(this).prop('checked') )
+            .find('input, button').prop( 'disabled', $(this).prop('checked') )
+            }
+    $('#id__all_sandboxes')
+        .each( _sandboxes_toggle )
+        .on( 'change', _sandboxes_toggle )
+
+{% endblock %}

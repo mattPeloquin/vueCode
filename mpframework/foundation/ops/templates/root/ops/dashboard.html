@@ -1,0 +1,71 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    DevOps dashboard page
+
+{%endcomment%}
+
+{% block panel_body %}
+
+    <h1>Banning</h1>
+    <div class="mpdebug">
+        <div style="padding-left: 1em">
+            <form class="mp_form" method="post" data-parsley-validate>
+                {% include "_/form.html" with form=ban_form %}
+                <input class="mp_button" type="submit" name="ban" value="Update Banning" />
+                </form>
+            </div>
+        </div>
+    <br>
+    <h1>Tuning</h1>
+    <div class="mpdebug">
+        <div style="padding-left: 1em">
+            <form class="mp_form" method="post" data-parsley-validate>
+                {% include "_/form.html" with form=tuning_form %}
+                <input class="mp_button" type="submit" name="tuning" value="Update Tuning" />
+                </form>
+            </div>
+        </div>
+    <br>
+    <h1>Bots</h1>
+    <div class="mpdebug">
+        <div style="padding-left: 1em">
+            <form class="mp_form" method="post" data-parsley-validate>
+                {% csrf_token %}
+                <input class="mp_button" type="submit" name="bots_stop" value="Stop Bots" />
+                <input class="mp_button" type="submit" name="bots_start" value="Restart Bots" />
+                </form>
+            </div>
+        </div>
+    <br>
+
+    {% mp_include_files "root/ops" "dashboard" ".html" %}
+
+    <h1>Root policy</h1>
+    <div class="mpdebug">
+        {% include "root/_/dict.html" with d=root_policy %}
+        </div>
+    <br><br>
+    <h1>Server Info</h1>
+    <div class="mpdebug">
+        <p>Server that provided this page: {{ server_ip }}</p>
+        {% if using_aws %}
+            {% for ip, info in servers_info.items %}
+
+                <h3>{{ info.name }} <i>({{ info.state }})</i></h3>
+                <div>
+                    <p>Name: {{ info.name }}  <i>({{ info.ip }}</i>)</p>
+                    <p>Amazon ID: {{ info.pk }}</p>
+                    <p>State: {{ info.state }}</p>
+                    <p>DNS: {{ info.dns }}</p>
+                    <p>Private IP: {{ ip }}</p>
+                    <p>Launch Time: {{ info.launch_time }}</p>
+                    </div>
+
+            {% endfor %}
+        {% else %}
+            <p>This environment is not using AWS</p>
+        {% endif %}
+        </div>
+
+{% endblock %}

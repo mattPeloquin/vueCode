@@ -1,0 +1,49 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Show top collections as tabs.
+    This is both a basic tabs page and base for other tabs pages.
+    The tab bar and articles to be shown are wrapped in the es_tabs
+    element to support change top/side tab orientation with css.
+    The default orientation is tabs on top.
+
+      collections - Injected VMs bag, defaults to 'all_tops'
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/macros.html" %}
+
+<pane class="es_pane_tabs {% block pane_name %} es_pane_tabs_tops {% endblock %}"
+        {% usemacro add_pane_context pane %}
+        >
+    <div class="es_tabs" data-bind="
+            {#-- Inject CSS to support tab positioning #}
+            class: mpp.sb_option( 'portal.pane_tabs', $element ),
+            ">
+        {#-- Default tabs assume one for each $data plus home #}
+        {% block pane_tabs %}
+            <!-- ko with: {{ pane.collections|default:'all_tops()' | safe }} -->
+                {% mp_include "nav_content_tabs" %}
+            <!-- /ko -->
+        {% endblock %}
+
+        {#-- Home panel shows site info #}
+        <!-- ko ifnot: mpp.sb_option( 'portal.no_home', $element ) -->
+            <article id="{{ pane.nav_home|default:'home' }}"
+                    class="es_home mp_nav_home mp_nav_panel" data-bind="
+                        bind_nav_panel: false,
+                        " data-no_breadcrumbs='true'
+                        >
+                {% mp_include "home_html" with featured_group='home_items' %}
+                </article>
+        <!-- /ko -->
+
+        {#-- Nav panels for each tab #}
+        {% block pane_panels %}
+            <!-- ko foreach: {{ pane.collections|default:'all_tops()' | safe }} -->
+                {% mp_include "collection_panel" with no_breadcrumbs=True %}
+            <!-- /ko -->
+        {% endblock %}
+
+        </div>
+    </pane>

@@ -1,0 +1,56 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Client template snippet for recursive collection node rendering.
+    Starting point to render a collection, uses the collections and items
+    templates to layout root tree node.
+    template_collection_nodes then recursively includes this with the current
+    node context to recurse to bottom of the tree.
+
+      1) KO $data context is a collection VM
+      2) 'itemfn' is KO $context object that holds the name of a VM member
+         to call along with any arguments. It defaults to items_core().
+      3) itemfn can be set from server or client items. Once set it is passed
+         down any nested contexts.
+      4) 'no_recurse' forces one level only
+      5) 'featured' displays optional horizontal featured content
+
+{%endcomment%}
+
+<!-- ko let: {
+    itemfn: $context.itemfn || {
+        name: '{{ itemfn }}' || 'items_core',
+        arg1: '{{ arg1|default:'' }}',
+        arg2: '{{ arg2|default:'' }}',
+        },
+    } -->
+    <!-- ko let: {
+        node_items: $data[ itemfn.name ]( itemfn.arg1, itemfn.arg2 ),
+        } -->
+
+        {% if featured_area %}
+            <!-- ko ifnot: mpp.sb_option( 'portal.no_featured', $element ) -->
+                {% mp_include "items" with items="items_area('{{ featured_area }}')" horizontal=True no_empty=True opt_template="featured" %}
+            <!-- /ko -->
+        {% endif %}
+
+        <!-- ko ifnot: ko.length( node_items ) || ko.length( node_children() ) -->
+            <div class="es_empty mp_empty" data-bind="
+                    html: sbt( 'empty', $element ),
+                    ">
+                </div>
+        <!-- /ko -->
+
+        {% mp_include "items" with items='node_items' nested=True no_empty=True %}
+
+        {% if not no_recurse %}
+            <!-- ko template: {
+                name: 'template_collection_nodes',
+                data: {
+                    nodes: node_children(),
+                    },
+                } -->
+            <!-- /ko -->
+        {% endif %}
+
+    <!-- /ko -->
+<!-- /ko -->

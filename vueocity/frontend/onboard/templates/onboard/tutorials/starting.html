@@ -1,0 +1,97 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Tutorial panels
+
+{% endcomment %}
+
+
+<div class="onboard_heading mp_flex mp_flex_between">
+    <div class="mp_button_text tutorial_toggle">
+        Getting started
+        </div>
+    <div class="es_close tutorial_close mp_button_text">
+        </div>
+    </div>
+
+<div class="onboard_panel">
+
+    {% if onboard_help %}
+        <div class="tp1 vuetool">
+            <div class="mp_viz_switch">
+                <h2>Trial helper</h2>
+                </div>
+            <div class="mp_viz_area">
+                Visible during your trial period. Use to try out the
+                different account levels.
+                </div>
+            </div>
+    {% endif %}
+
+    <div class="tp2 vuetool">
+        <div class="mp_viz_switch">
+            <h2>Staff menu</h2>
+            </div>
+        <div class="mp_viz_area mp_hidden">
+            The top menu bar is only visible to staff accounts.
+            The higher your account level, the more features you'll see here.
+            </div>
+        </div>
+
+    <div class="tp4 vuetool">
+        <div class="mp_viz_switch">
+            <h2>Content tools</h2>
+            </div>
+        <div class="mp_viz_area mp_hidden">
+            Edit, copy, and see currently configured access
+            options for content items with these hidden buttons. You can also
+            edit and add new items to collections.
+            </div>
+        </div>
+
+    {% if user.access_low %}
+        <div class="tp5 vuetool">
+            <div class="mp_viz_switch">
+                <h2>Workflow</h2>
+                </div>
+            <div class="mp_viz_area mp_hidden">
+                Customers see production content ('Prod' button).
+                Staff can see beta and development content with 'Dev' and 'Beta' buttons.
+                </div>
+            </div>
+    {% endif %}
+
+    <div class="tp3 vuetool">
+        <div class="mp_viz_switch">
+            <h2>User menu</h2>
+            </div>
+        <div class="mp_viz_area mp_hidden">
+            All staff and customers see the user profile menu.
+            Only staff and group admins see the group account menu.
+            </div>
+        </div>
+
+    <div class="tp6 vuetool">
+        <div class="mp_viz_switch">
+            <h2>Test your site</h2>
+            </div>
+        <div class="mp_viz_area mp_hidden">
+            Press this button to enable test mode, which hides
+            the staff UI. To fully test your site, create a test user account
+            with an incognito/private browser session.
+            </div>
+        </div>
+
+    </div>
+
+<script> 'use strict';
+    mp.when_ui_loaded( function onboard_tutorial() {
+
+        mp.set_highlight( ".tp1", "#onboard_help" )
+        mp.set_highlight( ".tp2", ".mp_staff_bar" )
+        mp.set_highlight( ".tp3", ".es_user_bar" )
+        mp.set_highlight( ".tp4", ".mp_control" )
+        mp.set_highlight( ".tp5", "#mpworkflow" )
+        mp.set_highlight( ".tp6", "#mpuserview_on" )
+
+        })
+    </script>

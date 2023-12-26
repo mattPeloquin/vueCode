@@ -1,0 +1,24 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Account admin menu
+
+{% endcomment %}
+
+{% if account and not is_portal_content %}
+    <nav class="es_top_ga mp_menu_user mp_ga_menu_root mp_hidden">
+        <div class="mp_menu">
+            <div class="mp_menu_item mp_menu_header">
+                <a>
+                    <span class="fa fa-group"></span>
+                    <span class="es_menu_text mpr_hide_med">
+                        {{ sb_options.text.account_name|default:"Groups" }}
+                        </span>
+                    </a>
+                {#-- Need to setup extra div for relative positioning of the menu #}
+                <div class="es_menu mp_menu mp_menu_dropdown">
+                    {% include "group/_menu_items.html" %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+{% endif %}

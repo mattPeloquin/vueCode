@@ -1,0 +1,47 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   DEV servers for PRODUCTION cluster
+#
+#   Supports a server cluster that shares DB and S3 with production,
+#   but uses separate servers, 'mpd' URL routing, and playpen resources
+#   (e.g., cache namespaces and SQS queues are separate).
+#
+#   NOTE -- the prod-mpd server instance is treated as a production
+#   server inside AWS so is part of the prod server security group.
+#   However, access to the 'mpd' endpoints is controlled in Django
+#   and ideally with IP routing.
+#
+
+# Add timestamp to playpen to ensure no sharing of cache when files
+# are pushed to prod-mpd for testing
+MP_PLAYPEN_ADD_TIMESTAMP: True
+
+# Don't share cache, SQS, and options
+MP_PLAYPEN_CACHE: prod-mpd
+MP_PLAYPEN_OPTIONS: prod-mpd
+MP_PLAYPEN_SQS:
+  NAME: test
+  VERSION: prod-mpd
+
+MP_COMPRESS:
+  VERBOSE: True
+  CSS: False
+  JS: False
+
+DEBUG: True
+MP_FLAGS:
+  DEV_show_page_tools: True
+
+# Don't throw exceptions for missing templates, to emulate prod behavior
+MP_TEMPLATE_DEBUG: False
+
+MP_LOG_LEVEL_DEBUG_MIN: 1
+MP_LOG_OPTIONS:
+  VERBOSE: True
+
+MP_ROOT:
+  HOST_SUBDOMAINS: ['mpd']
+
+# Don't CF cache prod-mpd javascript, since uncompressed/unversioned files
+# are loaded directly from static\mpf-js
+MP_EDGE_NOCACHE: ['js']

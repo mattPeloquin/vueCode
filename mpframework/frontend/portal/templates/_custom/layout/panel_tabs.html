@@ -1,0 +1,100 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display a collection using tabs with optional
+    side, top, and bottom panels.
+    The base implementation uses tabs based on the areas for binding
+    items to collections, which may be extended in custom templates.
+
+     1) Expects VM for tree node for KO $data context
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/nav_macros.html" %}
+
+<panel class="es_panel_tabs {% block panel_class %} es_panel_tabs_area {% endblock %}
+        es_content es_fullwidth mp_flex_column">
+    <div class="mp_flex_item_grow mp_flex mp_flex_nowrap mp_flex_stretch">
+        <!-- ko if: sb_option( 'portal.collection_left', $element ) -->
+            {% mp_include "collection_side" %}
+        <!-- /ko -->
+
+        <div class="mp_flex_item_grow">
+            {% mp_include "collection_header" %}
+
+            <div class="es_tabs" data-bind="
+                    class: sb_option( 'portal.tabs_side', $element ) ?
+                        'es_tabs_side' : '',
+                    ">
+                <nav class="es_tabs_container">
+                    <!-- ko ifnot: sb_option( 'portal.tabs_no_collapse', $element ) -->
+                        <div class="mpr_collapse" data-bind="
+                                attr: { 'data-collapse': 'mpc_' + $data.slug },
+                                ">
+                            <div class="fa fa-bars mpr_collapse_toggle">
+                                </div>
+                            </div>
+                    <!-- /ko -->
+                    <div class="es_tabs_panel" data-bind="
+                            class: sb_option( 'portal.tabs_no_collapse', $element ) ?
+                                    '' : 'mpr_collapse_hide',
+                            attr: { id: 'mpc_' + $data.slug },
+                            ">
+                        <div class="es_tabs_menu">
+                            {% block panel_nav %}
+
+                                <!-- ko if: ko.length( items_area('featured') ) -->
+                                    {% usemacro nav_tab 'area_featured' %}
+                                <!-- /ko -->
+                                {% usemacro nav_tab 'area_core' %}
+                                {% usemacro nav_tab 'area_support' %}
+                                <!-- ko if: ko.length( items_area('custom1') ) -->
+                                    {% usemacro nav_tab 'area_custom1' %}
+                                <!-- /ko -->
+                                <!-- ko if: ko.length( items_area('custom2') ) -->
+                                    {% usemacro nav_tab 'area_custom2' %}
+                                <!-- /ko -->
+                                <!-- ko if: ko.length( items_area('custom3') ) -->
+                                    {% usemacro nav_tab 'area_custom3' %}
+                                <!-- /ko -->
+
+                            {% endblock %}
+                            </div>
+                        </div>
+                    </nav>
+
+                <div class="mp_flex_item_grow mp_flex mp_flex_nowrap mp_flex_stretch">
+                    <div class="es_content_panel es_theme_panel">
+                        {% block panel_content %}
+
+                            <section {% usemacro nav_attr 'area_featured' 'nested_nav' %} >
+                                {% mp_include "collection_node" with itemfn='items_area' arg1='featured' %}
+                                </section>
+                            <section {% usemacro nav_attr 'area_core' 'show nested_nav' %} >
+                                {% mp_include "collection_node" %}
+                                </section>
+
+                            {% to_list 'custom1' 'custom2' 'custom3' 'support' as areas %}
+                            {% for area in areas %}
+                                {% with area_str='area_'|concat:area %}
+
+                                    <section {% usemacro nav_attr area_str 'nested_nav' %} >
+                                        {% mp_include "collection_node" with itemfn='items_area' arg1=area %}
+                                        </section>
+
+                                {% endwith %}
+                            {% endfor %}
+
+                        {% endblock %}
+                        </div>
+                    </div>
+                </div>
+
+            {% mp_include "collection_footer" %}
+            </div>
+
+            <!-- ko if: sb_option( 'portal.collection_right', $element ) -->
+                {% mp_include "collection_side" %}
+            <!-- /ko -->
+        </div>
+    </panel>

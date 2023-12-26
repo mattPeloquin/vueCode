@@ -1,0 +1,83 @@
+{% extends 'group/_page.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Group admin content summary screen
+
+{% endcomment %}
+
+
+{% block group_page_body %}
+{% if collections or items %}
+    <div id="content_report">
+        <h2>Content usage</h2>
+
+        <div class="mp_flex_line">
+            <div class="es_button_flat"
+                    onclick="mp.ajax_dialog(
+                        '{% url 'ga_content_top_csv' ga_id %}', mpt.REPORT_CHECK_DONE
+                        )">
+                Summary usage report
+                </div>
+            <div class="es_button_flat" style="margin-left: 1em"
+                    onclick="mp.ajax_dialog(
+                        '{% url 'ga_content_csv' ga_id %}', mpt.REPORT_CHECK_DONE
+                        )">
+                Detailed usage report
+                </div>
+            </div>
+
+        {% if collections %}
+        <div id="collection_report">
+
+            <div class="es_report_head mp_flex_line">
+                <input class="mp_search" placeholder="Search" />
+                </div>
+
+            <table class="es_report_table">
+                <thead>
+                    <tr class="es_heading">
+                        <th style="width: 40%" class="mp_sort es_textleft"
+                                data-sort="name">Collection Name</th>
+                        <th style="width: 20%" class="mp_sort" data-sort="completed">Users completed</th>
+                        <th style="width: 20%" class="mp_sort" data-sort="started">Users in progress</th>
+                        <th style="width: 20%" class="mp_sort" data-sort="hours">Hours</th>
+                        </tr>
+                    </thead>
+                <tbody class="es_report_body mp_report">
+                    {% for name, c in collections.items %}
+                        <tr class="es_row">
+                            <td class="name">{{ name }}</td>
+                            <td class="completed es_textcenter">{{ c.completed }}</td>
+                            <td class="started es_textcenter">{{ c.started }}</td>
+                            <td class="hours es_textcenter">{% widthratio c.minutes 60 1 %}</td>
+                            </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        {% endif %}
+        </div>
+{% else %}
+    <div>There is no content usage yet</div>
+{% endif %}
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    {% if collections %}
+        const collection_list = new List( 'collection_report', {
+                listClass: 'mp_report',
+                searchClass: 'mp_search',
+                sortClass: 'mp_sort',
+                valueNames: [
+                    'name', 'started', 'completed', 'hours',
+                    ]
+                })
+        collection_list.sort( 'name', { order: 'asc' } )
+
+        $(".mp_sort").addClass('es_button_text')
+    {% endif %}
+
+{% endblock %}

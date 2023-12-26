@@ -1,0 +1,18 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    If a form has errors, add error style
+
+    This assumes it is included inside a page script block that has already
+    waited for script_loaded and jQuery ready
+
+{%endcomment%}
+
+{% if form.errors %}
+
+    {% for field in form %}
+        {% if field.errors %}
+            $('#{{field.auto_id}}').addClass('es_field_error');
+        {% endif %}
+    {% endfor %}
+
+{% endif %}

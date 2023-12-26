@@ -1,0 +1,174 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+	Vueocity marketing website home page
+
+{%endcomment%}
+
+<section id="vue_home_header" class="mp_flex mp_flex_between" data-bind="
+        with: get_tag('home_main'),
+        ">
+
+    <div id="vue_home_hero">
+        <div class="es_hero_video mp_video">
+            <video playsinline autoplay muted loop width="x" height="y">
+                <source src="{{ site.hero_video.url }}">
+                </video>
+            </div>
+        </div>
+
+    <div id="vue_home_promo">
+        <!-- ko with: mpp.vm_items().get_tag('video_intro') -->
+            {% mp_include "item_wrapper" %}
+        <!-- /ko -->
+        </div>
+
+    <div id="vue_home_title">
+        <div data-bind="html: sb('text1')">
+            </div>
+        </div>
+
+    {% if user.workflow_dev %}
+    <div id="vue_home_float">
+        <div class="title" data-bind="html: sb('text3')">
+            </div>
+        <div class="details mp_hidden" data-bind="html: sb('text4')">
+            </div>
+        </div>
+    {% endif %}
+
+    <div id="vue_home_users" class="mp_flex_column mp_viz_peer_group" data-bind="
+            bind_content_panel: false,
+            ">
+        <section id="vue_home_whoami"
+                class="mp_flex_column mp_tree_node" data-bind="
+                with: mpp.vm_trees().get_tag('whoami'),
+                ">
+            <h2 class="es_title1" data-bind="
+                    html: sb('text1'),
+                    ">
+                </h2>
+            {% mp_include "items" with items='items_core()' %}
+            {% include "portal/controls/content.html" %}
+            </section>
+        <section id="vue_home_mybiz"
+                class="mp_flex_column mp_tree_node" data-bind="
+                with: mpp.vm_trees().get_tag('mybiz'),
+                ">
+            <h2 class="es_title1" data-bind="
+                    html: sb('text1'),
+                    ">
+                </h2>
+            {% mp_include "items" with items='items_core()' %}
+            {% include "portal/controls/content.html" %}
+            </section>
+        </div>
+
+    {% include "portal/controls/content.html" %}
+    </section>
+
+<section id="vue_home_customers" class="mp_flex mp_flex_center" data-bind="
+        with: get_tag('home_customers'),
+        ">
+    {% include "portal/controls/content.html" %}
+    <!-- ko template: {
+        name: 'template_et_card',
+        foreach: items_core(),
+        } -->
+    <!-- /ko -->
+    </section>
+
+<section id="vue_home_solutions" class="mp_flex mp_flex_center" data-bind="
+        with: get_tag('home_solutions'),
+        ">
+    {% include "portal/controls/content.html" %}
+	<h2 data-bind="html: sb('text1')">
+        </h2>
+	<p data-bind="html: sb('text2')">
+        </p>
+    {% mp_include "items" with items='items_core()' nested=True %}
+    </section>
+
+<section id="vue_home_how" class="mp_flex_column mp_flex_vcenter" data-bind="
+ 		with: get_tag('home_how'),
+        ">
+	{% include "portal/controls/content.html" %}
+	<h2 data-bind="html: sb('name')">
+        </h2>
+    <div class="how_panel">
+        <div class="how_item mp_flex_column mp_flex_center mpr_flex_col" data-bind="
+                template: {
+                    name: 'template_et_row',
+                    foreach: items_core(),
+                    },
+                ">
+            </div>
+        </div>
+    </section>
+
+<section id="vue_home_highlight" class="mp_flex_column mp_flex_vcenter" data-bind="
+ 		with: get_tag('home_highlights'),
+        ">
+	{% include "portal/controls/content.html" %}
+	<h2 data-bind="html: sb('text1')">
+        </h2>
+    <div class="highlight">
+        <div class="highlight_item mp_flex_column mp_flex_center" data-bind="
+                template: {
+                    name: 'template_image_row',
+                    foreach: items_core(),
+                    },
+                ">
+            </div>
+        </div>
+    </section>
+
+<footer id="footer" class="mp_flex_column mp_flex_vcenter">
+    <a class="signup es_nav_anchor mp_nav_anchor" href="{{ url_portal }}/sign_up">
+        Build your site
+        </a>
+    </footer>
+
+<script> 'use strict';
+    mp.when_script_loaded( function() {
+
+        // Setup random effect on item show
+        mpp.ItemVM.prototype.lazy_fn = function( element ) {
+            // Make items bounce in randomly
+            $( element ).find(".es_effect_bounce_in").each( function() {
+                const duration = 0.4 + ( 0.6 * Math.random() )
+                this.style.setProperty( '--es_effect_fast', duration + 's' )
+                })
+            }
+
+        })
+    mp.when_portal_ready( function() {
+
+        mp.viz_set_toggle( '#vue_home_float .title', '#vue_home_float .details',
+                    { no_icon: true } )
+
+        // Wiggle a random item until one clicked
+        let clicked = false
+        const wigglers = $("#vue_home_users item")
+        wigglers.on( 'click', function() {
+            clicked = true
+            })
+        function wiggle() {
+            wigglers.removeClass('es_effect_shake')
+            const item = Math.floor( wigglers.length * Math.random() )
+            const duration = 0.6 + ( 0.4 * Math.random() )
+            wigglers[ item ].style.setProperty( '--es_effect_fast', duration + 's' )
+            wigglers[ item ].classList.add('es_effect_shake')
+            }
+        function do_wiggle() {
+            if( clicked ) return
+            try {
+                wiggle()
+                setTimeout( do_wiggle, 1000 + Math.floor( 4000 * Math.random() ) )
+                }
+            catch( e ) {
+                }
+            }
+        setTimeout( do_wiggle, 1000 )
+
+        })
+    </script>

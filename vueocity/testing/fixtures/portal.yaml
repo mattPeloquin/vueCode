@@ -1,0 +1,333 @@
+#--- Vueocity platform, Copyright 2021 Vueocity LLC
+#
+#   Vueocity portal extensions
+#
+
+- fields:
+    name: content_metrics
+    template_type: T
+    orig_path: "_custom/layout/content_metrics.html"
+  model: sitebuilder.templatecustom
+  pk: 1504
+
+- fields:
+    name: item_cardview
+    template_type: I
+    orig_path: "_custom/layout/item_cardview.html"
+  model: sitebuilder.templatecustom
+  pk: 1102
+- fields:
+    name: item_listview
+    template_type: I
+    orig_path: "_custom/layout/item_listview.html"
+  model: sitebuilder.templatecustom
+  pk: 1110
+- fields:
+    name: item_listexpand
+    template_type: I
+    orig_path: "_custom/layout/item_listexpand.html"
+  model: sitebuilder.templatecustom
+  pk: 1112
+- fields:
+    name: item_listpopup
+    template_type: I
+    orig_path: "_custom/layout/item_listpopup.html"
+  model: sitebuilder.templatecustom
+  pk: 1114
+- fields:
+    name: item_listslide
+    template_type: I
+    orig_path: "_custom/layout/item_listslide.html"
+  model: sitebuilder.templatecustom
+  pk: 1116
+- fields:
+    name: item_listrow
+    template_type: I
+    orig_path: "_custom/layout/item_listrow.html"
+  model: sitebuilder.templatecustom
+  pk: 1118
+
+- fields:
+    name: nav_listcard
+    template_type: N
+    orig_path: "_custom/layout/nav_listcard.html"
+  model: sitebuilder.templatecustom
+  pk: 1131
+
+- fields:
+    name: node_list_expand
+    template_type: R
+    orig_path: "_custom/layout/node_list_expand.html"
+  model: sitebuilder.templatecustom
+  pk: 1141
+- fields:
+    name: node_list_slide
+    template_type: R
+    orig_path: "_custom/layout/node_list_slide.html"
+  model: sitebuilder.templatecustom
+  pk: 1143
+
+- fields:
+    name: pane_dashboard
+    template_type: P
+    orig_path: "_custom/pane/pane_dashboard.html"
+  model: sitebuilder.templatecustom
+  pk: 1301
+- fields:
+    name: pane_drill_progress
+    template_type: P
+    orig_path: "_custom/pane/pane_drill_progress.html"
+  model: sitebuilder.templatecustom
+  pk: 1303
+- fields:
+    name: pane_drill_group
+    template_type: P
+    orig_path: "_custom/pane/pane_drill_group.html"
+  model: sitebuilder.templatecustom
+  pk: 1305
+- fields:
+    name: pane_drill_category
+    template_type: P
+    orig_path: "_custom/pane/pane_drill_category.html"
+  model: sitebuilder.templatecustom
+  pk: 1312
+- fields:
+    name: pane_type_drill_items
+    template_type: P
+    orig_path: "_custom/pane/pane_type_drill_items.html"
+  model: sitebuilder.templatecustom
+  pk: 1314
+- fields:
+    name: pane_tabs_type
+    template_type: P
+    orig_path: "_custom/pane/pane_tabs_type.html"
+  model: sitebuilder.templatecustom
+  pk: 1331
+- fields:
+    name: pane_tabs_category
+    template_type: P
+    orig_path: "_custom/pane/pane_tabs_category.html"
+  model: sitebuilder.templatecustom
+  pk: 1333
+- fields:
+    name: pane_tabs_group
+    template_type: P
+    orig_path: "_custom/pane/pane_tabs_group.html"
+  model: sitebuilder.templatecustom
+  pk: 1335
+
+- fields:
+    name: viewer_node
+    template_type: F
+    orig_path: "_custom/layout/viewer_node.html"
+  model: sitebuilder.templatecustom
+  pk: 1412
+- fields:
+    name: viewer_insert
+    template_type: F
+    orig_path: "_custom/layout/viewer_insert.html"
+  model: sitebuilder.templatecustom
+  pk: 1414
+- fields:
+    name: viewer_popup
+    template_type: F
+    orig_path: "_custom/layout/viewer_popup.html"
+  model: sitebuilder.templatecustom
+  pk: 1416
+- fields:
+    name: viewer_overlay
+    template_type: F
+    orig_path: "_custom/layout/viewer_overlay.html"
+  model: sitebuilder.templatecustom
+  pk: 1418
+
+- fields:
+    name: panel_dates
+    template_type: Q
+    orig_path: "_custom/layout/panel_dates.html"
+  model: sitebuilder.templatecustom
+  pk: 1202
+- fields:
+    name: panel_progress
+    template_type: Q
+    orig_path: "_custom/layout/panel_progress.html"
+  model: sitebuilder.templatecustom
+  pk: 1204
+- fields:
+    name: panel_viewer
+    template_type: Q
+    orig_path: "_custom/layout/panel_viewer.html"
+  model: sitebuilder.templatecustom
+  pk: 1210
+- fields:
+    name: panel_tabs_children
+    template_type: Q
+    orig_path: "_custom/layout/panel_tabs_children.html"
+  model: sitebuilder.templatecustom
+  pk: 1220
+- fields:
+    name: panel_tabs_type
+    template_type: Q
+    orig_path: "_custom/layout/panel_tabs_type.html"
+  model: sitebuilder.templatecustom
+  pk: 1222
+- fields:
+    name: panel_tabs_category
+    template_type: Q
+    orig_path: "_custom/layout/panel_tabs_category.html"
+  model: sitebuilder.templatecustom
+  pk: 1224
+- fields:
+    name: panel_tabs_dates
+    template_type: Q
+    orig_path: "_custom/layout/panel_tabs_dates.html"
+  model: sitebuilder.templatecustom
+  pk: 1226
+- fields:
+    name: panel_tabs_progress
+    template_type: Q
+    orig_path: "_custom/layout/panel_tabs_progress.html"
+  model: sitebuilder.templatecustom
+  pk: 1228
+- fields:
+    name: panel_horizontal
+    template_type: Q
+    orig_path: "_custom/layout/panel_horizontal.html"
+  model: sitebuilder.templatecustom
+  pk: 1230
+- fields:
+    name: panel_drill
+    template_type: Q
+    orig_path: "_custom/layout/panel_drill.html"
+  model: sitebuilder.templatecustom
+  pk: 1234
+
+
+#--------------------------------------------------------------------
+# Portal template tests
+
+- fields:
+    provider_optional: 11
+    name: Test panes
+    notes: Test multiple panes
+    structure:
+      frame_template: tab_panes.html
+      nav_default: cards
+      panes:
+        -
+          name: Items
+          items: mpp.vm_items().all_sorted()
+          template: pane_items
+          sb_options:
+            portal:
+              hero_style: BACK
+              content_toggle_show: True
+              hide_if_no_access: True
+        -
+          name: Cards
+          template: pane_drill
+          sb_options:
+            portal:
+              hero_style: TEXT
+        -
+          name: TabsLeft
+          template: pane_tabs
+          sb_options:
+            portal:
+              pane_tabs: es_tabs_side
+        -
+          name: TabsCT2
+          template: pane_tabs
+          collections: "mpp.vm_trees().filter_tops({ portal_type: 'Type2' })"
+          sb_options:
+              portal:
+                no_home: true
+                collection_no_top: true
+                collection_right: true
+        -
+          name: Dash
+          template: pane_dashboard
+        -
+          name: Scroll
+          template: pane_scroll
+          default_panel: panel_page
+          sb_options:
+            portal:
+              collection_no_top: true
+        -
+          name: CardCatTabs
+          template: pane_drill
+          default_panel: panel_tabs_category
+        -
+          name: TypeTabs
+          template: pane_tabs_type
+          options:
+            item_template: item_card
+        -
+          name: CatTabs
+          template: pane_tabs_category
+          sb_options:
+              portal:
+                no_home: false
+        -
+          name: GrpTabs
+          template: pane_tabs_group
+        -
+          name: PlanDrill
+          template: pane_drill_plan
+          sb_options:
+            portal:
+              hero_style: NONE
+        -
+          name: GrpDrill
+          template: pane_drill_group
+          sb_options:
+            portal:
+              hero_style: BACK
+        -
+          name: CatDrill
+          template: pane_drill_category
+        -
+          name: TypeItems
+          template: pane_type_drill_items
+  model: sitebuilder.frame
+  pk: 9101
+
+- fields:
+    name: test_pane_lists
+    template_type: Y
+    code_prod: |
+
+      <h1>Categories</h1>
+      <div data-bind="
+              with: mpp.vm_categories(),
+              ">
+          {% mp_include "items" %}
+          </div>
+
+      <h1>Tree Roots</h1>
+      <div data-bind="
+              with: all_tops(),
+              ">
+          {% include "portal/_/content_drag.html" %}
+          </div>
+
+      <h1>All Trees</h1>
+      <div data-bind="
+              with: mpp.vm_trees().all_sorted(),
+              ">
+          {% include "portal/_/content_drag.html" with content='all_nodes()' %}
+          </div>
+
+      <h1>All items</h1>
+      <div>
+          {% mp_include "items" %}
+          </div>
+
+      <h1>Items using brief item template</h1>
+      <div>
+          {% mp_include "items" with brief=True %}
+          </div>
+
+  model: sitebuilder.templatecustom
+  pk: 9110

@@ -1,0 +1,65 @@
+{% extends 'admin/change_list.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Add quick filters for APA
+
+{%endcomment%}
+
+{% block mp_special_filters %}
+
+    <div id="inactive_toggle">
+        <div class="mp_slider">
+            <div class="ball mp_button"></div>
+            <div class="text">Show inactive</div>
+            </div>
+        </div>
+    <div id="free_toggle">
+        <div class="mp_slider">
+            <div class="ball mp_button"></div>
+            <div class="text">Hide free</div>
+            </div>
+        </div>
+
+    <script> 'use strict';
+        mp.when_ui_loaded( function special_filters() {
+
+            // Set initial state, based on how defaults are setup
+            let show_inactive = false
+            let hide_free = false
+            let current = window.location.toString().split('?')[1]
+            current = current ? current.split('&') : []
+            _.each( current, function( param ) {
+                if( _.startsWith( param, 'state' ) && _.endsWith( param, 'all' ) ) {
+                    show_inactive = true
+                    $("#inactive_toggle .mp_slider").addClass('slider_on')
+                    }
+                if( _.startsWith( param, 'free' ) && _.endsWith( param, 'paid' ) ) {
+                    hide_free = true
+                    $("#free_toggle .mp_slider").addClass('slider_on')
+                    }
+                })
+
+            // Fixup query params based on all handlers
+            $("#inactive_toggle").on( 'click', function() {
+                show_inactive = !show_inactive
+                _.remove( current, function( param ) {
+                    return _.startsWith( param, 'state' )
+                    })
+                })
+            $("#free_toggle").on( 'click', function() {
+                hide_free = !hide_free
+                _.remove( current, function( param ) {
+                    return _.startsWith( param, 'free' )
+                    })
+                })
+            $(".mp_special_filters").on( 'click', function() {
+                if( show_inactive ) current = _.union( current, ['state=all'] )
+                if( hide_free ) current = _.union( current, ['free=paid'] )
+                window.location = '?' + current.join('&')
+                })
+
+            })
+    </script>
+
+{% endblock %}
+

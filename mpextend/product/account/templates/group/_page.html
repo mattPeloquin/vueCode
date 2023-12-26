@@ -1,0 +1,31 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Group admin base page
+
+{% endcomment %}
+
+{% block panel_body %}
+    <div class="es_groupadmin">
+
+        <div class="mp_menu_user mp_flex mp_flex_vcenter mp_flex_between">
+
+            {% include "group/_account_list.html" %}
+
+            {% if not sb_options.site.left_menu %}
+                <div class="mpr_collapse" data-collapse="gamenu">
+                    <div class="fa fa-bars mpr_collapse_toggle"></div>
+                    <div id="gamenu" class="es_menu_page mp_ga_menu mp_menu
+                            mpr_collapse_inline">
+                        {% include "group/_menu_items.html" with css='mpr_hide_med' %}
+                        </div>
+                    </div>
+            {% endif %}
+
+            </div>
+
+        {% block group_page_body %}
+        {% endblock %}
+
+        </div>
+{% endblock %}

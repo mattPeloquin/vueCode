@@ -1,0 +1,86 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Default form for creating a new sandbox user
+
+    There are numerous options that can change what is show on this form.
+    The user create block has no inheritable blocks; if significant layout
+    changes are needed, this content should be replaced in a template override.
+
+{% endcomment %}
+
+<div class="es_login_create">
+    <form id="new_user" method="post" data-parsley-validate
+            action="{{ submit_url }}"
+            >
+        {% csrf_token %}
+
+        {# Honeypot to fool robots #}
+        <div id="code1">
+            {{ create_form.code1 }}
+            </div>
+
+        <div class="mp_flex_column mp_flex_vcenter">
+
+            <div class="es_login_entry_email">{{ create_form.email }}
+                </div>
+
+            <div class="mp_flex mp_flex_center">
+                {% if site.options.user.confirm_password %}
+                    <div class="es_login_password1">
+                        {{ create_form.password1 }}
+                        </div>
+                    <div class="es_login_password2">
+                        {{ create_form.password2 }}
+                        </div>
+                {% else %}
+                    <div class="es_login_entry_password">
+                        {{ create_form.password1 }}
+                        </div>
+                {% endif %}
+                </div>
+
+            {% if has_create_code %}
+                <div class="es_login_entry_field">
+                    {{ create_form.create_code }}
+                    </div>
+            {% endif %}
+
+            {# Fields set in querystrings which may be shown in custom templates #}
+            {% if site.options.user.ask_optional %}
+                <div class="es_login_entry_field">
+            {% else %}
+                <div class="mp_hidden">
+            {% endif %}
+                    {{ create_form.first_name }}
+                    {{ create_form.last_name }}
+                    {{ create_form.organization }}
+                    {{ create_form.title }}
+                    </div>
+            <div class="mp_hidden">
+                {{ create_form.country }}
+                {{ create_form.postal_code }}
+                {{ create_form.external_key }}
+                {{ create_form.external_group }}
+                {{ create_form.external_tag }}
+                {{ create_form.external_tag2 }}
+                {{ create_form.external_tag3 }}
+                </div>
+
+            {% block login_create %}
+                <input type="submit" class="es_button  es_login_button"
+                        name="create_user" value="Create account"
+                        title="If you are a new user, enter an email and password to create a new account"
+                    />
+            {% endblock %}
+
+            {% if not site.options.user.force_accept_terms %}
+                <a class="es_button_flat es_theme_overlay es_login_user_create_terms"
+                        href="{% url 'terms_display' %}" target="_"
+                        >
+                    By creating an account you agree to all terms of use
+                    </a>
+            {% endif %}
+
+            </div>
+        </form>
+    </div>

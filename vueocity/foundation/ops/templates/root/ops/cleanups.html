@@ -1,0 +1,73 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Manual fixups execution
+
+{%endcomment%}
+
+{% block panel_body %}
+
+    <div class="es_theme_page">
+        <h2>Cleanup Tasks</h2>
+        </div>
+
+    <form class="mp_form" method="post">
+        {% csrf_token %}
+
+        <input name="validate" type="text" />
+        <p>Type 'HELL YA' in box to make the task commit
+            </p>
+        <br>
+        <input name="limit" type="text" />
+        <p>Enter a number of iterations to limit task to
+            </p>
+        <br>
+        <input name="constraint" type="text" />
+        <p>Enter a value to constrain the task (like id)
+            </p>
+
+        <br><br>
+
+        <input type="submit" class="mp_button" name="temp"
+                value="ONE-OFF TEMP TASK" />
+
+        <br>
+
+        <input type="submit" class="mp_button" name="botstart"
+                value="START TEMP BOT" />
+        <input type="submit" class="mp_button" name="botstop"
+                value="STOP TEMP BOT" />
+
+        <br>
+
+        <input type="submit" class="mp_button" name="tracking_clean_sessions"
+                value="Remove old user session tracking" />
+
+        <br>
+
+        <input type="submit" class="mp_button" name="package_fixup"
+                value="Package Fixup" />
+        <input type="submit" class="mp_button" name="package_leaf_cleanup"
+                value="Package Cleanup" />
+        <input type="submit" class="mp_button" name="package_root_cleanup"
+                value="Package Root Cleanup" />
+        <input type="submit" class="mp_button" name="package_file_cleanup"
+                value="Package File cleanup" />
+        <br>
+        </form>
+
+
+    {#-- Display output if present #}
+    {% if output %}
+
+        <div>
+            {% for item in output %}
+                <ul>
+                    {{ item | safe }}
+                    </ul>
+            {% endfor %}
+            </div>
+
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,21 @@
+#--- Vueocity platform, Copyright 2021 Vueocity LLC
+#
+#   Dev settings
+#   See mpframework.settings for descriptions
+#
+
+MP_ROOT:
+
+  # DB Connection connection information
+  DB:
+    MAIN_HOST: ''
+    MAIN_READ: ''
+
+MP_ROOT_URLS:
+  URL_STATIC: 'vuedev.vueocity.com'
+  URL_STATIC_COMP: 'd3girp28njtpd9.cloudfront.net'
+  URL_PUBLIC: 'vuedev.vueocity.com'
+  URL_PUBLIC_COMP: 'd3girp28njtpd9.cloudfront.net'
+
+DEFAULT_FROM_EMAIL: 'dev@vueocity.com'
+ADMINS: [['Admin', 'dev@vueocity.com']]

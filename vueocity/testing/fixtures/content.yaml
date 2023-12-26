@@ -1,0 +1,192 @@
+#--- Vueocity platform, Copyright 2021 Vueocity LLC
+#
+#   Vueocity portal resources
+#
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: TEST VID
+    image1: P1BuddyLax.jpg
+    html3: |
+      <h2>This is text displayed for TEST VID</h2>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Aenean sed adipiscing diam donec adipiscing tristique risus nec
+        feugiat. Et pharetra pharetra massa massa. Viverra vitae congue
+        eu consequat ac felis donec. Eget velit aliquet sagittis id consectetur
+        purus ut faucibus. Nunc mattis enim ut tellus. Vitae ultricies leo
+        integer malesuada nunc.<br>
+        Non consectetur a erat nam at. Ultrices
+        tincidunt arcu non sodales neque. Tincidunt augue interdum velit
+        euismod. Elit eget gravida cum sociis natoque penatibus et.
+        Auctor urna nunc id cursus metus. Hendrerit dolor magna eget est
+        lorem ipsum dolor. Velit scelerisque in dictum non.
+    sb_options: |
+      testdata:
+        1: ABC
+  model: mpcontent.baseitem
+  pk: 5000
+- fields:
+    file_med: Video.mp4
+  model: mpcontent.video
+  pk: 5000
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: 'TC3'
+    _slug: 'TC3'
+    _name: A 3rd Test Collection
+    text1: Vueocity test collection
+    tooltip: This collection tests what is real!
+    image1: HoratioP1.png
+    _available: "2023-01-01 11:00:00+00:00"
+    html2: |
+      <h1>About description for 3rd Test Collection</h1>
+      This is part of html2
+    html3: |
+      <h2>This is text displayed for viewing for items that don't have their own</h2>
+      This is part of html3
+    sb_options: |
+      portal:
+        collection_no_top: true
+        item_template:
+          support: item_card
+  model: mpcontent.baseitem
+  pk: 5001
+- fields:
+    mptt_id: 1
+    parent: null
+    mptt_level: 0
+    mptt_left: 1
+    mptt_right: 2
+    panel: 1210
+  model: mpcontent.tree
+  pk: 5001
+- fields:
+    item: 5000
+    tree: 5001
+  model: mpcontent.treebaseitem
+  pk: 5000
+- fields:
+    item: 1301
+    tree: 5001
+  model: mpcontent.treebaseitem
+  pk: 5001
+- fields:
+    item: 1401
+    tree: 5001
+  model: mpcontent.treebaseitem
+  pk: 5002
+- fields:
+    item: 1201
+    tree: 5001
+  model: mpcontent.treebaseitem
+  pk: 5010
+- fields:
+    item: 1205
+    tree: 5001
+  model: mpcontent.treebaseitem
+  pk: 5013
+- fields:
+    item: 1201
+    tree: 5001
+    area: A
+  model: mpcontent.treebaseitem
+  pk: 5014
+- fields:
+    item: 1203
+    tree: 5001
+  model: mpcontent.treebaseitem
+  pk: 5015
+- fields:
+    item: 1201
+    tree: 5001
+    area: S
+  model: mpcontent.treebaseitem
+  pk: 5016
+- fields:
+    item: 6010
+    tree: 5001
+  model: mpcontent.treebaseitem
+  pk: 5017
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: TBA Plan Tool
+  model: mpcontent.baseitem
+  pk: 6010
+- fields:
+    proxy_main: https://tba.uglyyellowbunny.com/
+    _proxy_options:
+      request_headers:
+        TBA-PLAN-TIER: Tier1
+        VUE-AUTH: AE8A774F-1DE0-4F98-B037-659645706A66
+      response_cache_share:
+        url_regex: ( .+mootools.+1\.6\.0.*\.js )$
+      response_headers:
+        cache_static:
+          key: cache-control
+          path_regex: ( \.php | \.js | \.css )$
+          value: max-age=3600
+      response_text_replace:
+        cache_static:
+          path_regex: ( / | \.php )$
+          replacements:
+            ="assets/: ="{host_cache}/assets/
+            ="http://tba.uglyyellowbunny.com/: ="{host_cache}/
+        code_fixup:
+          encoding: UTF-8
+          path_regex: ( \.js | \.css )$
+          replacements:
+            /app/modules/: /{session_url}/app/modules/
+  model: mpcontent.proxyapp
+  pk: 6010
+
+- fields:
+    _name: Featured items
+    _script_name: home_items
+    _tag_matches: '*vid*, BP*, NO_MATCH'
+    scope: I
+    html: <h3>Featured items</h3>
+    text1: '<p style"font-size: 60%">This is some small text to describe the group</p>'
+  model: mpcontent.portalgroup
+  pk: 1012
+- fields:
+    _name: Featured content
+    _script_name: home_content
+  model: mpcontent.portalgroup
+  pk: 1013
+
+- fields:
+    _name: Group A (current week)
+    _script_name: group_A
+    html: |
+      <h3>Current content</h3>
+    sb_options:
+      portal:
+        show_empty: True
+  model: mpcontent.portalgroup
+  pk: 1020
+- fields:
+    _name: Group B (upcoming)
+    _script_name: group_B
+    html: |
+      <h3>Future content</h3>
+    sb_options:
+      portal:
+        show_empty: True
+  model: mpcontent.portalgroup
+  pk: 1022
+- fields:
+    _name: Group C (completed)
+    _script_name: group_C
+    html: |
+      <h3>Previous content</h3>
+    sb_options:
+      portal:
+        show_empty: True
+  model: mpcontent.portalgroup
+  pk: 1024

@@ -1,0 +1,32 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Portal element for content navigation
+
+      1) Expects KO $data context to be a tree node.
+      2) Normally expects $context.default_nav_template
+
+{%endcomment%}
+
+<!-- ko let: {
+        {#-- Let item override template default #}
+        _template: mpp.get_template_name( sb('nav_template') ) ||
+                    $context.default_nav_template,
+        } -->
+    <nav class="es_content es_content_nav" data-bind="
+            {% if nested %}
+                bind_nav_content_nest: $data,
+            {% else %}
+                bind_nav_content: $data,
+            {% endif %}
+            class: ( $data.css_searchable ? css_searchable() :
+                    css_classes() ) + ' es_' + _template,
+            ">
+
+        <!-- ko template: {
+            name: _template,
+            } -->
+        <!-- /ko -->
+
+        {% include "portal/controls/content.html" with tooltip=True %}
+        </nav>
+<!-- /ko -->

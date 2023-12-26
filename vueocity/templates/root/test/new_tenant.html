@@ -1,0 +1,22 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+	Support adding new provider to system
+
+{%endcomment%}
+
+
+{% block panel_body %}
+
+    <form id="new_tenant_form" method="post">
+        <div class="mp_flex_column">
+
+            <input name="subdomain" placeholder="Subdomain" />
+            <input type="email" name="email" placeholder="Email" />
+            <input type="password" name="password" placeholder="Password" />
+            <input type="submit" class="mp_button" value="New provider" />
+
+            </div>
+        </form>
+
+{% endblock %}

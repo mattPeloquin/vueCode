@@ -1,0 +1,15 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Extension floating tools
+
+{% endcomment %}
+
+{% if is_portal and not is_portal_content %}
+
+    {% if sandbox_tool %}
+        {% include "easy/sandbox_tool.html" %}
+    {% elif portal_tool or site.options.portal_tool %}
+        {% include "easy/portal_tool.html" %}
+    {% endif %}
+
+{% endif %}

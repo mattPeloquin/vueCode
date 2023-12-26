@@ -1,0 +1,31 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Force user bar to float at top of screen (except for mobile)
+
+{%endcomment%}
+
+<script>
+    mp.when_ui_loaded( function() {
+
+        if( $("body").width() > mp.request.breakpoints.width.small ) {
+            $(".es_user_bar").removeClass('mp_top_bar')
+            }
+
+        })
+</script>
+<style>
+
+    .es_user_bar {
+        position: absolute;
+        right: 0;
+        margin: 0.5em 1em;
+        }
+    .es_user_bar .es_theme_bar {
+        border-radius: var(--es_theme_border-radius) !important;
+        }
+
+    .es_collection_header .es_hero_overlay {
+        margin: 3em 2em 2em 2em;
+        }
+
+</style>

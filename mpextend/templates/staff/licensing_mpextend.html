@@ -1,0 +1,33 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Catalog menus
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% if not user.logged_into_root %}
+
+    {% usemacro menu_item 'Pricing options' 'fa-credit-card-alt' 'staff_admin:catalog_pa_changelist' %}
+    {% usemacro menu_item 'Coupons' 'fa-tag' 'staff_admin:catalog_coupon_changelist' %}
+
+    <hr class="mp_menu_break">
+    {% usemacro menu_item 'Setup payments' 'fa-money' 'payment_setup' %}
+
+    {% if user.access_all %}
+        <hr class="mp_menu_break">
+        {% usemacro menu_item 'License types' 'fa-legal' 'staff_admin:catalog_agreement_changelist' %}
+    {% endif %}
+
+{% endif %}
+
+{% if user.access_root_menu %}
+    <hr class="mp_menu_break">
+    <a class="mp_menu_item root"  href="{% url 'root_admin:catalog_pa_changelist' %}">PAs</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:catalog_coupon_changelist' %}">Coupons</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:catalog_agreement_changelist' %}">Agreements</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:payment_payto_changelist' %}">Pay tos</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:payment_payusing_changelist' %}">Pay usings</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:payment_payevent_changelist' %}">Pay events</a>
+{% endif %}

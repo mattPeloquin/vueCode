@@ -1,0 +1,30 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+   NGINX prod configuration
+
+   For nginx production servers clustered behind an SSL terminating ELB
+
+{%endcomment%}
+
+
+include  inc_main.conf;
+
+http {
+
+    include inc_http.conf;
+
+    # Main path through ELB to web server, handles all external traffic
+    server {
+        listen  80;
+        server_name  {{ servername }} "";
+        include  inc_server.conf;
+        }
+
+    # No-host requests from AWS (some healthchecks, empty pings) that are swallowed
+    server {
+        listen  80;
+        server_name  _;
+        access_log  {{ garbage_log }};
+        }
+
+    }

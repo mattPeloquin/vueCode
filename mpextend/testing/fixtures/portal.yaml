@@ -1,0 +1,89 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Portal template extensions
+
+- fields:
+    name: pane_scroll
+    template_type: P
+    orig_path: "_custom/pane/pane_scroll.html"
+  model: sitebuilder.templatecustom
+  pk: 301
+- fields:
+    name: pane_tabs
+    template_type: P
+    orig_path: "_custom/pane/pane_tabs.html"
+  model: sitebuilder.templatecustom
+  pk: 311
+
+- fields:
+    name: paneitem_page
+    template_type: H
+    orig_path: "_custom/pane/paneitem_page.html"
+  model: sitebuilder.templatecustom
+  pk: 361
+
+- fields:
+    name: panecollection_page
+    template_type: G
+    orig_path: "_custom/pane/panecollection_page.html"
+  model: sitebuilder.templatecustom
+  pk: 371
+
+
+- fields:
+    name: collection_header
+    template_type: T
+    orig_path: "_custom/layout/collection_header.html"
+  model: sitebuilder.templatecustom
+  pk: 434
+- fields:
+    name: collection_footer
+    template_type: T
+    orig_path: "_custom/layout/collection_footer.html"
+  model: sitebuilder.templatecustom
+  pk: 436
+- fields:
+    name: collection_side
+    template_type: T
+    orig_path: "_custom/layout/collection_side.html"
+  model: sitebuilder.templatecustom
+  pk: 438
+
+- fields:
+    name: nav_content_tabs
+    template_type: W
+    orig_path: "_custom/structure/nav_content_tabs.html"
+  model: sitebuilder.templatecustom
+  pk: 455
+
+- fields:
+    name: widget_category_filter
+    template_type: W
+    orig_path: "_custom/structure/widget_category_filter.html"
+  model: sitebuilder.templatecustom
+  pk: 462
+- fields:
+    name: widget_type_filter
+    template_type: W
+    orig_path: "_custom/structure/widget_type_filter.html"
+  model: sitebuilder.templatecustom
+  pk: 464
+
+- fields:
+    name: content_itemview
+    template_type: T
+    orig_path: "_custom/layout/content_itemview.html"
+  model: sitebuilder.templatecustom
+  pk: 501
+- fields:
+    name: item_view
+    template_type: I
+    orig_path: "_custom/layout/item_view.html"
+  model: sitebuilder.templatecustom
+  pk: 510
+- fields:
+    name: item_panel
+    template_type: I
+    orig_path: "_custom/layout/item_panel.html"
+  model: sitebuilder.templatecustom
+  pk: 512

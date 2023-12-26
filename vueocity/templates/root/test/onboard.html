@@ -1,0 +1,52 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Test screen for onboard functionality
+
+{%endcomment%}
+
+{% block panel_body %}
+
+    <form id="signup_form" method="post" action="/ft/public/ob/onboard_signup">
+        {% csrf_token %}
+        <div class="mp_flex_column">
+
+            <input name="subdomain" placeholder="Subdomain" />
+            <input type="email" name="email" placeholder="Email" />
+            <input type="password" name="password1" placeholder="Password" />
+            <input type="submit" name="login" value="Onboard new account" />
+
+            <input class="sandbox_name" name="sandbox_name" value="NewSite" />
+            <input name="onboard_role" value="TestOnboardRole" />
+            <input class="tzoffset" name="tzoffset" placeholder="Timezone" />
+            <input name="code1" placeholder="Honeypot" />
+
+            </div>
+        </form>
+
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    // Stash away the timezone offset
+    $(".tzoffset").val( mp.get_tz_offset() )
+
+    // Setup signup form
+    $("#signup_form").submit( function( event ) {
+        mp.show_wait_overlay( true, "Dude, sit tight for " +
+                                $('.sandbox_name').html() + "..." )
+        event.preventDefault()
+        mp.ajax_submit_form( this, {
+            finished: function( values ) {
+                mp.show_wait_overlay( false )
+                if( values && values.token ) {
+                    var login_url = '{% url 'onboard_login' '_token_' %}'
+                    login_url = login_url.replace( '_token_', values.token )
+                    window.location.assign( login_url )
+                    }
+                },
+            })
+        })
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Sidebar for a collection page
+    Default layout for a sidebar, assumes header-like content
+
+{%endcomment%}
+
+<header class="es_sidebar es_{{ side }} mp_flex_column">
+
+    {#-- Image present, title if not #}
+    <!-- ko if: sb('image4') -->
+        <img class="es_image" data-bind="
+                attr: { src: sb('image4') }
+                "/>
+    <!-- /ko -->
+    <!-- ko if: sb_option( 'portal.collection_no_top', $element ) -->
+        <h2 class="es_sidebar_title" data-bind="html: sb('name')" >
+            </h2>
+    <!-- /ko -->
+
+    {% mp_include "content_progress" %}
+
+    <div class="es_sidebar_sub">
+
+        {#-- Size of collection if present #}
+        <!-- ko if: sb('size') -->
+            <div class="mp_flex_line">
+                <div data-bind="html: sbt('content_size_title')">
+                    </div>
+                <div data-bind="
+                        text: sb('size') + sbt('content_size_unit'),
+                        ">
+                    </div>
+                </div>
+        <!-- /ko -->
+
+        <div class="mp_flex_column">
+
+            {#-- Supporting content  #}
+            <div class="mp_tree_node" data-bind="
+                    attr: { 'data-content_id': id }
+                    ">
+                <h2 class="es_title2" data-bind="
+                    html: sbt('area_support'),
+                    "></h2>
+                {% mp_include "items" with items="all_area('support')" default_template="item_compact" opt_template="support" %}
+                </div>
+
+            </div>
+        </div>
+    </header>

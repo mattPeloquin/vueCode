@@ -1,0 +1,53 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Stacked inline template that blends a single read-only inline seamlessly
+
+{%endcomment%}
+
+{% load admin_urls i18n %}
+
+<div class="inline-group
+    {% if inline_admin_formset.opts.classes %}
+        {{ inline_admin_formset.opts.classes|join:" " }}{% endif %}"
+    id="{{ inline_admin_formset.formset.prefix }}-group">
+
+    {% if inline_admin_formset.opts.title %}
+        <h3>{{ inline_admin_formset.opts.title }}</h3>
+    {% endif %}
+
+    {#-- Django throws ManagementForm data is missing exception without this #}
+    {{ inline_admin_formset.formset.management_form }}
+
+    {#-- There should only be one item to display as inline when using extend #}
+    <div class="es_inline_items">
+
+        {#-- Django throws ManagementForm data is missing exception without this #}
+        {{ inline_admin_formset.formset.management_form }}
+
+        {% for inline_admin_form in inline_admin_formset %}
+            {% if forloop.first %}
+
+                <div class="inline-related mp_module
+                    {{ inline_admin_formset.opts.inline_classes|join:' '|default:'' }}
+                    {% if inline_admin_form.original or inline_admin_form.show_url %}
+                        has_original{% endif %}"
+                    id="{{ inline_admin_formset.formset.prefix }}{{ forloop.counter0 }}"
+                    >
+
+                    {% if inline_admin_form.form.non_field_errors %}
+                        {{ inline_admin_form.form.non_field_errors }}
+                    {% endif %}
+
+                    {% for fieldset in inline_admin_form %}
+                        {% include "admin/includes/fieldset.html" %}
+                    {% endfor %}
+
+                </div>
+
+                {{ inline_admin_form.fk_field.field }}
+                {{ inline_admin_form.pk_field.field }}
+
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

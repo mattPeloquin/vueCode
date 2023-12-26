@@ -1,0 +1,15 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    User profile extensions
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% if user.is_owner %}
+    <hr class="mp_menu_break">
+
+    {% usemacro menu_user 'Account information' 'fa-building' 'staff_admin:tenant_provider_change' site.provider.pk %}
+
+{% endif %}

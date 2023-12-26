@@ -1,0 +1,26 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Scripts loaded only for portal pages
+
+    THIS FILE IS TEMPLATE FRAGMENT CACHED
+
+    THIS FILE NEEDS TO BE SAVED WITH UNIX STYLE LINE TERMINATIONS
+    FOR USE IN WINDOWS/LINUX ENVIRONMENT WITH django-compressor
+
+{%endcomment%}
+
+{% load compress_mp %}
+
+{% compress_mp js main %}
+
+    {#-- External shared dependencies #}
+
+    <script defer src="{{ static_url }}{{ compress_on|yesno:"min,libs" }}/backbone.js"></script>
+    <script defer src="{{ static_url }}{{ compress_on|yesno:"min,libs" }}/knockout.js"></script>
+
+    {% mp_include_files "portal" "script" ".html" %}
+
+    {#-- Flag indicating JS has been parsed #}
+    <script defer src="{{ static_url }}mpf-js/script_loaded.js"></script>
+
+{% endcompress %}

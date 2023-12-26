@@ -1,0 +1,224 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    User Overview Dashboard
+
+{%endcomment%}
+
+{% block head-no_cache %}
+    {{ block.super }}
+    <style>
+        #total_users {
+            text-align: left;
+            color: rgba(0, 0, 255, 0.6);
+            }
+        #users_summary {
+            max-width: 780px;
+            min-width: 600px;
+            margin-bottom: 0.6em;
+            }
+        #users_summary tr {
+            height: 1.6em;
+            }
+        #users_summary tr.active_users {
+            font-size: 120%;
+            height: 2em;
+            }
+        #users_summary td {
+            text-align: center;
+            font-weight: bold;
+            }
+        #users_summary td.big {
+            font-size: 160%;
+            }
+        #users_summary tbody .es_heading {
+            text-align: right;
+            }
+        .es_heading {
+            color: rgba(0, 0, 255, 0.6);
+            }
+       #days_back {
+            width: 2.4em;
+            padding: 0.2em;
+            text-align: center;
+            }
+       #user_map {
+            height: 400px;
+            width: 780px;
+            background-color: transparent !important;
+            margin-top: 1em;
+            }
+        #user_message {
+            font-size: 80%;
+            font-style: italic;
+            margin-top: 0.4em;
+            margin-bottom: 0.6em;
+            }
+        #user_list {
+            font-size: 80%;
+            margin-top: 1em;
+            }
+        .reporting {
+            margin-bottom: 0.6em;
+            }
+        .user_email {
+            font-weight: bold;
+            }
+        .user_url {
+            background: lightblue;
+            }
+        .user_stats {
+            font-size: 80%;
+            }
+        .head_note {
+            font-size: 90%;
+            font-weight: normal;
+            font-style: italic;
+            margin-left: 0.4em;
+            }
+        </style>
+{% endblock %}
+
+{% block panel_body %}
+    <div id="users_summary">
+        <table class="es_report_table">
+            <thead>
+                <tr class="es_heading">
+                    <th id="total_users" class="es_theme_bar">{{ users_total }} users</th>
+                    <th style="width: 18%" class="">Last hour</th>
+                    <th style="width: 16%" class="">Today</th>
+                    <th style="width: 16%" class="">Last week</th>
+                    <th style="width: 16%" class="">4 weeks</th>
+                    <th style="width: 16%" class="">This month</th>
+                    </tr>
+                </thead>
+            <tbody class="">
+                <tr class="active_users">
+                    <td class="es_heading">Active users</td>
+                    <td id="users_hour" class="big"></td>
+                    <td id="users_day" class=""></td>
+                    <td id="users_week" class=""></td>
+                    <td id="users_weeks" class=""></td>
+                    <td id="users_month" class=""></td>
+                    </tr>
+                <tr class="new_users details">
+                    <td class="es_heading">New users</td>
+                    <td id="new_hour" class=""></td>
+                    <td id="new_day" class=""></td>
+                    <td id="new_week" class=""></td>
+                    <td id="new_weeks" class=""></td>
+                    <td id="new_month" class=""></td>
+                    </tr>
+                <tr class="usage">
+                    <td class="es_heading">Items used</td>
+                    <td id="usage_hour" class="big"></td>
+                    <td id="usage_day" class=""></td>
+                    <td id="usage_week" class=""></td>
+                    <td id="usage_weeks" class=""></td>
+                    <td id="usage_month" class=""></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    <div class="reporting">
+        <h3>Download report for the last
+            <input class="mp_input" id="days_back" value=28>
+                </input>days:
+                <span class="head_note">(leave blank for all time)</span>
+                </h3>
+        <div class="mp_flex_line">
+            <div class="mp_button_text" onclick="mp.ajax_dialog(
+                    '{% url 'users_summary_csv' %}' + mp.days_back(), mpt.REPORT_CHECK_DONE
+                    )">
+                User summary
+                </div>
+            <div class="mp_button_text" onclick="mp.ajax_dialog(
+                    '{% url 'users_content_top_csv' %}' + mp.days_back(), mpt.REPORT_CHECK_DONE
+                    )">
+                Usage summary
+                </div>
+            <div class="mp_button_text" onclick="mp.ajax_dialog(
+                    '{% url 'users_content_csv' %}' + mp.days_back(), mpt.REPORT_CHECK_DONE
+                    )">
+                Usage details
+                </div>
+            <div class="mp_button_text" onclick="mp.ajax_dialog(
+                    '{% url 'users_licenses_csv' %}' + mp.days_back(), mpt.REPORT_CHECK_DONE
+                    )">
+                User licenses
+                </div>
+            </div>
+        </div>
+    <div id="user_map">
+        </div>
+    <div id="user_message">
+        </div>
+    <div id="user_list" class="details mp_hidden">
+        </div>
+
+{% endblock %}
+
+{% block page-no_cache %}
+    {{ block.super }}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ root_google_maps }}"></script>
+    <script src="{{ static_url }}mpf-js/staff/user_tracking.js"></script>
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    mp.days_back = function() {
+        const days_back = $('#days_back').val()
+        return days_back ? '/' + days_back : ''
+        }
+
+    mp.viz_set_toggle( '#total_users', '.details' )
+
+    function update_metrics( metrics ) {
+
+        $("#users_hour").html( metrics.users.hour )
+        $("#users_day").html( metrics.users.day )
+        $("#users_week").html( metrics.users.week )
+        $("#users_weeks").html( metrics.users.weeks )
+        $("#users_month").html( metrics.users.month )
+
+        $("#new_hour").html( metrics.new.hour )
+        $("#new_day").html( metrics.new.day )
+        $("#new_week").html( metrics.new.week )
+        $("#new_weeks").html( metrics.new.weeks )
+        $("#new_month").html( metrics.new.month )
+
+        $("#usage_hour").html( metrics.usage.hour )
+        $("#usage_day").html( metrics.usage.day )
+        $("#usage_week").html( metrics.usage.week )
+        $("#usage_weeks").html( metrics.usage.weeks )
+        $("#usage_month").html( metrics.usage.month )
+
+        }
+
+    update_metrics( {{ metrics | json }} )
+
+    // Start the inital call to server
+    mp.fetch({
+        url: '{% url 'api_tracking_active_users' %}',
+        data: { 'max_users': {{ user_report_max }} },
+        finished: function ( values ) {
+            mp.when_ui_loaded( function refresh_markers() {
+                try {
+                    // Refresh the information
+                    clean_old_markers( values.user_trackings )
+                    $("#user_message").html('The ' + values.user_trackings.length +
+                            ' most recent visitors are shown on the map')
+                    $.each( _.sortBy( values.user_trackings, 'last_update' ).reverse(),
+                                        add_user )
+                    mp.layout_resize()
+                    }
+                catch( e ) {
+                    mp.log_error("TRACKING update error: ", e)
+                    }
+                })
+            }
+        })
+
+{% endblock %}

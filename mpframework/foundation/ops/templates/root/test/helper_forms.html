@@ -1,0 +1,24 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Test helpers that require forms
+
+{%endcomment%}
+
+
+{% block panel_body %}
+
+    <h1>Send email</h1>
+    <div class="mpdebug">
+        <p>Use this to test content banning issues from recipients of server email</p>
+        <br>
+        <div style="padding-left: 1em">
+            <form class="mp_form" method="post" data-parsley-validate>
+                {% include "_/form.html" with form=email_form %}
+                <input class="mp_button" type="submit" name="email" value="Send Email" />
+                </form>
+            </div>
+        </div>
+    <br>
+
+{% endblock %}

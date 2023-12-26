@@ -1,0 +1,30 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Additions to user staff menu
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% usemacro menu_item 'Dashboard' 'fa-dashboard' 'user_dashboard' %}
+{% usemacro menu_item 'Licenses' 'fa-shopping-cart' 'staff_admin:account_apa_changelist' %}
+{% if user.sees_group %}
+    {% usemacro menu_item 'Group accounts' 'fa-users' 'staff_admin:account_groupaccount_changelist' %}
+{% endif %}
+
+{% if user.access_high %}
+    <hr class="mp_menu_break">
+    <span class="mp_menu_title">Content usage...</span>
+    <div class="mp_menu_group_icons">
+        {% usemacro menu_item 'Items' 'fa-list' 'staff_admin:usercontent_useritem_changelist' %}
+        {% if user.access_high %}
+            {% usemacro menu_item 'Badges' 'fa-trophy' 'staff_admin:usercontent_userbadge_changelist' %}
+        {% endif %}
+        {% usemacro menu_item 'Collections' 'fa-folder' 'staff_admin:usercontent_useritemtop_changelist' %}
+    </div>
+{% else %}
+    {% usemacro menu_item 'Content usage' 'fa-list' 'staff_admin:usercontent_useritem_changelist' %}
+{% endif %}
+
+<hr class="mp_menu_break">

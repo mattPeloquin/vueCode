@@ -1,0 +1,10 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    MPF layout for DateTime using native browser controls
+
+{% endcomment %}
+
+<p class="datetime">
+  {% with widget=widget.subwidgets.0 %}{% include widget.template_name %}{% endwith %}<br />
+  {% with widget=widget.subwidgets.1 %}{% include widget.template_name %}{% endwith %}
+</p>

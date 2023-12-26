@@ -1,0 +1,19 @@
+#--- Vueocity platform, Copyright 2021 Vueocity LLC
+#
+#   Override test root data with Vueocity bootstrap root
+#
+
+- fields:
+    name: Vueocity Root
+    system_name: vueroot
+    resource_path: vueroot
+  model: tenant.provider
+  pk: 1
+
+- fields: { _host_name: vueroot.127.0.0.1, sandbox: 1, main: true }
+  model: tenant.sandboxhost
+  pk: 1
+
+- fields: { _host_name: vueroot.vuedev.com, sandbox: 1, main: false }
+  model: tenant.sandboxhost
+  pk: 2

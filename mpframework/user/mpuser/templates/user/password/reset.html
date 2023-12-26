@@ -1,0 +1,35 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    User password reset
+
+{% endcomment %}
+
+
+{% block page_ready_script %}
+
+    mp.set_watermark("#{{ form.email.auto_id }}", "User Email");
+
+    {#-- Set the value of email if provided (since using jQuery view, easiest to do here) #}
+    {% if email_from_login %}
+        $("#{{ form.email.auto_id }}").val("{{ email_from_login }}");
+    {% endif %}
+
+{% endblock %}
+
+{% block panel_body %}
+
+    <form class="mp_form" action="" method="post"  data-parsley-validate>
+        {% csrf_token %}
+
+        <h1>Password reset</h1>
+        <p>Please enter your account email, and we'll send you a link to reset your password.</p>
+
+        <br>
+        {% include "_/form_errors.html" %}
+        {{ form.email }}
+        <input class="es_button_flat" type="submit" value="Reset my password" />
+
+        </form>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Scripts loaded for standard NON-PORTAL screens
+
+    THIS FILE IS TEMPLATE FRAGMENT CACHED
+
+    THIS FILE NEEDS TO BE SAVED WITH UNIX STYLE LINE TERMINATIONS
+    FOR USE IN WINDOWS/LINUX ENVIRONMENT WITH django-compressor
+
+{%endcomment%}
+
+{% load compress_mp %}
+
+{% compress_mp js main %}
+
+    {#-- External shared dependencies #}
+
+    <script defer src="{{ static_url }}{{ compress_on|yesno:"min,libs" }}/select2.js"></script>
+    <script defer src="{{ static_url }}{{ compress_on|yesno:"min,libs" }}/parsley.js"></script>
+    <script defer src="{{ static_url }}libs/clipboard.js"></script>
+    <script defer src="{{ static_url }}libs/s3direct/dist/index.js"></script>
+
+    {% mp_include_files "_base/script" "standard" ".html" %}
+
+    {#-- Flag indicating JS has been parsed #}
+    <script defer src="{{ static_url }}mpf-js/script_loaded.js"></script>
+
+{% endcompress %}

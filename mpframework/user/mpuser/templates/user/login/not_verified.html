@@ -1,0 +1,37 @@
+{% extends '_base/pages/style.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    If email isn't validated, allow them to resend
+
+{%endcomment%}
+
+{% block page_body %}
+
+    <div class="es_not_verified es_theme_panel">
+
+        <p style="font-size: 120%; padding-top: 1.5em; padding-bottom: 1em;">
+            Please check <i>{{ user.email }}</i> for activation instructions.
+            </p>
+        <p>The activation email may be in your spam filter.
+            </p>
+        <form class="mp_form" method="post" action="{{ not_verified_url }}">
+            {% csrf_token %}
+            <input name="resend_email" class="es_button" type="submit" value="Resend Verification Email" />
+            </form>
+        <p>
+            <a class="es_button_text"
+                style="padding-left: 0"
+                href="{% url 'logout' %}"
+                >Click here to return to login page.
+                </a>
+            </p>
+        <p>
+            <a class="es_button_text"
+                style="padding-left: 0"
+                href="mailto:{{ site.email_support }}?Subject=Activation problem for {{ user.email }}"
+                >Click here to send us an email if activation isn't working.
+                </a>
+            </p>
+        </div>
+
+{% endblock %}

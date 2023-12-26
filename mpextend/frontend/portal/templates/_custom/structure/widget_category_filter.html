@@ -1,0 +1,19 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Global filter for categories
+
+{% endcomment %}
+
+
+<!-- ko if: mpp.sb_option( 'portal.category_filter_hide', $element ) -->
+
+    <nav class="es_category_filters" data-bind="
+            foreach: mpp.vm_main.categories(),
+            ">
+        <div class="es_category_filter es_button" data-bind="
+                html: $data.name,
+                ">
+            </div>
+        </nav>
+
+<!-- /ko -->

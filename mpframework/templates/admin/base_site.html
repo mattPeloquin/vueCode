@@ -1,0 +1,62 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Base for Django admin content for main admin UI
+
+    REPLACES Django admin/base.html and needs keep in sync with
+    any changes there.
+
+{%endcomment%}
+
+{% load cache %}
+
+{% block head-no_cache %}
+
+    {#-- Support for any per-page css, like django-admin-nested #}
+    {{ media.css }}
+
+    {{ block.super }}
+
+{% endblock %}
+
+{% block page-no_cache %}
+
+    {#-- Django/MPF admin scripting #}
+    {% include "admin/script/main.chtml" %}
+
+    {#-- Django dynamic includes #}
+    {{ media.js }}
+
+    {{ block.super }}
+
+    {% include "admin/script/page.html" %}
+
+{% endblock %}
+
+
+{%comment%}--------------------------------------------
+    Page layout
+
+    Embed Django admin content in standard screen.
+    Normal and popup screens are supported.
+{%endcomment%}
+
+{% block main_area %}
+
+    {% block messages %}
+    {% endblock messages %}
+
+    <section id="admin_main" class="mp_staff_panel">
+        {% block content %}
+
+            {{ content }}
+
+        {% endblock %}
+        </section>
+
+{% endblock %}
+
+{% block footer %}
+    <div id="footer">
+        </div>
+{% endblock %}

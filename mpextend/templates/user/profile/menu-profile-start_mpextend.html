@@ -1,0 +1,15 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    User profile extensions
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% usemacro menu_user 'Redeem Coupon' 'fa-tag' 'profile_coupon' %}
+{% usemacro menu_user 'History' 'fa-calendar' 'profile_history' %}
+
+{% if user.has_test_access %}
+    {% usemacro menu_user 'Plans' 'fa-map' 'user_plans' %}
+{% endif %}

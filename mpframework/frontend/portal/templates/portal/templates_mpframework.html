@@ -1,0 +1,17 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Load portal client templates
+
+{%endcomment%}
+
+{% mp_include "collection_nodes" %}
+
+{% include "portal/controls/content_user.html" %}
+{% include "portal/controls/content_staff.html" %}
+{% include "portal/controls/content_info.html" %}
+
+{% for t in portal_templates %}
+    <script id="template_{{ t.script_name }}" type="text/template">
+        {% mp_include t.script_name %}
+        </script>
+{% endfor %}

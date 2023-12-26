@@ -1,0 +1,26 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Toggle alternate colors for portal.
+    Adds request tag to punch through nginx cache.
+
+{%endcomment%}
+
+{% if request_skin.color2 %}
+
+    <div class="es_button_text mp_color2_toggle">
+        <a class="fa fa-adjust {% if user.options.color2 %} fa-rotate-180 {% endif %}
+                mp_tooltip_dynamic" tooltip="color2_toggle"
+                href="{% url 'portal_user_options' options='{"color2_toggle":1}' %}?{{ request_info.tag }}"
+                >
+            <script>
+                mpt.tooltip_color2_toggle = function() {
+                    const colors = {{ user.options.color2 | json }} ?
+                                "Default" : "Alternate"
+                    return `Click to toggle alternate color scheme (e.g., dark mode).<br>
+                            ${ colors } colors are currently active.`
+                    }
+                </script>
+            </a>
+        </div>
+
+{% endif %}

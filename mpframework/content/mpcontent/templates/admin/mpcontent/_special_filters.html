@@ -1,0 +1,44 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Special filters shared across content screens
+
+{%endcomment%}
+
+{% if not is_popup %}
+    <div id="retired_toggle">
+        <div class="mp_slider">
+            <div class="ball mp_button"></div>
+            <div class="text">Show retired</div>
+            </div>
+        </div>
+{% endif %}
+
+<script> 'use strict';
+    mp.when_ui_loaded( function special_filters() {
+
+        // Set initial state, based on how defaults are setup
+        var show_retired = false
+        var current = window.location.toString().split('?')[1]
+        current = current ? current.split('&') : []
+        _.each( current, function( param ) {
+            if( _.startsWith( param, 'retired' ) && _.endsWith( param, 'all' ) ) {
+                show_retired = true
+                $("#retired_toggle .mp_slider").addClass('slider_on')
+                }
+            })
+
+        // Fixup query params based on all handlers
+        $("#retired_toggle").on( 'click', function() {
+            show_retired = !show_retired
+            _.remove( current, function( param ) {
+                return _.startsWith( param, 'retired' )
+                })
+            })
+        $(".mp_special_filters").on( 'click', function() {
+            if( show_retired ) current.push('retired=all')
+            window.location = '?' + current.join('&')
+            })
+
+        })
+</script>
+

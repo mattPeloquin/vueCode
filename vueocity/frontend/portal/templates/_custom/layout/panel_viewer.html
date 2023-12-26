@@ -1,0 +1,89 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Embed viewer with the main display of collection content
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/nav_macros.html" %}
+
+<panel class="es_panel_viewer mp_viewer_panel mpp_action_select_item
+        mp_flex_column">
+
+    <section class="es_content es_viewer_display es_theme_content
+                mp_flex_item_grow mpr_flex_col mp_flex mp_flex_nowrap" data-bind="
+            bind_content_panel: $data,
+            ">
+
+        <div class="es_viewer_main mp_flex_column">
+
+            <div class="mpp_viewer_insert_here"
+                    data-viewer_type="viewer_panel"
+                    >
+                </div>
+
+            <div class="es_tabs mpp_viewer_aux">
+                <div class="es_tabs_menu">
+                    {% usemacro nav_tab 'viewer_info' %}
+                    <!-- ko if: ko.length( items_area('support') ) -->
+                        {% usemacro nav_tab 'area_support' %}
+                    <!-- /ko -->
+                    <!-- ko if: sb('html2') -->
+                        {% usemacro nav_tab 'about' %}
+                    <!-- /ko -->
+                    </div>
+                </div>
+                <section {% usemacro nav_attr 'viewer_info' 'nested_nav' 'mp_print_hidden' %} >
+                    <panel class="es_viewer_content es_theme_panel">
+                        <div class="es_item_text1" data-bind="
+                                html: sb('text1')
+                                ">
+                            </div>
+                        <!-- ko with: mpp.vm_current.item() || vm.current.node() -->
+                            <!-- ko if: $data && $data.sb -->
+                                <!-- ko if: sb('access') -->
+                                    <div class="es_viewer_content_item" data-bind="
+                                            html: sb('html3'),
+                                            ">
+                                        </div>
+                                    <!-- ko if: $parent && $parent.sb -->
+                                        <div class="es_viewer_content_node" data-bind="
+                                                html: $parent.sb('html3'),
+                                                ">
+                                            </div>
+                                    <!-- /ko -->
+                                <!-- /ko -->
+                                <!-- ko ifnot: sb('access') || ( !sb('html3') && !( $parent && $parent.sb && $parent.sb('html3') ) ) -->
+                                    {% mp_include "content_itemview" with no_access=True %}
+                                <!-- /ko -->
+                            <!-- /ko -->
+                        <!-- /ko -->
+                        </panel>
+                    </section>
+                <section {% usemacro nav_attr 'area_support' 'nested_nav' 'mp_print_hidden' %} >
+                    <panel class="es_panel_viewer_support es_theme_panel">
+                        <h2 class="es_title1" data-bind="
+                                html: sb('name'),
+                                ">
+                            </h2>
+                        {% mp_include "items" with items="items_area('support')" opt_template="support" %}
+                        </panel>
+                    </section>
+                <section {% usemacro nav_attr 'about' 'nested_nav' 'mp_print_hidden' %} >
+                    <panel class="es_panel_viewer_about es_theme_panel" data-bind="
+                        html: sb('html2'),
+                        ">
+                        </panel>
+                    </section>
+            </div>
+
+        <div class="es_viewer_nav mpp_viewer_nav">
+            <div class="es_viewer_items mpp_viewer_items">
+                {% mp_include "collection_node" with column=True %}
+                </div>
+            </div>
+
+        </section>
+
+    {% mp_include "collection_footer" %}
+    </panel>

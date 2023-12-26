@@ -1,0 +1,42 @@
+{% mp_extends 'panel_tabs' %}
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Show collection's direct children as tabs, under which their children
+    will be displayed.
+    If there are core items attached to the root node, a 'home' tab is added.
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/nav_macros.html" %}
+
+{% block panel_class %} es_panel_tabs_children {% endblock %}
+
+{% block panel_nav %}
+
+    <!-- ko if: items_core().length -->
+        {% usemacro nav_tab %}
+    <!-- /ko -->
+    <!-- ko foreach: node_children() -->
+        {% usemacro nav_tab %}
+    <!-- /ko -->
+
+{% endblock %}
+
+{% block panel_content %}
+
+    <!-- ko if: items_core().length -->
+        <section class="es_content es_theme_panel" data-bind="
+                bind_content_panel: $data
+                ">
+            {% mp_include "collection_node" with horizontal=True no_recurse=True %}
+            </section>
+    <!-- /ko -->
+    <!-- ko foreach: node_children() -->
+        <section {% usemacro nav_attr '' 'nested_nav' 'mp_tree_node' %}>
+            {% mp_include "collection_node" %}
+            {% include "portal/controls/content.html" %}
+            </section>
+    <!-- /ko -->
+
+{% endblock %}

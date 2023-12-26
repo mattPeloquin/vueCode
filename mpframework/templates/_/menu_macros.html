@@ -1,0 +1,67 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Macros for creating menu item html
+
+    Adding an id to each menu item is for automated testing,
+    based on the assumption each item will only show once per
+    rendered screen. If this is an issue move to class or data.
+
+{%endcomment%}
+
+{% load macros %}
+
+{% macro _menu_attr text area %}
+    id="{{ area|default:'menu' }}_{{ text|slugify }}"
+        class="mp_menu_item"
+{% endmacro %}
+{% macro _menu_row icon text user_menu css %}
+    {% if icon %}<div title="{{ text }}"><span class="fa {{ icon }}"></span></div>{% endif %}
+    <span class="{% if user_menu %} es_menu_text {% else %} mp_menu_text {% endif %}
+            {% if css %}{{ css }}{% endif %}">
+        {{ text }}</span>
+{% endmacro %}
+
+{% macro menu_item text icon url_name url_arg css %}
+
+    <a {% usemacro _menu_attr text %}
+        href="{% if url_arg %}{% url url_name url_arg %}{% else %}{% url url_name %}{% endif %}">
+        {% usemacro _menu_row icon text '' css %}
+        </a>
+
+{% endmacro %}
+
+{% macro menu_user text icon url_name url_arg area %}
+
+    <a {% usemacro _menu_attr text area %}
+        href="{% if url_arg %}{% url url_name url_arg %}{% else %}{% url url_name %}{% endif %}">
+        {% usemacro _menu_row icon text 'user' %}
+        </a>
+
+{% endmacro %}
+
+{% macro menu_link text icon url1 url2 %}
+
+    <a {% usemacro _menu_attr text %}
+        href="{{ url1 }}{% if url2 %}{{ url2 }}{% endif %}">
+        {% usemacro _menu_row icon text %}
+        </a>
+
+{% endmacro %}
+
+{% macro menu_url text url_name url1 url2 %}
+
+    <a {% usemacro _menu_attr text %}
+        href="{% url url_name %}{{ url1 }}{% if url2 %}{{ url2 }}{% endif %}">
+        {% usemacro _menu_row '' text %}
+        </a>
+
+{% endmacro %}
+
+{% macro menu_click text icon on_click area %}
+
+    <a {% usemacro _menu_attr text area %}
+        href="#_" onclick="{{ on_click }}">
+        {% usemacro _menu_row icon text %}
+        </a>
+
+{% endmacro %}

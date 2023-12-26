@@ -1,0 +1,29 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Create new content item of specifc type, add to owning collection,
+    and open the edit page.
+
+    KEEP IN SYNC WITH: menu-content_add_mpextend.html
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% usemacro menu_click 'Video' 'fa-film' "mp.content_addcollection( this, 'video')" %}
+{% usemacro menu_click 'PDF' 'fa-file-pdf-o' "mp.content_addcollection( this, 'pdf')" %}
+{% usemacro menu_click 'Web page' 'fa-desktop' "mp.content_addcollection( this, 'protectedpage')" %}
+{% usemacro menu_click 'Live event' 'fa-hourglass-2' "mp.content_addcollection( this, 'liveevent')" %}
+{% usemacro menu_click 'Audio' 'fa-music' "mp.content_addcollection( this, 'audio')" %}
+{% if user.access_high %}
+    {% usemacro menu_click 'Link' 'fa-link' "mp.content_addcollection( this, 'proxylink')" %}
+    {% usemacro menu_click 'LMS package' 'fa-file-archive-o' "mp.content_addcollection( this, 'lmsitem')" %}
+    {% usemacro menu_click 'Embed' 'fa-code' "mp.content_addcollection( this, 'embed')" %}
+    {% if user.has_test_access %}
+       {% usemacro menu_click 'Quiz' 'fa-graduation-cap' "mp.content_addcollection( this, 'quiz')" %}
+    {% endif %}
+{% endif %}
+{% if user.access_all %}
+    {% usemacro menu_click 'Portal item' 'fa-square-o' "mp.content_addcollection( this, 'portalitem')" %}
+    {% usemacro menu_click 'Web app' 'fa-picture-o' "mp.content_addcollection( this, 'proxyapp')" %}
+{% endif %}

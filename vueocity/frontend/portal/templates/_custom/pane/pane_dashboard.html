@@ -1,0 +1,57 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Overview page focused on recently used content, progress
+    in content, and leveraging horizontal slider layout.
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/macros.html" %}
+
+<pane class="es_pane_dashboard"
+        {% usemacro add_pane_context pane %}
+        >
+    <article id="{{ pane.nav_home|default:'home' }}"
+            class="es_home mp_nav_home mp_nav_panel
+                    mp_flex_column" data-bind="
+                bind_nav_panel: false,
+                " data-no_breadcrumbs='true'
+                >
+
+        {% mp_include "home_html" with featured_group='home_collections' group_items='all_tops()' %}
+
+        <div class="es_portal_nav es_theme_panel">
+            <!-- ko with: mpp.vm_trees() -->
+
+            {% if user.is_ready %}
+                <section class="es_progress_in">
+                    <h2 class="es_title2" data-bind="
+                        html: sbt('recent'),
+                        "></h2>
+                    {% mp_include "items" with items='tops_in_progress()' %}
+                    </section>
+            {% else %}
+                <section class="es_progress_logged_out">
+                    <h2 class="es_title2" data-bind="
+                        html: sbt('sign_in_content'),
+                        "></h2>
+                    {% mp_include "items" with items='all_tops()' %}
+                    </section>
+            {% endif %}
+
+            <!-- /ko -->
+            </div>
+
+        </article>
+
+    {#-- Panels for collection drill downs on this pane #}
+    <!-- ko with: mpp.vm_trees() -->
+        <!-- ko foreach: {% if user.is_ready %}
+                tops_in_progress() {% else %}
+                all_tops()
+                {% endif %} -->
+            {% mp_include "collection_panel" %}
+        <!-- /ko -->
+    <!-- /ko -->
+
+    </pane>

@@ -1,0 +1,7 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#  mpExtend Dev servers for PRODUCTION cluster
+#
+
+MP_REPORT:
+  USER_BLOCK_SIZE: 50

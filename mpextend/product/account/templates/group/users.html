@@ -1,0 +1,111 @@
+{% extends 'group/_page.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Account admin user summary screen
+
+{% endcomment %}
+
+
+{% block group_page_body %}
+{% if users %}
+    <div id="users_report">
+        <h2>User summary</h2>
+
+        <div class="mp_flex_line">
+            <div class="es_button_flat"
+                    onclick="mp.ajax_dialog(
+                        '{% url 'ga_summary_csv' ga_id %}', mpt.REPORT_CHECK_DONE
+                        )">
+                User report
+                </div>
+            <div class="es_button_flat" style="margin-left: 2em"
+                    onclick="mp.ajax_dialog(
+                        '{% url 'ga_content_top_csv' ga_id %}', mpt.REPORT_CHECK_DONE
+                        )">
+                Summary usage report
+                </div>
+            </div>
+
+        <div class="es_report_head mp_flex_line">
+            <input class="mp_search" placeholder="Search" />
+            <p class="mp_locale_value">
+                {{ users|length }} users
+                </p>
+            <p class="mp_locale_value">
+                {{ totals_items.all }} items used
+                </p>
+            </div>
+
+        <table class="es_report_table">
+            <thead>
+                <tr class="es_heading">
+                    <th style="width: 12%" class="mp_sort es_textleft"
+                            data-sort="name">Name</th>
+                    <th style="width: 16%" class="mp_sort es_textleft"
+                            data-sort="email">Email</th>
+                    <th style="width: 9%" class="mp_sort"
+                            data-sort="tops_completed">Collections completed</th>
+                    <th style="width: 9%" class="mp_sort"
+                            data-sort="tops_started">Collections in progress</th>
+                    <th style="width: 8%" class="mp_sort"
+                            data-sort="items_completed">Items completed</th>
+                    <th style="width: 8%" class="mp_sort"
+                            data-sort="items_started">Items in progress</th>
+                    <th style="width: 8%" class="mp_sort es_textleft"
+                            data-sort="org">Organization</th>
+                    <th style="width: 5%" class="mp_sort es_textleft"
+                            data-sort="tag1">Tag 1</th>
+                    <th style="width: 5%" class="mp_sort es_textleft"
+                            data-sort="tag2">Tag 2</th>
+                    <th style="width: 5%" class="mp_sort es_textleft"
+                            data-sort="tag3">Tag 3</th>
+                    <th style="width: 5%" class="mp_sort" data-sort="hours">Hours</th>
+                    <th style="width: 10%" class="mp_sort" data-sort="last_use">Last use</th>
+                    </tr>
+                </thead>
+            <tbody class="es_report_body mp_report">
+                {% for u in users %}
+                    <tr class="es_row">
+                        <td class="name">{{ u.name }}</td>
+                        <td class="email">{{ u.email }}</td>
+                        <td class="tops_completed es_textcenter">{{ u.tops_completed }}</td>
+                        <td class="tops_started es_textcenter">{{ u.tops_started }}</td>
+                        <td class="items_completed es_textcenter">{{ u.items_completed }}</td>
+                        <td class="items_started es_textcenter">{{ u.items_started }}</td>
+                        <td class="org">{{ u.org }}</td>
+                        <td class="tag1">{{ u.tag1 }}</td>
+                        <td class="tag2">{{ u.tag2 }}</td>
+                        <td class="tag3">{{ u.tag3 }}</td>
+                        <td class="hours es_textcenter">{% widthratio u.minutes 60 1 %}</td>
+                        <td class="last_use es_textcenter">{{ u.last_use }}</td>
+                        </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+{% else %}
+    <div>Users have not yet accessed any content</div>
+{% endif %}
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    {% if users %}
+        const users_list = new List( 'users_report', {
+                listClass: 'mp_report',
+                searchClass: 'mp_search',
+                sortClass: 'mp_sort',
+                valueNames: [
+                    'email', 'name', 'org', 'tag1', 'tag2', 'tag3',
+                    'tops_started', 'tops_completed',
+                    'items_started', 'items_completed',
+                    'hours', 'last_use',
+                    ]
+                })
+        users_list.sort( 'last_use', { order: 'desc' } )
+
+        $(".mp_sort").addClass('es_button_text')
+    {% endif %}
+
+{% endblock %}

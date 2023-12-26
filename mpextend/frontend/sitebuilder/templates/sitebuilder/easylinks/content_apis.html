@@ -1,0 +1,88 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Content information API
+
+{%endcomment%}
+
+{% block panel_body %}
+<div id="list">
+    <h2>Content API links</h2>
+
+    <div class="es_report_head mp_flex_line">
+        <input class="mp_search" placeholder="Search" />
+        <p class="mp_locale_value">
+            {{ content|length }} total items
+            </p>
+        </div>
+
+    <table class="es_report_table">
+        <thead>
+            <tr class="es_heading">
+                <th style="width: 6%" class="mp_sort es_textleft"
+                        data-sort="tag">License tag</th>
+                <th style="width: 21%" class="mp_sort es_textleft"
+                        data-sort="name">Name</th>
+                <th style="width: 29%" class="mp_sort es_textleft"
+                        data-sort="full_api">All JSON data</th>
+                <th style="width: 19%" class="mp_sort es_textleft"
+                        data-sort="desc_url">Description page</th>
+                <th style="width: 19%" class="mp_sort es_textleft"
+                        data-sort="image_url">Image url</th>
+                <th style="width: 6%" class="mp_sort es_textleft"
+                        data-sort="itag">Internal tag</th>
+                </tr>
+            </thead>
+        <tbody class="es_report_body mp_report">
+        {% for c in content %}
+            <tr class="es_row">
+                <td class="tag">{{ c.tag }}</td>
+                <td class="name">{{ c.name }}</td>
+                <td class="full_api">
+                    <div class="mp_clipboard">
+                        <a target="_" href="{{ site.main_host_url }}{{ c.api_url }}"
+                                class="mp_easylink mp_ellipsis">
+                            {{ c.api_url }}
+                        </a></div>
+                    </td>
+                <td class="desc_url">
+                    <div class="mp_clipboard">
+                        <a target="_" href="{{ site.main_host_url }}{{ c.desc_url }}"
+                                class="mp_easylink mp_ellipsis">
+                            {{ c.desc_url }}
+                        </a></div>
+                    </td>
+                <td class="image_url">
+                    {% if c.image_url %}
+                        <div class="mp_clipboard">
+                            <a target="_" href="{{ site.main_host_url }}{{ c.image_url }}"
+                                    class="mp_easylink mp_ellipsis">
+                                {{ c.image_url }}
+                            </a></div>
+                    {% endif %}
+                    </td>
+                <td class="itag">{{ c.internal_tags }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    const list = new List( 'list', {
+            listClass: 'mp_report',
+            searchClass: 'mp_search',
+            sortClass: 'mp_sort',
+            valueNames: [
+                'tag', 'internal_tag', 'name', 'desc_url', 'image_url', 
+                ]
+            })
+    list.sort( 'tag', { order: 'asc' } )
+
+    $(".mp_sort").addClass('es_button_text')
+
+{% endblock %}
+

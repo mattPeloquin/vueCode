@@ -1,0 +1,11 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Create new content item of specifc type, add to owning collection,
+    and open the edit page.
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% usemacro menu_click 'Download' 'fa-file' "mp.content_addcollection( this, 'protectedfile')" %}

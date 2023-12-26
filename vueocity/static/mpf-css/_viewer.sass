@@ -1,0 +1,40 @@
+/*--- Copyright 2021 Vueocity LLC
+
+    Viewer style extensions
+ */
+
+viewer
+
+    .mpp_viewer_insert, .mpp_viewer_popup, .mpp_viewer_overlay
+        display: flex
+        align-items: center
+        align-content: center
+        justify-content: center
+
+    .mpp_viewer_popup, .mpp_viewer_overlay
+        position: fixed
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+        z-index: 601
+        .video-js.vjs-fluid
+            position: fixed
+            height: 100%
+            padding-top: 0
+
+.es_viewer_popup
+    .es_close
+        font-size: 180% !important
+
+.es_viewer_overlay
+    background: var(--overlay)
+    .es_close
+        font-size: 250% !important
+.es_user_staff .es_viewer_overlay .es_close
+    top: 0.8em
+
+.es_viewer_content
+    position: relative
+    .es_viewer_content_item
+        margin: 1.5em 1em 1em 0.2em

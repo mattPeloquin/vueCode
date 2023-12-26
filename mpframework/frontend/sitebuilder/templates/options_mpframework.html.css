@@ -1,0 +1,72 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    General site and theme CSS vars and defaults.
+
+    CSS vars that have admin entry fields are set from sb_options,
+    others are set directly.
+
+{%endcomment%}
+
+:root {
+    --es_theme_padding: {{ sb_options.site.theme_padding|default:'0.5em 1.5em' }};
+    --es_user_bar_height: {{ sb_options.site.user_bar_height|default:'auto' }};
+    --es_user_bar_padding: {{ sb_options.site.user_bar_padding|default:'0.2em' }};
+    --es_background_image_opacity: {{ sb_options.site.background_image_opacity|default:'0.3' }};
+    --es_background_image_blur: {{ sb_options.site.es_background_image_blur|default:'blur(1px)' }};
+
+    --es_user_search_width: 8em;
+    --es_tabs_side_width: 10em;
+
+    --es_theme_structure_spacing: 0px;
+    --es_theme_border-radius: 0.2em;
+    --es_theme_border-radius_content: 0.2em;
+    --es_theme_border-radius_control: 0.1em;
+    --es_theme_border-radius_structure: 0em;
+
+    --es_effect_fast: 0.8s;
+    --es_effect_med: 1.6s;
+    --es_effect_slow: 2.4s;
+    }
+
+.es_theme_popup, .es_theme_overlay, .es_theme_panel {
+    padding: var(--es_theme_padding);
+    border-radius: var(--es_theme_border-radius);
+    }
+.es_theme_content, .es_theme_content :is( .es_content_body ),
+.es_content.es_theme_current {
+    border-radius: var(--es_theme_border-radius_content);
+    }
+a, .es_button, .es_button_flat, .mp_input, .es_portal_tab,
+.es_portal::-webkit-scrollbar-thumb {
+    border-radius: var(--es_theme_border-radius_control);
+    }
+.es_theme_bar, .es_viewer_box {
+    margin: var(--es_theme_structure_spacing) !important;
+    border-radius: var(--es_theme_border-radius_structure) !important;
+    }
+.es_theme_bar {
+    width: calc( 100% - 2*var(--es_theme_structure_spacing));
+    }
+:is( .es_theme_bar, .es_staff_bar ) :is( nav, nav div ):not( .mp_menu ) {
+    border-radius: var(--es_theme_border-radius_control) !important;
+    }
+
+.es_user_bar.mp_top_bar {
+    max-height: var(--es_user_bar_height);
+    }
+.es_top_bar_left {
+    height: var(--es_user_bar_height);
+    max-width: 60vw;
+    padding: var(--es_user_bar_padding);
+    }
+.es_top_bar_right {
+    height: var(--es_user_bar_height);
+    padding: var(--es_user_bar_padding);
+    }
+
+.es_search_box {
+    width: var(--es_user_search_width);
+    font-size: 90%;
+    padding: 0.2em 0.4em;
+    margin: 0 1em 0 0;
+    }

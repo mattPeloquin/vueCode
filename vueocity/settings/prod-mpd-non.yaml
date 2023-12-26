@@ -1,0 +1,8 @@
+#--- Copyright 2021 Vueocity, LLC
+#
+#   Add JS compression to prod-mpd
+#
+
+MP_ROOT_URLS:
+  URL_STATIC: 'vuepub.vueocity.com'
+  URL_STATIC_COMP: 'd45exs2xsyt2.cloudfront.net'

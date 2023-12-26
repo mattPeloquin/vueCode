@@ -1,0 +1,24 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    LMS menu add in
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% if not user.logged_into_root %}
+    <hr class="mp_menu_break">
+
+    {% if user.has_test_access %}
+        {% usemacro menu_item 'User plans' '' 'staff_admin:plan_userplan_changelist' %}
+    {% endif %}
+
+{% endif %}
+
+{% if user.access_root_menu %}
+    <hr class="mp_menu_break">
+    <a class="mp_menu_item root"  href="{% url 'root_admin:plan_baseplan_changelist' %}">BasePlans</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:plan_userplan_changelist' %}">UserPlans</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:plan_groupplan_changelist' %}">GroupPlans</a>
+{% endif %}

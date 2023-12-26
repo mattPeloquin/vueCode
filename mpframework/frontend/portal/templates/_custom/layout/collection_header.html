@@ -1,0 +1,66 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Top display areas for a collection
+
+{%endcomment%}
+
+<!-- ko ifnot: sb_option( 'portal.collection_no_top', $element ) -->
+    <div class="es_collection_header" style="{{ style|default:'' }}">
+
+        {#-- Use hero image and title overlay #}
+        <!-- ko if: sb('image3') || sb_option( 'portal.hero_style', $element ) -->
+            <div class="es_hero_container" data-bind="
+                    attr: { 'data-hero_style': sb_option( 'portal.hero_style', $element ) },
+                    ">
+                <div class="es_hero_image mp_image" data-bind="
+                        style: { backgroundImage:
+                            'url(\'' + ( sb('image3') || sb('image1') ) + '\')' },
+                        ">
+                    </div>
+                <header class="es_hero_overlay es_heading mpr_width_half mp_overlay">
+                    <div class="es_theme_overlay">
+                        <h2 class="es_title1" data-bind="
+                                html: sb('name')
+                                ">
+                            </h2>
+                        <div class="es_item_text1" data-bind="
+                                html: sb('text1')
+                                ">
+                            </div>
+                        <div class="es_item_text2" data-bind="
+                                html: sb('text2')
+                                ">
+                            </div>
+                        </div>
+                    </header>
+            </div>
+        <!-- /ko -->
+
+        {#-- Otherwise just a title #}
+        <!-- ko ifnot: sb('image3') || sb_option( 'portal.hero_style', $element ) -->
+            <header class="es_heading es_theme_panel">
+                <!-- ko if: sb('html1') -->
+                    <div class="es_item_html1" data-bind="
+                            html: sb('html1')
+                            ">
+                        </div>
+                <!-- /ko -->
+                <!-- ko ifnot: sb('html1') -->
+                    <h2 class="es_title1" data-bind="
+                            html: sb('name'),
+                            ">
+                        </h2>
+                    <div class="es_item_text1" data-bind="
+                            html: sb('text1')
+                            ">
+                        </div>
+                    <div class="es_item_text2" data-bind="
+                            html: sb('text2')
+                            ">
+                        </div>
+                <!-- /ko -->
+                </header>
+        <!-- /ko -->
+
+        </div>
+<!-- /ko -->

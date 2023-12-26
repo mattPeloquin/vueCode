@@ -1,0 +1,21 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Test/Dev information page
+
+{%endcomment%}
+
+{% block panel_body %}
+
+    <h1>Request Object Contents</h1>
+    <div class="mpdebug">
+        {% include "root/_/dict.html" with d=request_dict %}
+        </div>
+
+    <br><br>
+    <h1>Settings</h1>
+    <div class="mpdebug">
+        {% include "root/_/dict.html" with d=mpf_settings %}
+        </div>
+
+{% endblock %}

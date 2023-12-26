@@ -1,0 +1,71 @@
+#--- Copyright 2021 Vueocity, LLC
+#
+#   Off Site Kitchen (OSK) servers
+#   These are spooler-only task queue servers.
+#
+
+DEFAULT_FROM_EMAIL: 'prod-osk@vueocity.com'
+
+MP_ROOT_AWS:
+    # Target group is used to leverage health ping check for ASG
+    ELB_TARGET_GROUP: 'OSK'
+
+MP_SERVER:
+    # Avoid competition for connections
+    DB_CONNECTION_AGE: 0
+
+MP_NGINX:
+    # Only supporting health pings and diagnostic
+    PROCESSES: 1
+    CONNECTIONS: 50
+    MAX_FILES: 100
+MP_UWSGI:
+    PROCESSES: 1
+    THREADS: 1
+    LISTEN_MAX: 25
+
+    # Bump memory sanity check
+    LIMITAS: 1600
+
+    # Cache just for spooler jobs - boost medium to hold request info for reports
+    CACHE_SMALL_OPTIONS: "items=4096"
+    CACHE_MEDIUM_OPTIONS: "items=32768,ignore_full=1"
+    CACHE_LARGE_OPTIONS: "items=4096,blocks=8192,blocksize=4096"
+
+    # Spooler work is all OSK does
+    # There are multiple spoolers that each poll for messages in SQS and
+    # share responsibility for executing the tasks in the spooler folder.
+    # Each process will try to empty the spooler folder when it wakes up, so make
+    # sure there are enough messages to keep everyone busy.
+    SPOOL_PROCESSES: 4
+    SPOOL_FREQ: 1
+    SPOOL_HARAKIRI: 40
+    SPOOL_MAX_TASKS: 400
+    SPOOL_SLEEP_AFTER: 0
+    SPOOL_BREATHE: 0
+    SPOOL_POLLERS:
+      SqsHigh:
+        QUEUES: [ 'HIGH' ]
+        FREQ: 0.2
+      SqsMed:
+        QUEUES: [ 'MED' ]
+        FREQ: 2
+      SqsLow:
+        QUEUES: [ 'LOW' ]
+        FREQ: 20
+    SPOOL_QUEUES:
+      HIGH:
+        LONG_POLL: 8
+        MESSAGES: 3
+        VISIBILITY_TIMEOUT: 45
+        FULL_THRESHOLD: 7
+      MED:
+        LONG_POLL: 4
+        MESSAGES: 2
+        VISIBILITY_TIMEOUT: 90
+        FULL_THRESHOLD: 3
+      LOW:
+        LONG_POLL: 1
+        MESSAGES: 1
+        VISIBILITY_TIMEOUT: 300
+        FULL_THRESHOLD: 1

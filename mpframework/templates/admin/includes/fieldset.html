@@ -1,0 +1,28 @@
+{%comment%}-- Mesa Platform
+
+    Override Django fieldset layout
+
+{%endcomment%}
+
+<fieldset class="mp_module {{ fieldset.classes }}">
+    {% if fieldset.name %}<div class="mp_collapse_handler mp_button">{{ fieldset.name }}</div>{% endif %}
+    {% if fieldset.description %}<div class="mp_row"><p class="mp_description">{{ fieldset.description | safe }}</p></div>{% endif %}
+
+    {% for line in fieldset %}
+
+        <div class="mp_row mp_cells {% if line.errors %}mp_errors{% endif %} {% for field in line %} {{ field.field.name }}{% endfor %} ">
+        {% for field in line %}
+
+            {% if line.fields|length_is:"1" %}
+            <div class="mp_admin_field">
+            {% else %}
+            <div class="mp_cell mp_admin_field {{ field.field.name }}{% if field.field.errors %} mp_errors{% endif %}">
+            {% endif %}
+                {% include "admin/_/field.html" %}
+                </div>
+
+        {% endfor %}
+            </div>
+
+    {% endfor %}
+    </fieldset>

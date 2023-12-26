@@ -1,0 +1,23 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Give cards a polaroid border
+
+{%endcomment%}
+
+<script>
+    mp.when_ui_loaded( function() {
+
+        mp.style_add_css( '.es_theme_card', 'es_theme_background', 'background' )
+
+        })
+</script>
+<style>
+
+    .es_theme_card .es_content_image {
+        padding: 0.5em;
+        }
+    .es_theme_card .es_content_text {
+        padding: 0 0.5em 0.5em 0.5em;
+        }
+
+</style>

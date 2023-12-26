@@ -1,0 +1,99 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    CSS loaded first for all pages
+ */
+
+/*---------------------------------------------------------
+    Reset/normalize style baseline
+ */
+
+html
+    // Build natural responsive sizing into default text
+    font-size: calc( 0.82rem + 0.4vw )
+    text-size-adjust: none
+*
+    margin: 0
+    padding: 0
+    border: 0
+    outline: 0
+    box-sizing: border-box
+a
+    text-decoration: none
+    color: inherit
+h1
+    font-size: 120%
+h2
+    font-size: 110%
+    margin: 0.4em 0 0.4em 0
+h3, h4
+    font-size: 100%
+img
+    height: auto
+    flex-shrink: 0
+    vertical-align: middle
+ol
+    list-style-position: inside
+
+@media( print )
+    .mp_print_hidden, .mp_print_hidden *
+        display: none !important
+
+/*---------------------------------------------------------
+    Flexbox is main MPF layout technique.
+
+    mp_flex tags should be used where there is benefit to declaring
+    flexbox in the HTML layout.
+ */
+
+.mp_flex
+    display: flex
+    flex-wrap: wrap
+    flex-direction: row
+    align-items: flex-start
+    align-content: flex-start
+    justify-content: flex-start
+
+.mp_flex_line
+    @extend .mp_flex
+    flex-wrap: nowrap
+    align-items: center
+
+.mp_flex_column
+    @extend .mp_flex
+    flex-wrap: nowrap
+    flex-direction: column
+    align-items: stretch
+    align-content: stretch
+
+.mp_flex_nowrap
+    flex-wrap: nowrap !important
+.mp_flex_center
+    justify-content: center !important
+.mp_flex_vcenter
+    align-items: center !important
+    align-content: center !important
+.mp_flex_start
+    align-items: start !important
+    align-content: start !important
+.mp_flex_stretch
+    align-items: stretch !important
+    align-content: stretch !important
+.mp_flex_row
+    flex-direction: row !important
+.mp_flex_row_reverse
+    flex-direction: row-reverse !important
+.mp_flex_between
+    justify-content: space-between !important
+.mp_flex_left
+    justify-content: flex-start !important
+.mp_flex_right
+    justify-content: flex-end !important
+
+.mp_flex_item_grow
+    flex: 1
+.mp_flex_item_center
+    align-self: center
+
+// Grid used in some areas
+.mp_grid
+    display: grid

@@ -1,0 +1,53 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display related to reporting
+ */
+
+.es_chart_group
+    width: 100%
+    .es_chart_container
+        width: 50%
+        .es_chart
+            display: block
+            padding: 1em
+            margin: 1em 1em 0 0
+            min-width: 256px
+            border-radius: var(--es_theme_border-radius)
+            // Downplay the button highlighting on the charts
+            color: inherit !important
+            background-image: linear-gradient( var(--gradient), rgba( 255, 255, 255, 0.96 ), rgba( 255, 255, 255, 0.8 ) ) !important
+            +mp_shadow_add
+
+.es_report_head
+    margin: 0.8em 0 0.4em 0
+    p
+        margin-left: 1em
+
+.es_report_table
+    table-layout: fixed
+    width: 100%
+    padding: 0.2em
+    border-spacing: 0
+
+    .es_heading
+        width: 100%
+        th
+            font-size: 66%
+            font-style: italic
+            font-weight: bold
+            padding-left: 0.2em;
+
+    .es_row
+        width: 100%
+
+        // Support Django cycle row color
+        &:nth-child(odd)
+            background-color: rgba( $cBlack, 0.08 )
+        &:nth-child(even)
+            background-color: rgba( $cBlack, 0.02 )
+
+        td
+            padding: 0.2em 0.4em 0.2em 0.4em
+            font-size: 80%
+        .fa
+            font-size: 110%

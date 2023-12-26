@@ -1,0 +1,32 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Add Vueocity-specific styles
+    COMPRESSED INTO CSS AT BUILD TIME
+
+{%endcomment%}
+
+
+<style>
+    {#-- Make default system font the native font stack ala Bootstrap 4 #}
+    {#-- and force the the staff areas to use it normally #}
+    body.es_tool, body.es_tool a, body.es_tool input,
+    body.es_page_staff, body.es_page_staff a, body.es_page_staff input {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue",
+                        Arial, sans-serif;
+        }
+    </style>
+
+{% if user.access_staff %}
+
+    {% include "_custom/theme/font_raleway.html" %}
+
+    <style>
+        {#-- Load Raleway for some staff areas #}
+        .es_staff_bar, .es_staff_bar a,
+        .es_tool, .es_tool a,
+        .es_content_tool, .es_content_tool a {
+            font-family: 'Raleway', sans-serif !important;
+            }
+        </style>
+
+{% endif %}

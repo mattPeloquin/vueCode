@@ -1,0 +1,44 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Screen user is sent to from email link
+
+{% endcomment %}
+
+
+{% block page_ready_script %}
+
+    mp.set_watermark("#{{ form.password1.auto_id }}", "Password");
+    mp.set_watermark("#{{ form.password2.auto_id }}", "Confirm");
+
+{% endblock %}
+
+{% block panel_body %}
+
+    {% if form %}
+
+        <form action="" method="post" class="mp_form"  data-parsley-validate>
+            {% csrf_token %}
+
+            <h1>Please enter a new password</h1>
+
+            {% include "_/form_errors.html" %}
+
+            <div>
+                <div>
+                    {{ form.password1 }}
+                    </div>
+                <div>
+                    {{ form.password2 }}
+                    </div>
+                </div>
+
+            <input class="es_button_flat" type="submit" value="Change my password" />
+
+            </form>
+
+    {% else %}
+        <h1>This password reset link has already been used</h1>
+    {% endif %}
+
+{% endblock %}

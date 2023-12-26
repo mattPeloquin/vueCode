@@ -1,0 +1,49 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Inject content controls.
+
+    Assumes context of a VM content item or bag.
+
+    May use used directly under a KO lazy_bind element,
+    so must embed any KO IF logic inside top-level element.
+
+{% endcomment %}
+
+{% if tooltip or user_controls %}
+    <div class="es_user_control mp_control mpp_tool_popup">
+
+        {% if tooltip %}
+            <!-- ko if: sb('tooltip') -->
+                <tooltip class="es_item_tooltip" data-bind="
+                        html: sb('tooltip'),
+                        ">
+                    </tooltip>
+            <!-- /ko -->
+        {% endif %}
+
+        {% if user_controls %}
+            <div class="es_tool_button fa fa-ellipsis"></div>
+            <div class="mp_flex_line es_content_tool_popup mp_hidden">
+                <!-- ko template: {
+                    name: 'template_content_user'
+                    } -->
+                <!-- /ko -->
+                </div>
+        {% endif %}
+
+        </div>
+{% endif %}
+
+{% if user.sees_content %}
+    <div class="es_staff_control mp_control mpp_tool_popup">
+        <div class="es_tool_button fa fa-ellipsis-h"></div>
+        <div class="mp_flex_line es_content_tool_popup mp_hidden" data-bind="
+                lazy_bind_mphidden: $data,
+                ">
+            <!-- ko template: {
+                name: 'template_content_staff'
+                } -->
+            <!-- /ko -->
+            </div>
+        </div>
+{% endif %}

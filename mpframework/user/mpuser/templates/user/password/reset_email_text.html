@@ -1,0 +1,11 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    User password reset email
+
+{% endcomment %}
+
+A password change request was made for your {{ site.name|default:"" }} account with the username {{ user.username }}.
+
+Please use the link below to choose a new password:
+
+https://{{ domain }}{% url 'pwd_reset_confirm' user_id_b64=uid token=token %}

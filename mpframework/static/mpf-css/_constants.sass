@@ -1,0 +1,62 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Constants shared across pre-compiled CSS
+
+    Most colors and other values here should be dynamic, driven
+    from sandbox themes. The values here are used for:
+      - Default values
+      - Areas where dynamic isn't feasible or extra complexity isn't worthwhile
+      - Root platform wants to dictate style (e.g., staff areas)
+
+    Don't define CSS matches in this file, only replaced constants, since this
+    file is included in multiple locations.
+
+    FUTURE - support root CSS override, and move these constants to root folder
+ */
+
+// Fixed colors in UI
+
+$cBlack:      rgb( 88, 89, 107 )
+$cWhite:      rgb( 255, 255, 255 )
+$cGray:       rgb( 200, 203, 240 )
+$cBlue:       rgb( 0, 161, 225 )
+$cBlue-deep:  rgb( 0, 49, 225 )
+$cOrange:     rgb( 253, 130, 4 )
+$cReddish:    rgb( 253, 79, 0 )
+$cRed:        rgb( 191, 48, 48 )
+$cGreen:      rgb( 107, 192, 72 )
+$cYellow:     rgb( 250, 208, 0 )
+
+$cStaff_border-radius: 0.5em
+$cStaff_border: 1px solid rgba( $cBlack, 0.2 )
+$cStaff_field_back: rgba( $cWhite, 0.9 )
+$cStaff_field_readonly: rgba( $cBlack, 0.06 )
+$bStaff_menu_back: linear-gradient( var(--gradient), rgba( $cWhite, 0.9 ), rgba( $cWhite, 0.84 ) ), linear-gradient( var(--gradient), rgba( $cBlue-deep, 0.3 ), rgba( $cBlue-deep, 0 ) ), linear-gradient( rgba( $cBlack, 0 ), rgba( $cBlack, 0.3 ) )
+
+$bStaff_light: linear-gradient( var(--gradient), rgba( $cWhite, 0.8 ), rgba( $cWhite, 0.7 ) ), linear-gradient( var(--gradient), rgba( $cBlue-deep, 0.3 ), rgba( $cBlue-deep, 0.4 ) )
+$cStaff_link: #309bbf
+
+$bStaff_hidden: linear-gradient( var(--gradient), rgba( $cWhite, 0.6 ), rgba( $cWhite, 0.4 ) ), linear-gradient( var(--gradient), rgba( $cBlack, 0.4 ), rgba( $cBlack, 0.6 ) )
+$bStaff_highlight: linear-gradient( var(--gradient), rgba( $cWhite, 0.4 ), rgba( $cWhite, 0.1 ) ), linear-gradient( var(--gradient), rgba( $cOrange, 0.8 ), rgba( $cOrange, 0.9 ) )
+$bStaff_overlay: linear-gradient( to bottom, rgba( $cWhite, 0.9 ), rgba( $cWhite, 0.8 ) ), linear-gradient( to bottom, rgba( $cBlue, 0.6 ), rgba( $cBlue, 0.3 ) ), linear-gradient( to bottom, rgba( $cBlack, 0.1 ), rgba( $cBlack, 0.2 ) )
+
+$mp_shadow_staff: 3px 3px 6px rgba( $cBlack, 0.4)
+$mp_shadow: 1px 1px 2px rgba( $cBlack, 0.24 ), 2px 2px 4px rgba( $cBlack, 0.12 )
+$mp_shadow_up: 2px 2px 4px rgba( $cBlack, 0.24 ), 3px 3px 6px rgba( $cBlack, 0.12 )
+
+=mp_shadow_add
+    box-shadow: $mp_shadow !important
+    transition: box-shadow 0.12s ease-out, background-image 0.12s ease-out
+    &:is(:hover,:focus,:active)
+        box-shadow: $mp_shadow_up !important
+
+=es_pointer
+    cursor: pointer
+    // Disable blue box android adds to pointer items
+    -webkit-tap-highlight-color: transparent
+
+=mp_button_highlight
+    color: $cWhite
+    background: $bStaff_highlight
+    background-color: rgba( $cOrange, 1 ) !important
+    box-shadow: $mp_shadow_staff

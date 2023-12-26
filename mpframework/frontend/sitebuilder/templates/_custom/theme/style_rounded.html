@@ -1,0 +1,29 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Example style that reworks cards to round images
+
+{%endcomment%}
+
+{% mp_include "mixin_scroll_thin" %}
+
+<style>
+
+    :root {
+        --es_theme_border-radius: 1em;
+        --es_theme_border-radius_control: 0.5em;
+        --es_theme_border-radius_content: 1em;
+        }
+
+    .es_theme_content, .es_content_image img {
+        border-radius: var(--es_theme_border-radius);
+        }
+
+    /*
+        Style fixup for specific case of card text background
+        abutting image with different color than background.
+    */
+    :is( .es_card, .es_listcard ) .es_content_image img {
+        border-radius: unset;
+        }
+
+</style>

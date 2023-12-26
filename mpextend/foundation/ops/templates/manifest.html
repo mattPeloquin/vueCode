@@ -1,0 +1,34 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    PWA manifest.json template
+
+    TBD - setup colors in view based on theme settings
+
+{% endcomment %}
+
+{
+  "short_name": "{{ site.name }}",
+  "name": "{{ site.name }}",
+  "icons": [
+    {% if site.icon.url %}
+        {
+        "src": "{{ site.icon.url }}",
+        "sizes": "192x192"
+        },
+        {
+        "src": "{{ site.logo.url }}",
+        "sizes": "512x512"
+        }
+    {% endif %}
+    ],
+  "scope": "/",
+  "start_url": "{{ site.portal_path }}",
+  "display": "minimal-ui",
+  "background_color": "{{ site.options.pwa_background|default:'#FFFFFF' }}",
+  "theme_color": "{{ site.options.pwa_theme|default:'#6bc048' }}",
+  "description": "{{ site.summary }}",
+  "shortcuts": [
+  ],
+  "screenshots": [
+  ]
+}

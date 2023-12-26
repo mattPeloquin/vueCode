@@ -1,0 +1,36 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Logging management page
+
+{%endcomment%}
+
+{% block page-no_cache %}
+    {{ block.super }}
+    <style>
+        #debug_log_timing {
+            margin-bottom: 1em;
+            }
+        </style>
+{% endblock %}
+
+{% block panel_body %}
+
+    <h1>Logging Options</h1>
+    <div class="mpdebug">
+
+        <div style="padding-left: 1em">
+            <form class="mp_form" method="post">
+
+                {% include "_/form.html" with form=form %}
+
+                <br>
+                <input class="mp_button" type="submit" value="Update Logging Options" />
+
+                </form>
+            </div>
+
+        </div>
+
+{% endblock %}
+

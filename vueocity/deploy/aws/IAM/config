@@ -1,0 +1,39 @@
+#
+# Define IAM profiles below for each role that can be assumed.
+#
+# Include AWS IAM key/secret in the accompanying 'credentials' file,
+# which is included in a profile by the line:
+#   source_profile = default
+#
+# MPF fab commands will add profile when run.
+#
+# To run aws commands from shell:
+#  - Pass the profile name in '--profile' CLI option
+#  - Set default with:
+#       set AWS_PROFILE vuedev
+#
+
+[profile vueprod]
+region = us-west-2
+role_arn = arn:aws:iam::093572473909:role/VueDev
+source_profile = default
+
+[profile vuedev]
+region = us-west-2
+role_arn = arn:aws:iam::467666609660:role/VueDev
+source_profile = default
+
+[profile vuecam]
+region = us-west-2
+role_arn = arn:aws:iam::436139601473:role/VueDev
+source_profile = default
+
+[profile vueops]
+region = us-west-2
+role_arn = arn:aws:iam::097426089276:role/VueDev
+source_profile = default
+
+[profile vueocity]
+region = us-west-2
+role_arn = arn:aws:iam::224255157851:role/VueDev
+source_profile = default

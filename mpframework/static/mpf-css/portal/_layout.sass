@@ -1,0 +1,93 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Styles related to portal display
+ */
+
+.es_home_html, .es_collection_header
+    width: 100%
+
+.es_tabs
+    display: flex
+    flex-direction: column
+    min-height: inherit
+    .es_portal_tab
+        padding: 0.2em 0.6em
+        text-align: left
+    .es_tabs_menu
+        display: flex
+        align-items: center
+        flex-wrap: wrap
+    &.es_tabs_side
+        flex-direction: row
+        .es_tabs_panel
+            width: var(--es_tabs_side_width)
+            .es_tabs_menu
+                position: fixed
+                z-index: 9
+                flex-direction: column
+                align-items: flex-start
+                flex-wrap: nowrap
+                height: 100%
+                width: var(--es_tabs_side_width)
+            .es_portal_tab
+                width: 100%
+    .es_tabs_container
+        position: relative
+
+// Portal left is controls and navtabs tabs for child panels (left items always inside top items)
+.es_portal_left
+    position: relative
+    padding-left: 10em
+    border: none
+
+    // Define look for tabs in the left panel
+    > div
+        padding: 0em
+    > ul
+        position: absolute
+        top: 0
+        left: 0
+        width: 9em
+        padding: 2px
+        border: none
+        height: 100%
+        background: transparent !important
+        > li
+            width: 100%
+            border: none
+            overflow: hidden
+            > a
+                width: 100%
+                text-align: left !important
+
+// Select access dialog
+.es_access_select_title
+    justify-content: space-between
+    a
+        font-size: 90%;
+.es_access_select
+    .es_access_select_item
+        margin: 0.6em 0 0.6em 0
+        > button
+            width: 100%
+            padding: 0.6em 0.8em 0.6em 0.8em
+    .es_access_select_option
+        font-size: 80%
+        padding: 0.4em 0 0.2em 0.4em
+        #access_postal_code
+            width: 120px
+        #access_country
+            width: 170px
+    .es_access_select_help
+        font-size: 85%
+        margin-left: 0.2em
+
+.es_access_option
+    position: absolute
+    top: 0
+    right: 0
+    font-size: 160%
+    line-height: 1
+    opacity: 0.6
+    &:is(:hover,:focus,:active)
+        opacity: 1

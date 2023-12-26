@@ -1,0 +1,122 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+   Server block for handing requests to django
+
+   HARDCODED VALUES MUST BE SYNCED WITH MPF URLS
+
+   URLs that don't explicitly match prefixes will cause nginx 404 errors,
+   allowing nginx to deal with any spurious attacks on site without
+   involving more expensive Django processing.
+
+   FUTURE SCALE -- assuming performant with nginx->uwsgi over local sockets;
+   may need to cluster uwsgi servers separately behind an ELB to make
+   use of nginx reverse proxy and caching most efficient.
+
+{%endcomment%}
+
+#----------------------------------------------------------------
+# Shared uwsgi parameters
+
+# Kill upstream connection if client bails; uwsgi will generate error trying
+# to write to bad IO when its done, but no good way to get uwsgi to stop,
+# so this is the most efficient way to handle
+uwsgi_ignore_client_abort off;
+
+# Preserve all headers sent to Django to pick up the X-forwarded
+# header for HTTPS requests from ELB or listener
+uwsgi_pass_request_headers  on;
+
+# Timeout for starting connection with uwsgi server
+uwsgi_connect_timeout {{ s.MP_NGINX.CONNECTION_TIMEOUT_START }};
+
+# Timeouts to wait upstream proxy responses (for each request, not total response)
+uwsgi_read_timeout {{ s.MP_NGINX.CONNECTION_TIMEOUT }}s;
+uwsgi_send_timeout {{ s.MP_NGINX.CONNECTION_TIMEOUT }}s;
+
+# Explicit defaults for documentation
+uwsgi_buffering on;
+
+# Don't use nginx error pages with uwsgi responses, so they can be cached
+uwsgi_intercept_errors off;
+
+#----------------------------------------------------------------
+
+# Mini-cache throttling for public endpoints:
+#  - Cache the body to handle API posts (e.g., access requests)
+#  - Public URLs should not care about user
+#  - Ignore set-cookie as the cookie may be sent each time
+location ~ ^/({{ URL_NGINX_PUBLIC }}).*$ {
+    set $mp_location 'public';
+    include  inc_uwsgi.conf;
+    client_max_body_size  {{ s.MP_NGINX.MINI_CACHE.BODY_MAX }}k;
+    uwsgi_ignore_headers  set-cookie;
+    uwsgi_cache           uwsgi_mini_cache;
+    uwsgi_cache_valid     any {{ s.MP_NGINX.MINI_CACHE.AGE }}s;
+    uwsgi_cache_methods   GET HEAD POST;
+    uwsgi_cache_key       $host$request_uri|$request_body;
+    uwsgi_cache_lock      on;
+    uwsgi_cache_lock_timeout {{ s.MP_NGINX.MINI_CACHE.LOCK_TIMEOUT }}s;
+    }
+
+# Main location for most reverse-proxy traffic (usually user sessions)
+# Uses micro cache to protect against attacks and spikes; only
+# cache after 2nd appearance, to avoid overhead for unique URL requests
+location ~ ^/({{ URL_NGINX_MAIN }}).*$ {
+    set $mp_location 'main';
+    include  inc_uwsgi.conf;
+    uwsgi_ignore_headers  set-cookie;
+    uwsgi_cache           uwsgi_micro_cache;
+    uwsgi_cache_valid     any {{ s.MP_NGINX.MICRO_CACHE.AGE }}s;
+    uwsgi_cache_methods   GET HEAD;
+    uwsgi_cache_key       $host$request_uri$mp_user;
+    uwsgi_cache_min_uses  {{ s.MP_NGINX.MICRO_CACHE.MIN_USES }};
+    uwsgi_cache_lock      on;
+    uwsgi_cache_lock_timeout {{ s.MP_NGINX.MICRO_CACHE.LOCK_TIMEOUT }}s;
+
+    # Per-connection buffers for loading response from uwsgi
+    uwsgi_buffers              16 4k;  # Total memory available for buffers
+    uwsgi_busy_buffers_size    48k;    # Max buffer for sending to client
+    }
+
+# Admin location where larger posts are required
+location ~ ^/({{ URL_NGINX_ADMIN }}).*$ {
+    set $mp_location 'admin';
+    include  inc_uwsgi.conf;
+    client_body_buffer_size  {{ s.MP_NGINX.UPLOAD.BUFFER }}k;
+    client_max_body_size  {{ s.MP_NGINX.UPLOAD.MAX }}m;
+    }
+
+# Pass special-case root (no-sub host) patterns to Django
+location ~* ^({{ URL_NGINX_ROOT_PASS }})$ {
+    include  inc_uwsgi.conf;
+    uwsgi_cache           uwsgi_mini_cache;
+    uwsgi_cache_valid     any {{ s.MP_NGINX.MINI_CACHE.AGE }}s;
+    uwsgi_cache_methods   GET HEAD POST;
+    uwsgi_cache_key       $host$request_uri|$request_body;
+    uwsgi_cache_lock      on;
+    uwsgi_cache_lock_timeout {{ s.MP_NGINX.MINI_CACHE.LOCK_TIMEOUT }}s;
+    }
+
+{%comment%}-------------------------------------------------------------------
+    Workaround for AWS IP and HOST support
+
+    Health requests from ELB or Route53 can have hostnames that
+    use either the instance's internal or public ip address in the
+    case of health checks or an unknown internal ip for latency checks
+    To support passing along to the Django health URL, need to change
+    these IP hosts into into a well-known name
+
+    FUTURE SECURE -- tighten allowed host remapping to only allow certain IPs
+{%endcomment%}
+
+set $allowed_host $host;
+if ($host ~ "\d+\.\d+\.\d+\.\d+") {
+    set $allowed_host '{{ s.MP_HEALTHCHECK_HOST }}';
+    }
+
+# Setup healthcheck location
+location ~ ^/{{ s.MP_HEALTHCHECK_URL }}.*$ {
+    uwsgi_param  HTTP_HOST  $allowed_host;
+    access_log {{ health_log }};
+    include  inc_uwsgi.conf;
+    }

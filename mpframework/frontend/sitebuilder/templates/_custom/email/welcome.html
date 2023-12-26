@@ -1,0 +1,36 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Custom template body of HTML User welcome / verification / activation email
+
+{% endcomment %}
+
+
+<style>
+    {% mp_include "email_css" %}
+</style>
+
+<h2>Welcome to {{ site.name }}</h2>
+
+{% if email_user_activate %}
+
+    <p>Please use the link below to activate your account:</p>
+
+    <a href="{{ scheme }}://{{ domain }}{% url 'user_verify' user_id_b64=user_id extra_b64=extra token=token %}">
+        Activate {{ user.username }}
+        </a>
+
+{% else %}
+
+    <p>Your {{ user.username }} account for is ready for use at
+        <a href="{{ site.main_host_ssl }}">
+            {{ site.main_host }}</a>.
+        </p>
+
+{% endif %}
+
+<p>For support please contact {{ site.email_support }}.
+    </p>
+<p>If you did not sign up for a new account at {{ site.name }},
+    you can ignore this email. However, be aware someone used your email
+    to sign-up at {{ site.main_host }}.
+    </p>

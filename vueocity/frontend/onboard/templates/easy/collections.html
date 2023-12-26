@@ -1,0 +1,21 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    EasyVue Top-level collection management
+
+{% endcomment %}
+
+{% block page_ready_script %}
+
+    {% include "_/field_errors.html" with form=form %}
+
+{% endblock %}
+
+{% block panel_body %}
+
+    {# Enctype setting necessary for supporting image upload #}
+    <form enctype='multipart/form-data' method="post" class="mp_form"  data-parsley-validate>
+        {% csrf_token %}
+        </form>
+
+{% endblock %}

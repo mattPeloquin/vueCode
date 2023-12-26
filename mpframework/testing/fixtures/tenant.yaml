@@ -1,0 +1,88 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Setup basic tenants for ad hoc and unit testing
+
+#--------------------------------------------------------------------
+# Provider Configuration
+
+- fields:
+    name: Test Provider1 - Single Sandbox
+    system_name: prov1
+    resource_path: prov1
+  model: tenant.provider
+  pk: 11
+
+- fields:
+    name: Test Provider2 - Multi Sandbox, No Create
+    system_name: prov2
+    resource_path: prov2
+  model: tenant.provider
+  pk: 12
+
+#--------------------------------------------------------------------
+# Sandbox and Host URL Configuration
+
+- fields:
+    _provider: 11
+    subdomain: P1Sand
+    name: 'Default sandbox - S20'
+    email_support: 'support@p1.com'
+    _policy:
+      test_site: True
+  model: tenant.sandbox
+  pk: 20
+
+- fields: { _host_name: '127.0.0.1', sandbox: 20, main: true }
+  model: tenant.sandboxhost
+  pk: 20
+- fields: { _host_name: 'p1.127.0.0.1', sandbox: 20, main: false }
+  model: tenant.sandboxhost
+  pk: 21
+
+# This value is hardcoded in some Django test code for faking requests on login
+- fields: { _host_name: 'testserver', sandbox: 20, main: false }
+  model: tenant.sandboxhost
+  pk: 22
+
+- fields:
+    _provider: 12
+    subdomain: 'P2Sand1'
+    name: 'Sandbox1 P2 with theme overrides'
+    _resource_path: P2Sand
+    _font: 21
+    _color: 32
+    _style: 42
+    _mixin: 56
+    email_support: 'support@p2.com'
+    _email_staff: 'admin@p2.com'
+    _background_image: P2vue.png
+    options:
+      bootstrap:
+        content_full_load: true
+        content_data_in_page: true
+        user_data_in_page: true
+        nocache_data_in_page: true
+  model: tenant.sandbox
+  pk: 30
+
+- fields: { _host_name: p2sand1.127.0.0.1, sandbox: 30, main: true }
+  model: tenant.sandboxhost
+  pk: 30
+- fields: { _host_name: site1-p2.127.0.0.1, sandbox: 30, main: false }
+  model: tenant.sandboxhost
+  pk: 31
+
+- fields:
+    _provider: 12
+    subdomain: 'P2Sand2'
+    name: 'Sandbox2 P2'
+    _resource_path: P2Sand
+    email_support: 'support@p2.com'
+    _email_staff: 'admin@p2.com'
+  model: tenant.sandbox
+  pk: 40
+
+- fields: { _host_name: p2sand2.127.0.0.1, sandbox: 40, main: true }
+  model: tenant.sandboxhost
+  pk: 40
+

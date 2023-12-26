@@ -1,0 +1,64 @@
+{% extends '_base/pages/scripting.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Default protected video/audio player using HTML5 and videojs
+
+    Shown either in iframe inside MPF viewer or in its own tab.
+    Modifications specific to videojs should occur here, while the
+    viewer can respond to messages published by the HTML video element.
+
+    THIS FILE NEEDS TO BE SAVED WITH UNIX STYLE LINE TERMINATIONS
+    FOR USE IN WINDOWS/LINUX ENVIRONMENT WITH django-compressor
+
+{% endcomment %}
+
+{% load compress_mp %}
+
+{% block page_head %}
+    {{ block.super }}
+
+    {% compress_mp css video_videojs %}
+        <link href="{{ static_url }}libs/videojs.css" rel="stylesheet" />
+        <link href="{{ static_url }}mpf-css/videojs-custom-{{ code_rev }}.css" rel="stylesheet" />
+    {% endcompress %}
+
+    {#-- Add sandbox CSS #}
+    {% include "_base/style/sandbox.html" %}
+
+    {% compress_mp js video_videojs %}
+        <script defer src="{{ static_url }}{{ compress_on|yesno:"min,libs" }}/videojs.js"></script>
+        <script defer src="{{ static_url }}libs/videojs-quality.js"></script>
+        <script defer src="{{ static_url }}libs/videojs-chromecast.js"></script>
+        <script defer src="{{ static_url }}libs/videojs-airplay.js"></script>
+        <script defer src="{{ static_url }}mpf-js/videojs-extensions.js"></script>
+    {% endcompress %}
+{% endblock %}
+
+{% block page_body %}
+
+    <div class="es_{{ play_type }} es_{{ play_type }}_player
+                    es_{{ play_type }}_{{ item.pk }} mp_videojs_player">
+
+        <{{ play_type }} id="video_videojs"
+                class="video-js vjs-default-skin vjs-big-play-centered"
+                >
+            {#-- Video loaded in videojs #}
+            </{{ play_type }}>
+
+        </div>
+
+    <script> 'use strict';
+        (function(mpv) {
+
+            // TBD - need to pass options into script iframe
+            mpp.auto_play = true
+
+            mpv.player_sources = {{ player_sources | json }}
+            mpv.player_poster = '{{ item.poster_url }}'
+            mpv.item = {{ item | json }}
+            mpv.progress_data = '{{ cui.progress_data|default:0 }}'
+
+            })(window.mpv = window.mpv || {});
+        </script>
+
+{% endblock %}

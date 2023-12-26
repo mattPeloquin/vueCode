@@ -1,0 +1,27 @@
+/*--- Copyright 2021 Vueocity LLC
+
+    Style baseline extensions for Vueocity portal content.
+ */
+
+// Items
+
+.es_slide.es_theme_list
+    .es_content_wrapper
+        overflow: visible
+    .es_content_body
+        position: absolute
+        top: 100%
+        z-index: 3
+        overflow: visible
+        height: fit-content
+
+.es_items.es_template_item_listrow
+    flex-direction: column
+    & :is( .es_list_header, .es_list_row, item )
+        width: 100%
+    .mp_list1
+        width: 45%
+    .mp_list2
+        width: 15%
+    .mp_list3
+        width: 40%

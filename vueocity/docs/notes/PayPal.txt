@@ -1,0 +1,38 @@
+
+
+Paypal Notes
+
+PayPal is used with the Vueocity root account to make transactions on behalf of providers
+using their PayPal ID.
+
+Don't want to manage provider's account pwd, so can't do transactions directly
+with their accounts.
+
+
+Log into developer site with normal account credentials
+
+https://developer.paypal.com/
+
+
+Sandbox accounts - password:  paytest11
+
+mattp-facilitator@vueocity.com
+mattp-buyer@vueocity.com
+user@acme.com
+staff@provider1.com
+
+mattp@vueocity.com - this is weird from original; won't let me delete
+
+Look at profile for each sandbox account to get the URL credentials.
+
+NEVER GOT SANDBOX TO WORK
+
+NVP Express checkout URLs:
+https://developer.paypal.com/docs/classic/api/#express-checkout
+
+This works for normal selling, but the API never correctly applied recurring payments,
+so has not worked for setting up subscriptions.
+Maybe not being authorized correctly via email, etc?
+
+Next step is to implement REST API, where hopefully subscriptions / pre-approvied payments
+can be setup on behalf of other accounts.

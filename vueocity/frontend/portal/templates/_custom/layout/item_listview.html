@@ -1,0 +1,19 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Item using detailed view with an access button.
+
+{%endcomment%}
+
+<div class="es_listview es_itemview es_content_full es_theme_list
+            es_theme_content" data-bind="
+        style: {
+            '--es_item_font-size': sb_option('portal.item_font_size', $element),
+            '--es_itemview_min-height': sb_option('portal.list_min_height', $element),
+            },
+        ">
+    <div class="es_content_wrapper">
+
+        {% mp_include "content_itemview" with title_always=True %}
+
+        </div>
+    </div>

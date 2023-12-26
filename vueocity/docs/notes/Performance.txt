@@ -1,0 +1,15 @@
+
+=== Simple load test ===
+
+Can use ab test from a dev or prod-mpd server.
+This can hit ELB from public address, or go straight to server in same VPC.
+
+> sudo yum install httpd-tools
+
+> ab -c 200 -n 400 https://www.vueocity.com/api/public/content/
+
+
+> (wget -O - pi.dk/3 || lynx -source pi.dk/3 || curl pi.dk/3/ || \ fetch -o - http://pi.dk/3 ) > install.sh
+> install.sh
+
+> cat urls.txt | parallel 'ab -c 50 -n 200 {}'

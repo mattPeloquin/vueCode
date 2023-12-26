@@ -1,0 +1,23 @@
+/*! Vueocity's Mesa Platform */
+/*
+    Main styling for elements is included here
+
+    Use the following guidelines for CSS development:
+
+        - Keep DRY with sass
+        - CSS inheritance rules are ridiculous; keep CSS simple
+        - Use Javascript fixup code as a last resort, or to simplify CSS
+        - Use the element inspector debug tools to see what is going on
+        - Be careful with open class selectors that have to be scanned in DOM
+
+        - Prefer em over px for spacing, to take advantage of scaling to font size
+        - Newer browsers can scale px, so many historical concerns about px not relevant
+        - Use mix of % and px for font sizing: careful with cumulative em and % effect on font-sizing
+
+        - z-index only works when position: has been set
+ */
+
+@import "constants"
+@import "libs/libs"
+@import "general/general"
+@import "portal/portal"

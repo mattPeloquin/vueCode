@@ -1,0 +1,42 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Default login form
+
+{% endcomment %}
+
+
+<div class="es_login_auth">
+
+    <form id="sign_in" method="post" data-parsley-validate
+            action="{{ submit_url }}"
+            >
+        {% csrf_token %}
+
+        <div class="mp_flex_column mp_flex_vcenter">
+
+            <div class="es_login_entry_email">{{ auth_form.email }}</div>
+            <div class="es_login_entry_password">{{ auth_form.password }}</div>
+
+            {% if has_login_code %}
+                <div class="es_login_entry_field">
+                    {{ auth_form.login_code }}
+                    </div>
+            {% endif %}
+
+            {% block login_auth %}
+                <input type="submit" name="login" class="es_button es_login_button"
+                        value="{{ sb_options.text.signin|default:"Sign in" }}"
+                        />
+            {% endblock %}
+
+            {% if site.options.user.show_remember %}
+                <div class="mp_checkbox es_theme_overlay es_login_remember_me es_login_text">
+                    {{ auth_form.remember }}
+                        <label for="{{ auth_form.remember.auto_id }}"></label>
+                    <p>Remember me</p>
+                    </div>
+            {% endif %}
+
+            </div>
+        </form>
+    </div>

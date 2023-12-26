@@ -1,0 +1,67 @@
+{% extends 'admin/change_form.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    HTML updates for group account editing
+
+{%endcomment%}
+
+{% block page-no_cache %}
+    {{ block.super }}
+    <style>
+        {#-- Make 3 usage fields across look nice #}
+        fieldset.mp_module .mp_row.unit_points .mp_admin_field,
+        fieldset.mp_module .mp_row.unit_users .mp_admin_field,
+        fieldset.mp_module .mp_row.unit_minutes .mp_admin_field {
+            min-width: 18em;
+            max-width: 18em;
+            }
+        fieldset.mp_module .mp_row.unit_points .mp_admin_field input,
+        fieldset.mp_module .mp_row.unit_users .mp_admin_field input,
+        fieldset.mp_module .mp_row.unit_minutes .mp_admin_field input {
+            min-width: 16em;
+            max-width: 16em;
+            }
+        </style>
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    function _ga_license_toggle() {
+        const ga_license = $(this).prop('checked')
+        $('.mp_row.ga_users,.mp_cell.ga_users_max')
+            .toggleClass( 'mp_hidden', ga_license )
+            .find('input, button').prop( 'disabled', ga_license )
+        }
+    $('#id_ga_license')
+        .each( _ga_license_toggle )
+        .on( 'change', _ga_license_toggle )
+
+    {% if original %}
+
+        let pa_help = '{{ original.pa.description }}<br>'
+        {% if original.pa.notes %}
+            pa_help += '{{ original.pa.notes }}<br>'
+        {% endif %}
+        {% if original.pa.agreement.notes %}
+            pa_help += '{{ original.pa.agreement.notes }}'
+        {% else %}
+            pa_help += 'License type: {{ original.pa.agreement }}'
+        {% endif %}
+        $('#help_pa_notes').html( pa_help )
+
+        $('#help_access_period').html(': <b>{{ original.pa.access_period }}</b>')
+        $('#help_unit_price').html(': <b>{{ original.pa.unit_price }}</b>')
+
+        {% if original.is_subscription %}
+            $('#help_auto_renew').html(
+                'This license will automatically bill for payment each ' +
+                'access period.<br>' +
+                'Uncheck to cancel the subscription at the end of this period.'
+                )
+        {% endif %}
+
+    {% endif %}
+
+{% endblock %}
+

@@ -1,0 +1,71 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Example style that reworks cards to round images
+
+{%endcomment%}
+
+{% mp_include "mixin_hover_grow" with speed='0.4' growth='1.25' %}
+{% mp_include "mixin_scroll_none" %}
+
+<style>
+    :root {
+        --es_theme_border-radius: 6em;
+        --es_theme_border-radius_control: 6em;
+        --es_theme_border-radius_content: 6em;
+        --es_theme_border-radius_structure: 6em;
+        --es_theme_structure_spacing: 0.2em;
+        }
+
+    .es_user_bar.mp_top_bar {
+        padding: 0.2em 0 0.2em 0.4em;
+        }
+    .es_hero_container {
+        border-radius: var(--es_theme_border-radius_structure) !important;
+        width: calc( 100vw - 2em );
+        margin-left: 1em;
+        }
+    .es_theme_panel {
+        width: calc( 100vw - 4em );
+        margin-left: 2em;
+        }
+    .es_content_full {
+        width: 80%;
+        }
+
+    .es_items .es_card_controls {
+        bottom: 8em;
+        right: 4em;
+        }
+    .es_content_image, .es_theme_card .es_content_body {
+        overflow: visible !important;
+        }
+    .es_theme_card {
+        background: transparent !important;
+        }
+    .es_theme_card .es_content_text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        }
+    .es_theme_card .es_card_body img {
+        width: var(--es_card_image_height);
+        height: var(--es_card_image_height);
+        border-radius: 50%;
+        }
+    .es_theme_card .es_style_hover {
+        transition: transform 0.24s ease-out;
+        }
+    .es_theme_card:hover .es_style_hover {
+        transform: scale(1.16);
+        }
+    .es_theme_card .es_progress {
+        left: 16%;
+        right: 16%;
+        }
+    .es_theme_card .es_progress_bar {
+        height: 1.6em;
+        font-size: 80%;
+        border-radius: 2em;
+        }
+
+</style>

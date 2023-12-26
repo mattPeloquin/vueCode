@@ -1,0 +1,31 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Include file for injecting color values into a CSS class
+
+    TEMPLATE INSIDE <style> TAGS
+
+    Override to change default color setup, the default expects:
+
+        class: The CSS class to attach color to
+        text: CSS color for text (none if empty)
+        shadow: Add a shadow color to text
+        back: CSS color for background (none if empty)
+        sheen: Sheen level for background color; will override an image
+        important: Mark color updates as !important
+
+{% endcomment %}
+
+{{ class | safe }} {
+    {#-- Use a linear gradient overlay to make shiny, and override any image #}
+    {% if back or sheen %}
+        background: {% if sheen %} {{ sheen }} {% endif %}{% if back and sheen %},{% endif %}
+            {% if back %} {{ back }} {% endif %}
+            {% if important %}!important{% endif %};
+    {% endif %}
+    {% if text %}
+        color: {{ text }} {% if important %}!important{% endif %};
+        {% if shadow %}
+            text-shadow: 1px 1px 2px {{ shadow }} {% if important %}!important{% endif %};
+        {% endif %}
+    {% endif %}
+    }

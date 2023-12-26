@@ -1,0 +1,83 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Base Content Editing Menu
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% if not user.logged_into_root %}
+
+        <div class="mp_menu mp_menu_float mp_menu_sub">
+            <div class="mp_menu_item mp_menu_parent">
+                {% usemacro menu_item 'Items' 'fa-list' 'staff_admin:mpcontent_baseitem_changelist' %}
+                <div class="mp_menu mp_menu_dropdown">
+                    {% mp_include_files "content" "menu-content_list" ".html" %}
+                    </div>
+                </div>
+            </div>
+        <div class="mp_menu mp_menu_float mp_menu_sub">
+            <div class="mp_menu_item mp_menu_header">
+                <span class="mp_menu_text">Add...</span>
+                <div class="mp_menu mp_menu_dropdown">
+                    {% mp_include_files "content" "menu-content_add" ".html" %}
+                    </div>
+                </div>
+            </div>
+
+    {% if user.access_high and item_types %}
+        <div class="mp_menu mp_menu_float mp_menu_sub">
+            <div class="mp_menu_item mp_menu_header">
+                <span class="mp_menu_text">Edit...</span>
+                <div class="mp_menu mp_menu_dropdown">
+                    {% for type in item_types %}
+                        {% usemacro menu_url type.name 'staff_admin:mpcontent_baseitem_changelist' '?portaltype&#61;' type.id %}
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+    {% endif %}
+
+    {% mp_include_files "content" "menu_top" ".html" %}
+
+    {% if user.access_med %}
+        <hr class="mp_menu_break">
+        {% if user.access_all and tree_types %}
+            <div class="mp_menu mp_menu_float mp_menu_sub">
+                <div class="mp_menu_item mp_menu_parent">
+                    {% usemacro menu_item 'Collections' 'fa-folder-open' 'staff_admin:mpcontent_treetop_changelist' %}
+                    <div class="mp_menu mp_menu_dropdown">
+                        {% for type in tree_types %}
+                            {% usemacro menu_url type.name 'staff_admin:mpcontent_treetop_changelist' '?portaltype&#61;' type.id %}
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+        {% else %}
+            {% usemacro menu_item 'Collections' 'fa-folder-open' 'staff_admin:mpcontent_treetop_changelist' %}
+        {% endif %}
+        {% if user.access_high %}
+            <hr class="mp_menu_break">
+            {% usemacro menu_item 'Groups' 'fa-object-group' 'staff_admin:mpcontent_portalgroup_changelist' %}
+            {% if user.access_all %}
+                {% usemacro menu_item 'Categories' 'fa-cubes' 'staff_admin:mpcontent_portalcategory_changelist' %}
+                {% usemacro menu_item 'Types' 'fa-qrcode' 'staff_admin:mpcontent_portaltype_changelist' %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% mp_include_files "content" "menu_bottom" ".html" %}
+
+{% endif %}
+
+{% if user.access_root_menu %}
+    <hr class="mp_menu_break">
+    <a class="mp_menu_item root"  href="{% url 'root_admin:app_list' 'mpcontent' %}">All Content types</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:mpcontent_baseitem_changelist' %}">Baseitems</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:mpcontent_tree_changelist' %}">Trees</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:mpcontent_treebaseitem_changelist' %}">Tree items</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:mpcontent_portaltype_changelist' %}">Types</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:mpcontent_portalcategory_changelist' %}">Categories</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:mpcontent_portalgroup_changelist' %}">Groups</a>
+{% endif %}

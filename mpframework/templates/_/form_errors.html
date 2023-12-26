@@ -1,0 +1,22 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Create list of form errors
+
+{%endcomment%}
+
+   {% if form.errors %}
+        <div class="es_error_list">
+
+            {% if form.non_field_errors %}
+                {{ form.non_field_errors.as_ul }}
+            {% endif %}
+
+            {% for field in form.visible_fields %}
+                {% if field.errors %}
+                    {{ field.errors.as_ul }}
+                {% endif %}
+            {% endfor %}
+
+        </div>
+   {% endif %}
+

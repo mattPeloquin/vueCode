@@ -1,0 +1,25 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Show child nodes list items that expand
+
+{%endcomment%}
+
+<div class="es_node_list_expand es_theme_list es_theme_content" data-bind="
+        ">
+    <div class="es_content_wrapper mp_viz_content_toggle">
+
+        <div class="es_content_title es_content_highlight mp_flex_line">
+            <h2 class="es_title1" data-bind="
+                    html: sb('name'),
+                    ">
+                </h2>
+            </div>
+
+        <div class="es_content_body mp_viz_content_body" data-bind="
+                css: { 'mp_hidden': !sb_option('portal.expand_children') },
+                ">
+            {% mp_include "collection_node" %}
+            </div>
+
+        </div>
+    </div>

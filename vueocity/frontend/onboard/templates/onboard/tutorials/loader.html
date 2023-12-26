@@ -1,0 +1,34 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Startup tutorial tool
+
+{% endcomment %}
+
+
+<tool id="tutorial_tool" class="onboard_tool es_tool">
+
+    {% if url_current|startswith:onboard_tutorial_sandbox %}
+        {% include onboard_tutorial|concat:"sandbox.html" %}
+    {% elif url_current|startswith:onboard_tutorial_product %}
+        {% include onboard_tutorial|concat:"product.html" %}
+    {% else %}
+        {% include onboard_tutorial|concat:"starting.html" %}
+    {% endif %}
+
+    </tool>
+
+<script> 'use strict';
+    mp.when_ui_loaded( function onboard_tutorial_tool() {
+
+        $("#tutorial_tool .tutorial_close").on( 'click', function() {
+            $("#tutorial_tool").hide()
+            })
+        mp.viz_set_toggle( '#tutorial_tool .tutorial_toggle',
+                           '#tutorial_tool .onboard_panel',
+                            { no_icon: true })
+
+        mp.viz_add_toggle("#tutorial_tool")
+
+        setTimeout( () => $("#tutorial_tool").addClass('es_tool_fade'), 4000 )
+        })
+    </script>

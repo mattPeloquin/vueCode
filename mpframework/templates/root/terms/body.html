@@ -1,0 +1,17 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Terms of use body, comes after preamble
+
+{% endcomment %}
+
+{% if site.terms_html %}
+
+    <div class="es_terms es_theme_panel">
+        {{ site.terms_html|default:"" | safe }}
+    </div>
+
+{% endif %}
+
+<div class="es_terms_root es_theme_panel" style="padding-left: 2em">
+    {{ root_terms|default:"" | safe }}
+    </div>

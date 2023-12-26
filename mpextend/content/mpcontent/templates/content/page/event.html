@@ -1,0 +1,18 @@
+{% extends page_base %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Place LiveEvent HTML content into bare page
+
+{% endcomment %}
+
+{% block page_body %}
+    <div class="es_liveevent es_liveevent_{{ event.pk }}">
+        {% if event %}
+
+            {% mp_include event_template %}
+
+        {% else %}
+            <h2>This event is not currently available</h2>
+        {% endif %}
+        </div>
+{% endblock %}

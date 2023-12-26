@@ -1,0 +1,98 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Render a set of content VM items, either under a collection
+    or as an array for a pane.
+
+    Supports either display/access items or tree nav items, and
+    builds in support for horizontal slider displays.
+
+        1) KO $data context only assumes VM collection or bag of 'items'
+    	2) 'items' - Can override 'all_items()' default for VMs
+        3) Various options including $data, pane, or defaults define
+           the templates used for item and nav
+        4) 'items' can also be built with itemfn and arg1
+
+{%endcomment%}
+
+{% with items=items|default:'all_items()' itemfn=itemfn|default:'' %}
+
+    <!-- ko let: {
+        {% if itemfn %}
+            _items: $data['{{ itemfn }}']('{{ arg1|default:'' }}'),
+        {% else %}
+            _items: {{ items | safe }},
+        {% endif %}
+        } -->
+
+        {% if not no_empty %}
+            <!-- ko ifnot: ko.length( _items ) -->
+                <div class="mp_empty" data-bind="
+                        html: $data.sbt && sbt( 'empty', $element ),
+                        ">
+                    </div>
+            <!-- /ko -->
+        {% endif %}
+
+        <!-- ko if: ko.length( _items ) -->
+        <!-- ko let: {
+            brief: {{ brief | jsbool }},
+            {#-- Check container, pane, and defaults for item and nav templates #}
+            default_item_template: mpp.get_template_name(
+                {% if opt_template %}
+                    ( $data.sb_option && sb_option( 'portal.item_template.' + '{{ opt_template }}', $element ) ) ||
+                {% endif %}
+                {% if default_template %}
+                    '{{ default_template }}'
+                {% else %}
+                    mpp.pane_options( 'item_template', $element ) ||
+                    ( $data.sb && sb( 'item_template', $element ) ) ||
+                    mp.request.default_item
+                {% endif %}
+                ),
+            default_nav_template: mpp.get_template_name(
+                    mpp.pane_options( 'nav_template', $element ) ||
+                    ( $data.sb && sb( 'nav_template', $element ) ) ||
+                    mp.request.default_nav ),
+            } -->
+            <section class="es_items mp_viz_peer_group mp_flex_line" data-bind="
+                    css: mpp.get_items_template_styles( default_item_template ),
+                    ">
+
+                {#-- Add controls and structure for horizontal scroll #}
+                {% if horizontal %}
+                    <div class="es_items_horizontal">
+                        <div class="es_slider_left es_button_overlay">
+                            <div class="fa fa-angle-left">
+                                </div>
+                            </div>
+                {% endif %}
+
+                {#-- Display each item using default or it's own template #}
+                <div class="es_items_container
+                    {% if column %} es_items_column {% else %} es_items_row {% endif %}
+                    ">
+                <!-- ko foreach: _items -->
+                    <!-- ko if: $data -->
+                        <!-- ko if: $data.render_nav( $element ) -->
+                            {% mp_include "nav_wrapper" %}
+                        <!-- /ko -->
+                        <!-- ko if: $data.render_item( $element ) -->
+                            {% mp_include "item_wrapper" %}
+                        <!-- /ko -->
+                    <!-- /ko -->
+                <!-- /ko -->
+                </div>
+
+                {% if horizontal %}
+                        <div class="es_slider_right es_button_overlay">
+                            <div class="fa fa-angle-right">
+                                </div>
+                            </div>
+                        </div>
+                {% endif %}
+            </section>
+        <!-- /ko -->
+        <!-- /ko -->
+
+    <!-- /ko -->
+{% endwith %}

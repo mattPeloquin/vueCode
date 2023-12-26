@@ -1,0 +1,17 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Ops test data
+
+- fields:
+    sandbox: 20
+    user: 1
+    field: test
+    object_id: 1
+    value: A FAKE OLD CHANGE
+  model: ops.fieldchange
+  pk: 1
+
+- fields:
+    server: TestServer
+  model: ops.healthcheck
+  pk: 1

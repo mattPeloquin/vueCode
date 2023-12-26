@@ -1,0 +1,22 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   UI config settings imported by shared.yaml
+
+MP_SANDBOX_EVENTS:
+
+  user_complete_badge:
+    scope: DSG
+    level: 40
+    title: "Badge completion: {email}"
+    message: "%s has completed %s"
+
+  content_lms_new:
+    scope: DS
+    level: 40
+    title: "LMS package added"
+    message: "%s has added LMS package %s with %s"
+  content_lms_update:
+    scope: DS
+    level: 40
+    title: "LMS package update"
+    message: "%s has updated LMS package %s with %s"

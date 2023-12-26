@@ -1,0 +1,185 @@
+#--- Vueocity platform, Copyright 2021 Vueocity LLC
+#
+#   Shared root configuration for Vueocity
+#
+
+YAML_INCLUDES:
+  - ui.yaml
+
+MP_ROOT:
+
+  HOST: 'vueocity.com'
+
+  # Vueocity has been happy with papertrail
+  SYSLOG:
+    host: 'logs3.papertrailapp.com'
+    port: '51845'
+    ca_file: '/etc/papertrail-bundle.pem'
+    permitted_peer: '*.papertrailapp.com'
+
+  CORS_HOSTS:
+   - 'vueocity.com'
+   - 'd45exs2xsyt2.cloudfront.net'
+   - 'd271v8jzlihffs.cloudfront.net'
+   - 'd3girp28njtpd9.cloudfront.net'
+
+   - 'prodapp-2095803910.us-west-2.elb.amazonaws.com'
+
+  # VPCs MPF is running in; used for S3 access restriction
+  AWS_VPC_ENDPOINTS:
+      s3: 'vpce-f304d19a'
+
+  # Email connection information
+  EMAIL_SERVER: email-smtp.us-west-2.amazonaws.com
+
+  # Test support for payments
+  PAYMENT:
+    paypal_nvp:
+      url_api: 'https://api-3t.sandbox.paypal.com/nvp'
+      url_interactive: 'https://www.sandbox.paypal.com'
+      username: 'mattp_api1.vueocity.com'
+      password: 'GWVLJ6E8U3SSEPLD'
+      signature: 'A0GBYfNat8ofXMq.Yv2qPBS0VIqRAqsITyPEStuHenRpqVSXN4ZOPfyx'
+      timeout: 4
+    stripe_connect:
+      client_id: ca_COxFwUdYRQRbXi64b2Bj7o7mfDrUjmu2
+      secret_key: sk_test_pqYHdaRdU0AKyEdrS7im26DD
+      public_key: pk_test_HFCOXwNZJz6TmsSL6Xh4NShu
+      oauth_url: https://connect.stripe.com/oauth/authorize
+      max_network_retries: 1
+      timeout: 2
+
+  IP_INFO_API:
+    URL: 'https://api.ipregistry.co/{}?key=229p1e6pf4vhxp5u'
+    TIMEOUT: 2
+    API_HEADERS: {}
+
+  DEVICE_INFO_API:
+    URL: 'http://api.userstack.com/detect?access_key=21b60c94f22567529bc2e2a5d51edcb4&ua={}'
+    TIMEOUT: 2
+
+MP_ROOT_AWS:
+  # Coudfront configuration
+  CF_DIST_PROTECTED: E26UMAZC9PGZOL
+  CF_S3_PROTECTED_ORIGIN: 'f9e2df55e2e05c7f02be48c912e4f1bec4fa3edc3ba6c82c46b44f13a823f6621ec00b55cf70ae75f57842eb444ca2a7'
+  # S3 Buckets
+  S3_BUCKET: 'vueocity'
+  S3_BUCKET_PUBLIC: 'devvue-public'
+  S3_BUCKET_PROTECTED: 'devvue-protected'
+
+# Elasticache endpoints -- Cluster must be setup manually
+# Redis DB endpoints are used to separate key namespaces.
+# Master write endpoint is first entry, next are read slaves
+MP_ROOT_CACHE:
+  DEFAULT:
+   - 'redis://vueredis.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/0'
+   - 'redis://vueredis-ro.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/0'
+  VERSION:
+   - 'redis://vueredis.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/1'
+   - 'redis://vueredis-ro.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/1'
+  PERSIST:
+   - 'redis://vueredis.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/2'
+   - 'redis://vueredis-ro.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/2'
+  TEMPLATE:
+   - 'redis://vueredis.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/3'
+   - 'redis://vueredis-ro.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/3'
+  SESSION:
+   - 'redis://vueredis.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/4'
+   - 'redis://vueredis-ro.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/4'
+  REQUEST:
+   - 'redis://vueredis.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/5'
+   - 'redis://vueredis-ro.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/5'
+  USER:
+   - 'redis://vueredis.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/8'
+   - 'redis://vueredis-ro.cgr1a3.ng.0001.usw2.cache.amazonaws.com:6379/8'
+
+#--------------------------------------------------------------------
+# Flags and options
+
+MP_FLAGS:
+  PORTAL_TOOL_random_style: False
+
+
+#--------------------------------------------------------------------
+# Config and devops
+
+ADMINS: [['DevOps', 'devops@vueocity.com']]
+
+MP_INVALID_SUBDOMAIN:
+  MIN_LEN: 3
+  CHARS: [
+      ' ', '.', '_', ':', '\t', '\n', '/', '\\', '&', '@',
+      'xxx', 'nude', 'sex', 'porn', 'pussy', 'incest',
+      'fuck', 'shit', 'cunt', 'penis', 'vagina',
+      ]
+  WORDS: [
+      'www', 'root', 'admin', 'www', 'mail', 'log', 'api', 'portal',
+      'login', 'logout', 'signup', 'signin', 'signout',
+      'about', 'support', 'blog', 'help', 'forum', 'settings', 'resources',
+      'dev', 'test', 'release', 'secure',
+      'vpn', 'email', 'download', 'link',
+      'file', 'video', 'audio', 'pdf', 'music', 'event',
+      'elearning', 'lms', 'ondemand', 'onboard',
+      ]
+  START: [ '-', 'vu', 'mpd', 'prod', 'beta', 'http', 'ftp', 'ssh' ]
+
+MP_DEV_IPS:
+  - "0.0.0.0"
+  - "127.0.0.1"
+  - "24.17.95.181/24"   # Matt
+  - "54.213.117.1"      # prod-mpd Elastic IP, for self-requests
+
+# HACK - Onboard assumptions on text fixture data
+MP_ROOT_ONBOARD_SETUP:
+    1:
+      NoCode:
+        sandbox_to_clone: 20
+        start_level: Free
+        max_level: SiteBuilderPro
+      All:
+        sandbox_to_clone: 20
+        start_level: SiteBuilderPro
+        max_level: SiteBuilderPro
+    # Support to unit test onboard
+    20:
+      TestOnboardRole:
+        sandbox_to_clone: 20
+        start_level: BizVue
+        max_level: SiteBuilderPro
+
+MP_ROOT_ONBOARD_LEVELS:
+    EasyVue:
+      order: 1
+      name: EasyVue
+      icon: icon_camera
+      show: false
+      onboard_policy:
+        staff_level_max: 10
+    Free:
+      order: 10
+      name: Free tier
+      icon: icon_camera
+      show: true
+      onboard_policy:
+        staff_level_max: 30
+    BizVue:
+      order: 20
+      name: BizVue
+      icon: icon_folder
+      show: false
+      onboard_policy:
+        staff_level_max: 30
+    SiteBuilder:
+      order: 30
+      name: SiteBuilder
+      icon: icon_tool
+      show: true
+      onboard_policy:
+        staff_level_max: 50
+    SiteBuilderPro:
+      order: 40
+      name: SiteBuilder Pro
+      icon: icon_tools
+      show: true
+      onboard_policy:
+        staff_level_max: 70

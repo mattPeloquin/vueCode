@@ -1,0 +1,148 @@
+#*****************************************************************************
+#
+#   A starting point to flag areas of the code for more
+#   in depth analysis based on the presence of given search criteria.
+#
+#   THIS WILL NEED TO BE TUNED FOR EACH ENGAGEMENT
+#
+
+CONSTANT:_FILES_:  *.js;*.html
+
+# Any options to be used with all file types can be included here
+CONSTANT:_GLOBAL_OPTS_:
+#  OPT:ADD_LINE_SEP:;  OPT:PYTHON   OPT:MACHINE_NONE
+
+# NOTE -- if you're doing a lot with languages like VB that might need
+# special handling, you may need to duplicate all these entries to include
+# special case options -- or you can check if the special casing is really
+# necessary as ignoring a few false positives isn't huge
+
+# Group things in multiple out files
+CONSTANT:_STRING_OUT_: OUT:searchStrings.csv
+CONSTANT:_NUMBER_OUT_: OUT:searchNumbers.csv
+
+CONSTANT:_OUTFILE_: OUT:searchCode.csv
+
+
+#====================================================================
+#   Literals
+
+# We want to look for numbers after most chars, EXCEPT '=', as those
+# are usually assignments that are false positives
+CONSTANT:_NONASSIGN_: \w \s , {} <> : / \\ \. \^ \[\] \(\) \+ \- \* \| \&
+
+# Match dec and hex magic numbers except 0, 1, and 0xFF
+search Code    search.*   _FILES_    _GLOBAL_OPTS_   _NUMBER_OUT_
+
+    # Numbers that follow operators except assingment
+    ^\s* [_NONASSIGN_]+ \s* (?!\b[01]\b) \b(\d+)\b
+    ^\s* [_NONASSIGN_]+ \s* 0[xX] (?![01f]\b|[01f][01f]\b) ([0-9a-fA-F]+)\b
+
+    # Numbers that follow non-assignment equal operators
+    (== | \+= | !=) \s* (?!\b[01]\b)  \b(\d+)\b
+    (== | \+= | !=) \s* 0[xX] (?![01f]\b|[01f][01f]\b) ([0-9a-fA-F]+)\b
+
+    NEGATIVE__ define | const
+    NEGATIVE__ debug | trace | assert
+    NEGATIVE__ ^\s* [ { \[ \( , ]*  [ \- 0-9 x \. ]+?
+
+    NEGATIVE__ varchar
+
+search_end
+
+
+# Match all strings
+search Code    search.*   _FILES_   _GLOBAL_OPTS_  _STRING_OUT_   OPT:SEARCH_STRINGS
+    ([\"].+[\"])
+    ([\'].+[\'])
+
+    # Skip items in brackets; usually programatic info, meta-data, etc.
+    NEGATIVE__^\s* [ \[ { \( ]
+search_end
+
+#====================================================================
+#   Code Analysis
+
+
+search  Code    search.*   _FILES_    TEMP         _GLOBAL_OPTS_   _OUTFILE_
+    \b(_\..+?)\(
+search_end
+
+
+search  Code    search.*   _FILES_    Debug         _GLOBAL_OPTS_   _OUTFILE_
+    debug
+    assert
+    trace
+    contract
+    print
+
+    # Avoid "dialog" and "logic"
+    (?<!a)log[^i]
+
+search_end
+
+
+search  Code    search.*   _FILES_    SQL          _GLOBAL_OPTS_  _OUTFILE_   OPT:SEARCH_STRINGS
+    [\"\']+ \s* select \b (?! \s* case)
+    [\"\']+ \s* update \b
+    [\"\']+ \s* insert \b
+    [\"\']+ \s* create \b
+    ^ [\"\'\s]* select \b (?! \s* case)
+    ^ [\"\'\s]* update \b
+    ^ [\"\'\s]* insert \b
+    ^ [\"\'\s]* create \b
+    sqlquery
+search_end
+
+search  Code    search.*   _FILES_    Exceptions         _GLOBAL_OPTS_   _OUTFILE_
+    \b throw \b
+    \b catch \b
+    \b raise \b
+    \b rescue \b
+    \b NSerror \b  # iOS does't normally use exceptions
+#    \b except
+search_end
+
+
+search  Code    search.*   _FILES_    Execution     _GLOBAL_OPTS_  _OUTFILE_   OPT:SEARCH_STRINGS
+    script \b
+    scriptable
+    \b exec \b
+    \b eval \b
+    \b execute \b
+    \b run \b
+#    dynamic
+search_end
+
+
+search  Search  search.*    _FILES_     Concurrency     _GLOBAL_OPTS_  _OUTFILE_
+    thread
+    process
+    sleep
+    mpi
+    \b main \b
+    \b winmain \b
+#   \b fork \b
+#   \b join \b
+search_end
+
+search  Search  search.*    _FILES_     Interfaces      _GLOBAL_OPTS_   _OUTFILE_
+    interface
+    web .* service
+    api
+search_end
+
+
+search  Search  search.*    _FILES_     Caching         _GLOBAL_OPTS_   _OUTFILE_
+    cach
+search_end
+
+search  Search  search.*    _FILES_     Encryption      _GLOBAL_OPTS_  _OUTFILE_
+    cryp
+    crc
+    md5
+    rijndael
+    /b salt /b
+search_end
+
+

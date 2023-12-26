@@ -1,0 +1,652 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Shared settings for all profiles
+#
+#   These are the baseline settings that both define characteristics of MPF
+#   and the details of its deployment. They are overridden as needed by specific
+#   dev, test, and production profiles.
+#
+#   CONFIG SPECIFIC TO CLOUD DEPLOYMENTS ARE IN ROOT SETTINGS
+#
+
+YAML_INCLUDES:
+  - ui.yaml
+
+#--------------------------------------------------------------------
+# Placeholders for key external root resources
+
+MP_ROOT:
+  PROVIDER_ID: 1
+  SANDBOX_ID: 1
+  HOST_SUBDOMAINS: []
+  DB: {}
+
+  # Assume local server
+  HOST: '0.0.0.0'
+
+  # Prefixes used for optional server partitioning
+  URL_PREFIX_BOH: 'bh'
+  URL_PREFIX_FT: 'ft'
+  # Prefix used to mark no-host requests
+  URL_PREFIX_NO_HOST: 'nh'
+
+  # Valid user agent strings for health checks
+  SERVER_HEALTH_USER_AGENTS: ['ELB-HealthCheck']
+
+  # Optional check for known cross-origin hosts that may make a request on
+  # behalf of external origin. Needs to include any root aliases and
+  # cloudfront compatibility no-host calls.
+  CORS_HOSTS: []
+
+  # Endpoint for email service
+  EMAIL_SERVER: MP_TBX
+
+  # Months window to consider a site active
+  ACTIVE_SITE_WEEKS: 12
+
+  # Syslog config used for remote logging
+  SYSLOG: {}
+
+MP_ROOT_URLS:
+  URL_STATIC: 'publicdirect'
+  URL_STATIC_COMP: 'publicdirect'
+  URL_PUBLIC: 'publicdirect'
+  URL_PUBLIC_COMP: 'publicdirect'
+  URL_EDGE_PROTECTED: ''
+  URL_EDGE_PROTECTED_COMP: ''
+  URL_EDGE_PROTECTED_PUBLIC: ''
+
+# AWS specific configuration should be placed here
+# Note that secrets may also be loaded into this dict on startup
+MP_ROOT_AWS:
+  S3_BUCKET: MP_TBX
+  S3_BUCKET_PUBLIC: MP_TBX
+  S3_BUCKET_PROTECTED: MP_TBX
+  # ELB target groups organize servers into ELB route targets,
+  # usually with different configuration profile optimizations.
+  # MPF URL prefix conventions are designed to support
+  # using the ELB to route traffic by url.
+  # The current URL groups are FOH, BOH, and FT. Task-queue only target
+  # groups may also be created that don't handle traffic from ELB,
+  # but take advantage of the health ping tie to auto scale groups.
+  ELB_TARGET_GROUP: 'Dev'
+
+MP_ROOT_CACHE:
+  USER: MP_TBX
+  VERSION: MP_TBX
+  DEFAULT: MP_TBX
+  TEMPLATE: MP_TBX
+  PERSIST:  MP_TBX
+  SESSION: MP_TBX
+  REQUEST: MP_TBX
+
+#--------------------------------------------------------------------
+# Shared assumptions/defaults for using cloud
+
+# Default Playpen items
+MP_PLAYPEN_SQS:
+    NAME: test
+    VERSION: dev
+
+# Email
+# AWS massively throttles port 25
+# It is not clear that SES honors timeout, so retries is the most important setting
+EMAIL_PORT: 587
+EMAIL_TIMEOUT: 10
+EMAIL_MP_RETRYS: 3
+
+#--------------------------------------------------------------------
+# Server configuration
+# These values are sensitive to the actual servers used in deployment
+# These defaults are based on assumption of small servers
+
+MP_SERVER:
+
+    # ELB idle timeout is how long ELB keeps open HTTPS connection to client
+    # while waiting on nginx to respond to HTTP request.
+    # It is also the maximum lifetime for presisted keep-alive connections.
+    # The value needs to balance reusing keep-alive connections with stopping
+    # request responses that are too slow
+    # FUTURE - hook up to terraforming
+    CONNECTION_TIMEOUT_ELB: 40
+
+    # DB connections kept open within a thread this many seconds.
+    # Setting above 0 enables Django connection sharing between requests.
+    # Django checks at START and END of every request and will close
+    # connections that have lived longer than this many seconds.
+    # This does not control connection timeout on the DB side; MPF assumes
+    # that will be longer than this setting.
+    # Read age is only used when read replica is configured
+    DB_CONNECTION_AGE: 30
+    DB_READ_CONNECTION_AGE: 60
+
+    # Frequency for polling on process updates
+    # Some dynamic options are stored locally in each process; this poll is
+    # used to check if those values will be updated.
+    # This effectively defines the lag between seeting option and it
+    # being applied across all processes.
+    PROCESS_UPDATE_POLL: 15
+
+    # Maximum open files on server
+    # Since MPF runs processes under one user, this is used to set both
+    # kernel (sysctl fs.file-max) and user (ULIMIT soft/hard nofiles).
+    # Set large enough to handle all open files used by all processes
+    # on the server for Linux, Nginx, and Uwsgi. This is primarily driven
+    # by the max connections settings for Nginx and Uwsgi. Those should
+    # be tuned based on server size; this default value is set
+    # high enough to support most configurations.
+    MAX_FILES: 64000
+
+MP_NGINX:
+    # Balance nginx peak capacity with uwsgi LISTEN_MAX below
+    # For each server nginx should be buffering connections beyond
+    # what uwsgi will handle with LISTEN_MAX.
+    PROCESSES: 1
+    # CONNECTIONS is per PROCESS and includes all client requests
+    # AND backend connections to uwsgi within a timeout period.
+    # For good buffering, size and timeouts should be tuned
+    # based on load and attack mitigation testing.
+    CONNECTIONS: 500
+    # MAX_FILES is the RLIMIT_NOFILE file handles for one nginx process;
+    # must include connections, caching, and all other needs and
+    # be less than MP_SERVER.MAX_FILES
+    MAX_FILES: 1000
+    # Time that nginx will wait for various connection requests to
+    # complete, including keep-alive and uwsgi/proxy communication.
+    # THIS SHOULD BE LARGER THAN ELB idle timeout, as per AWS advice
+    # to prevent issues from ELB reusing connection after server timeout.
+    # https://docs.aws.amazon.com/elasticloadbalancing/latest/application/application-load-balancers.html
+    CONNECTION_TIMEOUT: 45
+    # How many requests are made on connection from ELB before reset.
+    KEEP_ALIVE_REQUESTS: 2000
+    # Various timeouts for how long nginx waits for uwsgi or resources
+    CONNECTION_TIMEOUT_START: 15
+
+    # Tuning for shared server values
+    SERVER:
+      # Larger buffer to handle big cookies and urls [AWS, marketo, etc.]
+      HEADER_BUFFER: 2  # kb
+      # Relatively small default body to reject attacks, while still
+      # supporting non-upload posts for images, content
+      BODY_MAX: 2  # mb
+
+    # Max upload file in MB - only for POSTs to nginx vs. S3 direct upload
+    UPLOAD:
+      BUFFER: 32  # kb
+      MAX: 500  # mb
+
+    # Nginx micro-cache throttling on main django urls
+    # No way to invalidate, so user won't see changes until timeout
+    MICRO_CACHE:
+      AGE: 2
+      MIN_USES: 2  # Don't cache unique requests (e.g., punch throughs)
+      LOCK_TIMEOUT: 4  # Time to wait for origin in multiple requests
+      MAX: 64    # mb size on disk
+      KEYS: 512   # kb key memory [1024=8K keys, 32=250 keys]
+
+    # Nginx mini-cache throttling on django urls that don't change much, but
+    # need to be responsive to updates, and which can be high volume.
+    # No way to invalidate, so user won't see changes until timeout
+    MINI_CACHE:
+      AGE: 30
+      BODY_MAX: 4   # kb, body hashed for keys so no large posts
+      LOCK_TIMEOUT: 4
+      MAX: 64
+      KEYS: 512
+
+    # Protected non-video content location caching
+    CONTENT:
+      AGE: 21600
+      MAX: 1000
+      KEYS: 1024
+
+    # Protected video content location caching
+    VIDEO:
+      BUFFERS: 64 2m
+      BUSY_SIZE: 32m
+      AGE: 21600
+      MAX: 8000
+      KEYS: 512
+
+MP_UWSGI:
+    # Worker processes and threads are very sensitive to deployment, just
+    # set a typical dev example here
+    PROCESSES: 2
+    THREADS: 2
+
+    # Queue size for socket connection requests
+    # This is primarily used for nginx to uwsgi connection. It sets
+    # BOTH uwsgi and Linux somaxconn, so sets max PROCESS queue length, although
+    # for uwsgi MASTER checks the queue so this is across all workers.
+    # This needs to be balanced with connections that nginx is configured
+    # to handle; if nginx sends too many, connections will be dropped.
+    # This value is focused on uwsgi because the max should be much higher
+    # than what nginx needs to serve incoming TCP requests.
+    # Set default below typical Linux 128 default to avoid issues with containers
+    LISTEN_MAX: 100
+
+    # Local buffer cache settings
+    # UWSGI caches are shared across processes and used by MPF as buffers to reduce
+    # trips to distributed cache over network.
+    # Tune S/M/L item memory to server usage and age timeouts.
+    # See uwsgi.tmpl and uwsgi cache2 documentation for more details.
+    # Small has keysize=256 blocksize=256, for version caching and some other items
+    CACHE_SMALL_OPTIONS: "items=2048"
+    # Medium has keysize=512 blocksize=2048, primarily used for request information
+    CACHE_MEDIUM_OPTIONS: "items=2048"
+    # Large cache buffers most MPF Redis caching
+    # keysize=1024, uses bitmap cache so the size of items can span
+    # blocks, so block size is configured here
+    CACHE_LARGE_OPTIONS: "items=4096,blocks=8192,blocksize=2048"
+
+    # Django may keep grabbing memory, so for general hygiene reset each uwsgi
+    # process after a given number of requests across all its workers.
+    # Health pings, work schedule, traffic, and attacks drive how often the
+    # the max requests causes a process restart.
+    MAX_REQUESTS: 500
+    # Randomize each server's max requests, to avoid them from staying
+    # in lock step and restarting together
+    MAX_REQUESTS_RANDOM: 100
+    MAX_REQUESTS_MIN: 400
+    # FUTURE - add variance to worker requests to avoid restarts at same time
+    MAX_REQUESTS_DELTA: 20  # this is * workerid
+    # Sanity check on rouge use of address space; this should be above
+    # any reasonable limit django is expected to grab over MAX_REQUESTS period
+    LIMITAS: 1400
+
+    # Kill long-running processes
+    # Screens should generally return within seconds, but don't set
+    # too low since it can cause thrashing if a server is briefly overloaded
+    # This should be less than but close to CONNECTION_TIMEOUT
+    HARAKIRI: 30
+
+    # Task spoolers
+    # Sets the number of spooler processes in uwsgi. These processes all poll
+    # for messages with their own threads [and execute immediate ones] but
+    # share processing of tasks in spooler folders.
+    SPOOL_PROCESSES: 1
+    # How often the spooler process checks for work in local folders.
+    # Each time spooler wakes up it reads ALL priority folders and
+    # tries to process ALL tasks that were in place when folder was read.
+    SPOOL_FREQ: 2   # MUST BE INTEGER OR UWSGI HANGS, 1 is lowest
+    # Queues are polled by threads in spooler processes.
+    # Typically long poll with longer on high so those items
+    # are handled as soon as possible.
+    SPOOL_QUEUES:
+      # For higher priority, goal is to sit on queue with long polling and
+      # grab items as soon as they appear
+      HIGH:
+        # How long to wait on SQS - 20 max, too high interferes with shutdown
+        LONG_POLL: 6
+        # Max messages to pull
+        MESSAGES: 2
+        # Default visibility timeout to set for messages. Time in seconds
+        # for processing and deleting message [including spooler execution]
+        # before the queue makes it visible again and releases FIFO block
+        # on the message group.
+        VISIBILITY_TIMEOUT: 60
+        # Don't pull messages if this many items ahead in spooler
+        # This includes items for higher priority levels, so setting
+        # to 1 means if there are any spooler items at this or
+        # higher priority, polling will be skipped.
+        FULL_THRESHOLD: 2
+      # For lower priority, goal is only to get work already in the queue,
+      # but some long polling is useful to ensure SQS can respond with items
+      MED:
+        LONG_POLL: 2
+        MESSAGES: 1
+        VISIBILITY_TIMEOUT: 120
+        FULL_THRESHOLD: 1
+      LOW:
+        LONG_POLL: 1
+        MESSAGES: 1
+        VISIBILITY_TIMEOUT: 600
+        FULL_THRESHOLD: 1
+    # Set up one or more polling threads
+    # Frequency is wait BETWEEN any long polling defined for the queue.
+    # Within each poller message getting isn't prioritized, so create separate
+    # queues for fine control of priority.
+    SPOOL_POLLERS:
+      SqsHigh:
+        QUEUES: ['HIGH']
+        FREQ: 0.5
+      SqsMed:
+        QUEUES: ['MED']
+        FREQ: 5
+      SqsLow:
+        QUEUES: ['LOW']
+        FREQ: 50
+    # Seconds spool worker sleep after processing tasks
+    SPOOL_SLEEP_AFTER: 1
+    # Settings for optional breathing DURING uwsgi spool jobs, either to
+    # make more responsive or manage CPU load
+    SPOOL_BREATHE: 0.2
+    SPOOL_BREATHE_EVERY: 50
+    # Number of tasks a spooler handles before restart
+    # Spooler tasks can suck up a lot of memory the Django doesn't let
+    # go of, so have the spooler recycle frequently
+    SPOOL_MAX_TASKS: 250
+    # Maximum time for a spooler task, which should be small
+    SPOOL_HARAKIRI: 30
+
+#-------------------------------------------------------------------
+#   Caching
+
+#   Cache aging needs to balance expected scenarios for use of data
+#   with cache sizes, particularly in cases where they may be frequent
+#   invalidations [e.g., content that is being edited] where many versions
+#   of the same content may be placed in cache; the only way abandoned
+#   versions are removed is to age out, so monitor memory use.
+#   AGE is standardized in seconds:
+#     86400s = 1 day
+MP_CACHE_AGE:
+
+    # Browser cache-control aging
+    # Seconds any cacheable URL is cached [by default] in the browser [if it chooses]
+    # which should be set for performance, SEO tuning requirements, etc.
+    #  - STATIC files, UPLOADED files, and DYNAMIC endpoints are ALL set by this,
+    #    with S3 metadata set on upload, and dynamic set in response.
+    #  - 1 year is used to score well on tests like Google page analyzer
+    #  - Goal is to cache as many URL responses as possible on the browser.
+    #    This is balanced against dynamic content, but try to cache most endpoints.
+    #    via URL hash/name [e.g., JS compress, cache version, upload timestamp, etc.].
+    #  - Protected content is special cased, to allow balance of performance with not
+    #    having stuff like protected video left on local hard drive
+    BROWSER: 31536000  # 1 year
+    BROWSER_PROTECTED: 3600  # 1 hour
+
+    # For CloudFront, can't really control how long AWS will keep content, but
+    # at least indicate it isn't volatile
+    EDGE: 691200  # 8 days
+    EDGE_PROTECTED: 28800  # 8 hours
+
+    # User session cache items should set EXPLICIT timeouts, but set a default
+    USER: 28800  # 8 hours
+
+    # Small buffer default timeouts
+    # Time window is from first distributed cache get request;
+    # buffer does NOT renew buffered values [but does renew from distributed].
+    BUFFER_SMALL: 3600  # 1 hour
+    # Cache version calls are buffered by default
+    # CANNOT INVALIDATE ACROSS SERVERS IN THIS WINDOW
+    BUFFER_VERSION: 4
+    # Set provider and system parent versions longer since fewer changes
+    BUFFER_VERSION_PROVIDER: 8
+    BUFFER_VERSION_SYSTEM: 12
+
+    # The version cache stores prefixes used to build chained cache keys
+    # for group invalidation. When these expire, caches items that use the
+    # versioning (default and template) are abandoned.
+    VERSION: 115200  # 32 hours
+    # Set default and templat items shorter than version so if they are abandoned
+    # they will be cleaned up faster
+    DEFAULT: 28800  # 8 hours
+    TEMPLATE: 28800  # 8 hours
+
+    # Long-term persistance for information that is stable like IP
+    PERSIST: 691200  # 8 days
+
+    # Session cache is used for protected access sessions, task sessions
+    # and other important but temporary information.
+    # Many session items set explicit timeouts, but set a default that
+    # works for typical operations that should complete in reasonable time.
+    # Note that sessions driven from SQS tasks shouldn't expire within
+    # time windows where information is needed, including adverse events
+    # that could back up the queue [including aggregating results].
+    SESSION: 28800  # 8 hours
+
+    # Request cache is used managing request information including
+    # throttling and request debugging [e.g., phone-home errors]
+    REQUEST: 14400  # 4 hours
+
+    # Time Window cache periods define how long data is cached from a given
+    # point in time. During the time window, any changes to the data are
+    # handled separately as deltas to the original data.
+    # The overlap fudge reduces race conditions from timewin time marker
+    # expiring and an active request for deltas based on just expired timewin
+    TIMEWIN_OVERLAP_FUDGE: 24
+    TIMEWIN_USER: 7200  # 2 hours
+    TIMEWIN_CONTENT: 28800  # 8 hours
+
+# File extensions that will NOT be cached on Cloudfront;
+# for use in specific development or deployment scenarios
+MP_EDGE_NOCACHE: []
+
+#--------------------------------------------------------------------
+# Application flags and tuning options
+
+# Feature flags can be overridden on per-site basis
+MP_FLAGS:
+  # These flags are for testing/dev functionality
+  # production flags are added in prod profiles or to root sandbox
+  DEV_show_page_tools: True
+  DEV_keep_ko_bindings: False
+
+# Tuning parameteres are SHARED ACROSS PLAYPENS
+MP_TUNING:
+  # Disable non-critical processing
+  DISABLE_NON_CRITICAL: False
+  # Second interval the client pings the server
+  # Also used as the basis for scaling throttling of client pings
+  CLIENT_PING_FREQUENCY: 50
+  # Seconds without UI activity that client considers itself idle
+  # This has a major impact on the metrics recorded for user usage, as it controls
+  # when a browser that is left open will stop sending updates to server
+  CLIENT_IDLE_WAIT: 1200
+  # Seconds JS Client waits on requests until errors are assumed
+  CLIENT_ERROR_TIMEOUT: 24
+
+  # Throttling tracked by IP across ALL server processes
+  THROTTLE:
+    # Seconds for throttle counting
+    PERIOD: 15
+    # Default requests per period allowed before throttling,
+    # and boost value for more expensive requests
+    # Modifiable in admin
+    THRESHOLD: 20
+    THRESHOLD_BOOST: 5
+    # Initial ban time, up to warning threshold
+    WARN_SECONDS: 10
+    # Number of warning bans before full ban
+    BAN_THRESHOLD: 2
+    # Ban time after threshold
+    BAN_SECONDS: 60
+    # Time to keep track of number of bans
+    BAN_AGE: 120
+    # Local per-server cache age used when banned
+    LOCAL_SECONDS: 5
+    # List of IPs to exclude, modifiable in admin
+    EXEMPT: []
+
+# These minimum sb_option defaults are needed for MPF functionality,
+# but may be overridden in sb_option data
+MP_SB:
+  DEFAULT_FRAME: 'default_frame'
+  BREAKPOINTS:
+    # Breakpoints are used in both CSS and JS, so are included here
+    # instead of in templates so they can be set in one location
+    width_small: 575.98
+    width_medium: 797.98
+    width_large: 1101
+    height_small: 500
+    height_medium: 801
+
+MP_LOOKUP:
+  LIMIT: 32
+  AUTO_LIMIT: 16
+
+#--------------------------------------------------------------------
+# Policy settings
+
+MP_INVALID_NAME:
+  CHARS: [ ':', '\t', '\n', '\\', '@' ]
+
+MP_INVALID_SUBDOMAIN:
+  MIN_LEN: 2
+  CHARS: [ ' ', '.', ':', '_', '\t', '\n', '/', '\\', '&', '@' ]
+  WORDS: [ 'www', 'root', 'admin', 'www', 'mail', 'log', 'api', 'portal' ]
+  START: [ '-', 'mpd', 'http', 'ftp', 'ssh' ]
+
+# Password policy includes min length and fragments that aren't allowed
+MP_PASSWORD_MIN_LEN: 6
+MP_PASSWORD_INVALID: [
+    'pass', 'pwd', 'user', 'admin', 'root',
+    '1234', 'abcd', 'qwer', 'asdf', 'zxcv',
+    '0987', 'lkjh', 'mnbv',
+    ]
+
+# Session lifetime for authenticated user
+MP_USER_SESSION_AGE_LONG: 1209600  # 2 weeks
+# Default session cache lifetime (visitors)
+MP_USER_SESSION_AGE_SHORT: 172800 # 2 days
+
+# Login failure throttling
+MP_LOGIN_FAILURE_THRESHOLD: 2
+MP_LOGIN_FAILURE_MULTIPLIER: 4
+MP_LOGIN_FAILURE_MAX: 8
+MP_LOGIN_FAILURE_WAIT: 60
+
+#--------------------------------------------------------------------
+# File handling
+
+# Django file upload setting
+# Use 50 MB as size for storing upload file in memory; tune based on machine type
+FILE_UPLOAD_MAX_MEMORY_SIZE: 52428800
+
+MP_FILE:
+
+  # Video file extensions
+  # Video files are big and usually streamed, so there are several types of
+  # special handling for them
+  VIDEO_TYPES: [
+      'mp4', 'm4p', 'm4v',
+      'webm', 'ogm', 'mts',
+      'avi', 'flv', 'wmv',
+      'mov', 'qt',
+      ]
+
+  # Extensions where name mangling shouldn't be used for url readability
+  NO_MANGLE_TYPES: [
+      'pdf',
+      ]
+
+MP_PROTECTED:
+
+  # Default length of life for any signed urls
+  SECONDS: 3600
+
+  # Prewarming protected files [i.e., test fixtures] can take a long time
+  # with EC2 micro instances, since they get throttled
+  PREWARM: False
+
+  # File types to SKIP PROTECTION CHECK on
+  # URLS WITH THESE FILE ENDINGS WILL BE PUBLIC
+  # Intended as optimization for LMS and web page content that
+  # may be numerous, but which have little value on its own
+  # FUTURE - keep nginx pass through? Won't need if all LMS/Page content through CF
+  NGINX_PASS_TYPES: [
+      'png', 'gif', 'jpg', 'jpeg', 'svg', 'bmp', 'tiff', 'tif',
+      'css', 'js',
+      ]
+
+
+#--------------------------------------------------------------------
+# Other settings and options
+
+# Django hash key for password, sessions, and such
+SECRET_KEY: MP_TBX
+
+# Javascript compiling and loading
+MP_COMPRESS:
+    CSS: False
+    JS: False
+    VERBOSE: False
+    # Custom HTML space stripping on by default
+    SPACE_STRIP: True
+
+# If set to true has hash for file and others names
+MP_HASH_UNIQUE_NAMES: False
+
+# Email addresses we'll send from
+DEFAULT_FROM_EMAIL: 'MP_TBX@MP_TBX.com'
+ADMINS: [['MPF Admin', 'MP_TBX@MP_TBX.com']]
+
+MP_ADMIN:
+  # Provider admin page limit
+  # This may be divided by 2 or 4, so pick divisible number for ux
+  LIST_PAGINATION: 80
+
+  # URL permission config for DJ admin urls
+  AREA_PERMISSIONS:
+    # URLs based only on user level
+    'sitebuilder': [ 'LEVEL', 'SB1' ]
+    'ops': [ 'LEVEL', 'SB1' ]
+    # Based on tenancy and area
+    'tenant': [ 'TENANT', 'S' ]
+    # Just based on area
+    'mpuser': [ 'AREA', 'U' ]
+    'account': [ 'AREA', 'U' ]
+    'mpcontent': [ 'AREA', 'C' ]
+    'catalog': [ 'AREA', 'P' ]
+
+MP_HTTP_SECURITY:
+    STS_HEADER: 'max-age=31536000'
+    CORS_MAX_AGE: 3600
+    CORS_HEADERS:
+        - 'accept'
+        - 'accept-encoding'
+        - 'accept-language'
+        - 'cache-control'
+        - 'connection'
+        - 'content-length'
+        - 'content-type'
+        - 'cookie'
+        - 'host'
+        - 'referer'
+        - 'origin'
+        - 'user-agent'
+        - 'x-csrftoken'
+        - 'x-http-method-override'
+        - 'x-requested-with'
+
+#--------------------------------------------------------------------
+# Debug, test, and logging
+
+DEBUG: False
+
+# Is test data, materials, fields, etc. in fixtures available in system?
+MP_TEST_USE_FIXTURES: True
+
+# By default, do unit tests run with a default DB
+MP_TEST_USE_NORMAL_DB: False
+
+# Used in some test cases to adjust depth
+MP_TEST_LEVEL: 1
+
+# Logging detail - set default options on startup and for clean DB.
+# Settings in an existing DB will overwrite after startup, except for
+# the level min, which sets a floor.
+MP_LOG_LEVEL_DEBUG_MIN: 0
+MP_LOG_LEVEL_INFO_MIN: 0
+MP_LOG_OPTIONS:
+    VERBOSE: False
+    CODE_TRACE: False
+    LOCALFILE_RESET: True
+
+# Initial sub-logging settings [usually overridden by DB values]
+# See mplogging.setup for names of sub loggers that can be added
+# The LOG_ALL option overrides the sub list and turns everything on
+MP_LOG_SUB: []
+MP_LOG_ALL: False
+
+# Browser logging guidelines - case insensitive
+MP_LOG_BROWSER:
+    WARNING_TRIGGERS:
+     - 'error'
+    WARNING_IGNORES:
+     - 'you aborted'
+
+# Special access for some IPs
+MP_DEV_IPS:
+  - "0.0.0.0"
+  - "127.0.0.1"

@@ -1,0 +1,58 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Reusable snippet for content navigation tabs
+
+        1) KO $data context is array of VMs
+
+{%endcomment%}
+
+<nav class="es_tabs_container">
+    <!-- ko ifnot: mpp.sb_option( 'portal.no_tabs_collapse', $element ) -->
+        <div class="mpr_collapse" data-collapse="mpc_{{ pane.slug }}">
+            <div class="fa fa-bars mpr_collapse_toggle">
+                </div>
+            </div>
+    <!-- /ko -->
+    <div id="mpc_{{ pane.slug }}" class="es_tabs_panel" data-bind="
+            class: mpp.sb_option( 'portal.no_tabs_collapse', $element ) ?
+                    '' : 'mpr_collapse_hide mpr_collapse_hide_all',
+            ">
+
+        {#-- Optional text display if there are no tabs #}
+        <!-- ko ifnot: ko.length( $data ) -->
+            <div class="es_empty" data-bind="
+                    html: mpp.sbt( 'empty', $element ),
+                    ">
+                </div>
+        <!-- /ko -->
+
+        {#-- Tab menu for pane navigation #}
+        <div class="es_tabs_menu">
+
+            {#-- Home tab #}
+            <!-- ko ifnot: mpp.sb_option( 'portal.no_home', $element ) -->
+                <nav id="{{ pane.nav_home|default:'home' }}"
+                    class="es_portal_tab" data-bind="
+                        bind_nav_link_nest: $data,
+                        ">
+                    <a class="es_nav_anchor mp_nav_anchor">
+                        {{ pane.name|default:'Home' }}
+                        </a>
+                    </nav>
+            <!-- /ko -->
+
+            {#-- VM tabs #}
+            <!-- ko foreach: $data -->
+                <nav class="es_portal_tab" data-bind="
+                        bind_nav_link_nest: $data,
+                        ">
+                    <a class="es_nav_anchor mp_nav_anchor" data-bind="
+                            html: sb('name'),
+                            ">
+                        </a>
+                    </nav>
+            <!-- /ko -->
+            </div>
+
+        </div>
+    </nav>

@@ -1,0 +1,67 @@
+#--- Copyright 2021 Vueocity, LLC
+#
+#   Back of house (BOH) servers
+#   BOH servers handle staff and group admin functionality,
+#   and typically run spooler processes as well.
+#
+#   Current config does NOT use stick ELB sessions.
+#
+
+DEFAULT_FROM_EMAIL: 'prod-boh@vueocity.com'
+
+MP_ROOT_AWS:
+    ELB_TARGET_GROUP: 'BOH'
+
+MP_SERVER:
+    # Connection overhead is less of concern for BOH, so avoid competition
+    # for connections if close to DB scaling point
+    DB_CONNECTION_AGE: 20
+
+MP_NGINX:
+    PROCESSES: 1
+    CONNECTIONS: 1000
+    MAX_FILES: 1500
+
+MP_UWSGI:
+    PROCESSES: 3
+    THREADS: 2
+    LISTEN_MAX: 400
+    # Bump memory sanity check, and reset memory with fewer tasks
+    LIMITAS: 1600
+    MAX_REQUESTS: 500
+    MAX_REQUESTS_RANDOM: 100
+    # Support occasional long admin screens
+    HARAKIRI: 45
+
+    # No stickiness in admin cache so less long-term benefit
+    # also supporting spooler report jobs
+    CACHE_SMALL_OPTIONS: "items=4096"
+    CACHE_MEDIUM_OPTIONS: "items=32768,ignore_full=1"
+    CACHE_LARGE_OPTIONS: "items=4096,blocks=8192,blocksize=4096"
+
+    # BOH spooler work helps OSK and is backup
+    SPOOL_PROCESSES: 1
+    SPOOL_FREQ: 2
+    SPOOL_SLEEP_AFTER: 1
+    SPOOL_BREATHE: 0.2
+    SPOOL_BREATHE_EVERY: 50
+    SPOOL_MAX_TASKS: 200
+    SPOOL_HARAKIRI: 20
+    SPOOL_QUEUES:
+      HIGH:
+        LONG_POLL: 4
+        MESSAGES: 1
+        VISIBILITY_TIMEOUT: 60
+        FULL_THRESHOLD: 2
+      MED:
+        LONG_POLL: 1
+        MESSAGES: 1
+        VISIBILITY_TIMEOUT: 120
+        FULL_THRESHOLD: 1
+      LOW:
+        LONG_POLL: 1
+        MESSAGES: 1
+        # Leave non-default tasks to OSK
+        TASK_GROUPS: ['DEFAULT']
+        VISIBILITY_TIMEOUT: 300
+        FULL_THRESHOLD: 1

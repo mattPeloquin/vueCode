@@ -1,0 +1,35 @@
+{% mp_extends 'panel_tabs' %}
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Group core items into upcoming and previous tabs, with resource tab
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/nav_macros.html" %}
+
+{% block panel_class %} es_panel_tabs_dates {% endblock %}
+
+{% block panel_nav %}
+
+    {% usemacro nav_tab 'date_upcoming' %}
+    {% usemacro nav_tab 'date_previous' %}
+    {% usemacro nav_tab 'area_support' %}
+
+{% endblock %}
+
+{% block panel_content %}
+
+    <section {% usemacro nav_attr 'date_upcoming' 'nested_nav' 'es_dates_upcoming' %} >
+        {% mp_include "collection_node" with itemfn='items_upcoming' %}
+        </section>
+
+    <section {% usemacro nav_attr 'date_previous' 'nested_nav' 'es_dates_previous' %} >
+        {% mp_include "collection_node" with itemfn='items_previous' %}
+        </section>
+
+    <section {% usemacro nav_attr 'area_support' 'nested_nav' %} >
+        {% mp_include "collection_node" with itemfn='items_area' arg1='support' %}
+        </section>
+
+{% endblock %}

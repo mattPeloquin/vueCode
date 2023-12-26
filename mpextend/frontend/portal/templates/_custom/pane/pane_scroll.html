@@ -1,0 +1,19 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Displays collections on single scrollable page.
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/macros.html" %}
+
+<pane class="es_pane_scroll"
+        {% usemacro add_pane_context pane %}
+        >
+    {% mp_include "home_html" with featured_group='home_items' %}
+
+    <!-- ko foreach: {{ pane.collections|default:'all_tops()' | safe }} -->
+        {% mp_include "collection_panel" with bind='lazy_bind_visible' no_breadcrumbs=True %}
+    <!-- /ko -->
+
+    </pane>

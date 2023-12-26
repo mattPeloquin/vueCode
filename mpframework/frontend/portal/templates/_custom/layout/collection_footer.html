@@ -1,0 +1,37 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Bottom display areas for a collection
+
+{%endcomment%}
+
+<!-- ko if: sb_option( 'portal.collection_footer', $element ) -->
+    <aside class="es_bottom mp_flex_column">
+
+        <!-- ko if: sb('image4') -->
+            <div class="es_hero_image mp_image" data-bind="
+                style: { backgroundImage: 'url(\'' + sb('image4') + '\')' },
+                ">
+                </div>
+        <!-- /ko -->
+            <div class="es_theme_overlay" data-bind="
+                    html: sb('text4'),
+                    ">
+                </div>
+        <!-- ko ifnot: sb('image4') -->
+            <div class="es_theme_panel" data-bind="
+                    html: sb('text4'),
+                    ">
+                </div>
+        <!-- /ko -->
+
+        {#-- Feedback button #}
+        <a class="es_button"
+            style="margin-top: 1em !important;"
+            data-bind="attr: {
+                'href': 'mailto:{{ site.email_support }}?subject=' + name + '%20Feedback'
+                }">
+            Send us feedback
+            </a>
+
+        </aside>
+<!-- /ko -->

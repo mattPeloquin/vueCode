@@ -1,0 +1,13 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+	Snippet for pretty display of dicts
+
+{% endcomment %}
+
+<div>
+    {% for k, v in d.items %}
+        <p>{{ k }} -> {{ v|safe|truncatechars:80 }}</p>
+    {% empty %}
+        <p style="font-style:italic">No items are present</p>
+    {% endfor %}
+</div>

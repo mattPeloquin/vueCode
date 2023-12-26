@@ -1,0 +1,22 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Layout for the signin panel
+
+{% endcomment %}
+
+<div id="user_auth" class="es_login_panel mp_user_auth">
+    <div class="mp_flex_column mp_flex_vcenter">
+
+        {% include "user/login/signin_form.html" %}
+        {% include "user/login/password_reset.html" %}
+
+        {% if not site.options.user.no_create %}
+            <div class="mp_flex_column mp_flex_vcenter">
+                <div class="es_user_switch es_theme_overlay es_button_flat mp_user_switch">
+                    {{ sb_options.text.new_account|default:"Need an account?" }}
+                    </div>
+                </div>
+        {% endif %}
+
+        </div>
+    </div>

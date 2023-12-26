@@ -1,0 +1,98 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Access select dialog for seamless ecommerce
+
+    Displays PA pricing options with account, tax, and coupon options.
+
+{%endcomment%}
+
+{#-- Template for PA buttons  #}
+<script id="template_access_pa_button" type="text/template">
+
+    <div class="es_access_select_item mp_relative">
+        <div data-pa_id=<%= id %> name="access_submit_<%= id %>" tabindex=1
+                class="es_button access_pa_button
+                    {#-- Free highlight #}
+                    <% if( price <= 0 ) { %> es_free_highlight <% } %>
+                    ">
+            <div>
+                <%= description %>
+                </div>
+            </div>
+            {% include "portal/controls/pa.html" %}
+        </div>
+
+    </script>
+
+{#-- Template for access selection dialog form #}
+<script id="template_access_select" type="text/template">
+
+    <div class="es_access_select_title mp_flex_line">
+        <h2><%= title %></h2>
+        <a href="#_" onclick="mp.login()" tabindex=1
+                class="es_button <% if( !login ) { %> mp_hidden <% } %>">
+            <%= login %></a>
+        </div>
+
+    <form id="access_select_form" class="es_access_select"
+            action="{% url 'access_select' %}" method='POST'
+            >
+        {#-- Hidden inputs to pass selection to server #}
+        <input id="access_pa_id" type=hidden name="pa_id" value="">
+
+        {#-- PA Selection buttons (HTML injected by pas_selection script) #}
+        <div id="access_pa_select" class="es_access_select_items">
+
+            <%= pa_buttons %>
+
+            </div>
+
+        {% if user.is_authenticated %}
+
+            {#-- Coupon section #}
+            <div id="access_coupon" class="es_access_coupon es_access_select_option
+                    mp_flex_line">
+                <input id="coupon_code" class="mp_input"
+                    type=text name="coupon_code" tabindex=1
+                    placeholder="<%= coupon_prompt %>"
+                    >
+                <div id="coupon_apply" class="es_button_flat" tabindex=1 >
+                    <%= coupon_apply %>
+                    </div>
+                </div>
+
+            {#-- Account selection control #}
+            <div id="access_account" class="es_access_account es_access_select_option">
+                <div class="es_access_select_help">
+                    <%= access_account_apply %>
+                    </div>
+                <select id="account_select" class="es_access_select_items"
+                        name="account_id"  tabindex=1
+                        >
+                    <%= accounts %>
+                    </select>
+                </div>
+
+            {#-- Location, primarily for sales tax country/zip code #}
+            {% if site.options.location_show or site.taxes.postal_codes %}
+                <div id="access_location" class="es_access_location es_access_select_option">
+                    <div class="es_access_select_help">
+                        <%= access_location %>
+                        </div>
+                    <div class="mp_flex_line">
+                        <input id="access_postal_code" class="mp_input"
+                                name="postal_code" type=text tabindex=1
+                                placeholder="Postal code"
+                                >
+                        <select id="access_country" class="mp_input"
+                                name="country" tabindex=1 >
+                            </select>
+                        </div>
+                    </div>
+                {% endif %}
+
+        {% endif %}
+
+        </form>
+
+    </script>

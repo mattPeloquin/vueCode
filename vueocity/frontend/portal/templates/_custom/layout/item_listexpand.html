@@ -1,0 +1,32 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Item list rows that expand into a more detailed view
+    with an access button.
+
+{%endcomment%}
+
+<div class="es_listexpand es_itemview es_content_full es_theme_list es_theme_content" data-bind="
+        style: {
+            '--es_item_font-size': sb_option('portal.item_font_size', $element),
+            '--es_itemview_min-height': sb_option('portal.list_min_height', $element),
+            },
+        ">
+    <div class="es_content_wrapper">
+
+        <a href="#_" class="es_content_title es_content_highlight es_text_limit
+                mp_viz_content_toggle mp_flex_line">
+            {% mp_include "content_state" %}
+            <h3 class="es_item_title" data-bind="
+                    html: sb('name'),
+                    ">
+                </h3>
+            </a>
+
+        <div class="mp_viz_content_body mp_flex_column" data-bind="
+                css: { 'mp_hidden': !sb_option('portal.expand_items') },
+                ">
+            {% mp_include "content_itemview" %}
+            </div>
+
+        </div>
+    </div>

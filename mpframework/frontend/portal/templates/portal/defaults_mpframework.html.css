@@ -1,0 +1,156 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Options, CSS vars, and defaults for portal content CSS are set here.
+
+    CSS may be overridden by style attributes in client code
+    for specific content items.
+
+{% endcomment %}
+
+
+:root {
+    --es_item_font-size: {{ sb_options.portal.item_font_size|default:'1em' }};
+    --es_item_title_size: {{ sb_options.portal.item_header_size|default:'1.2' }};
+    --es_item_title_rows: {{ sb_options.portal.item_title_rows|default:'1' }};
+    --es_item_text_rows: {{ sb_options.portal.item_text_rows|default:'2' }};
+    --es_item_line-height: 1.2;
+
+    --es_card_gap: {{ sb_options.portal.card_gap|default:'1em' }};
+    --es_card_width: {{ sb_options.portal.card_width|default:'20em' }};
+    --es_card_height: {{ sb_options.portal.card_height|default:'20em' }};
+    --es_card_image_ratio: {{ sb_options.portal.card_image_ratio|default:'0.625' }};
+    --es_card_image_height: {{ sb_options.portal.card_image_height|default:'calc( var(--es_card_height) * var(--es_card_image_ratio) )' }};
+
+    --es_list_gap: {{ sb_options.portal.list_gap|default:'0.25em' }};
+    --es_list_max-height: {{ sb_options.portal.list_height|default:'4em' }};
+    --es_list_min-height: {{ sb_options.portal.list_height|default:'auto' }};
+    --es_list_height: {{ sb_options.portal.list_height|default:'auto' }};
+    --es_list_image_aspect: {{ sb_options.portal.list_image_aspect|default:'1.6' }};
+    --es_list_image_space: {{ sb_options.portal.list_image_space|default:'0em' }};
+    --es_list_width: auto;
+
+    --es_listcard_height: {{ sb_options.portal.listcard_height|default:'5em' }};
+    --es_listcard_width_image: {{ sb_options.portal.listcard_width_text|default:'7em' }};
+    --es_listcard_width_text: {{ sb_options.portal.listcard_width_text|default:'11em' }};
+    --es_listcard_width: {{ sb_options.portal.listcard_width|default:'calc( var(--es_listcard_width_image) + var(--es_listcard_width_text) )' }};
+
+    --es_compact_width: 12em;
+
+    --es_viewer_items_width: {{ sb_options.portal.viewer_items_width|default:'20vw' }};
+    --es_sidebar_width: {{ sb_options.portal.sidebar_width|default:'33vw' }};
+    --es_sidebar_font-size: {{ sb_options.portal.sidebar_font_size|default:'90%' }};
+    }
+
+.es_portal_open {
+    opacity: 0.4;
+    }
+.es_portal_open:is( :hover, :focus, :active ) {
+    opacity: 1;
+    }
+
+.es_sidebar {
+    width: var(--es_sidebar_width);
+    }
+
+{#-- Baseline for content themes #}
+
+.es_theme_card {
+    --es_item_title_rows: 2;
+    --es_item_text_rows: 2;
+    width: var(--es_card_width);
+    height: var(--es_card_height);
+    margin: 1em;
+    border-radius: var(--es_theme_border-radius);
+    }
+.es_theme_card :is(
+    .es_item_title, .es_item_text1, .es_item_text2, .es_item_text3, .es_item_text4
+    ) {
+    text-align: center;
+    }
+
+.es_items.es_items_card .es_items_container {
+    gap: var(--es_card_gap);
+    }
+.es_items.es_items_list .es_items_container {
+    gap: var(--es_list_gap);
+    }
+
+{#-- Specifics for content item displays #}
+
+.es_list.es_theme_list {
+    --es_item_font-size: 0.9em;
+    }
+.es_list.es_theme_list .es_content_body {
+    max-height: var(--es_list_max-height);
+    }
+.es_list.es_theme_list .es_item_state {
+    font-size: 130%;
+    flex: 0 0 1.2em;
+    margin-left: 0.4em;
+    }
+.es_list.es_theme_list .es_content_image {
+    font-size: var(--es_item_font-size);
+    flex: 0 0 calc( (var(--es_list_max-height) - var(--es_list_image_space)) * var(--es_list_image_aspect) );
+    height: calc( var(--es_list_max-height) - var(--es_list_image_space) );
+    margin: 0 0.4em;
+    }
+.es_list.es_theme_list .es_content_text {
+    max-height: var(--es_list_max_height);
+    }
+
+.es_listcard.es_theme_list {
+    --es_item_title_rows: 2;
+    --es_item_font-size: 0.8em;
+    --es_item_title_size: 1.1;
+    width: auto;
+    min-width: var(--es_listcard_width_text);
+    max-width: var(--es_listcard_width);
+    margin: 0.2em;
+    padding: 0em;
+    }
+{% include "_/add_color.html.css" with class='.es_listcard.es_theme_list' text='var(--card_text,var(--variant))' back='var(--card_back,var(--list_back))' sheen='var(--sheen_low)' %}
+.es_listcard.es_theme_list .es_content_image {
+    width: var(--es_listcard_width_image);
+    min-width: var(--es_listcard_width_image);
+    height: var(--es_listcard_height);
+    }
+.es_listcard.es_theme_list .es_content_text {
+    width: var(--es_listcard_width_text);
+    height: var(--es_listcard_height);
+    padding: 0.1em 0.3em;
+    }
+.es_listcard.es_theme_list .es_item_state {
+    position: absolute;
+    }
+
+.es_compact.es_theme_list {
+    --es_item_text_rows: 1;
+    --es_item_font-size: 0.9em;
+    max-width: var(--es_compact_width);
+    min-width: var(--es_compact_width);
+    }
+.es_horizontal .es_viewer_nav .es_compact.es_theme_list {
+    min-width: auto;
+    }
+.es_items.es_template_item_compact .es_items_container {
+    justify-content: flex-start;
+    }
+
+{#-- Viewer displays #}
+
+.es_viewer_nav {
+    padding: 0.4em;
+    }
+
+.es_vertical .es_viewer_nav {
+    width: 100%;
+    }
+.es_horizontal .es_viewer_nav {
+    max-width: var(--es_viewer_items_width);
+    }
+.es_vertical .es_viewer_items .es_item_text3 {
+    position: absolute;
+    top: 0;
+    right: 0.2em;
+    font-size: 80% !important;
+    }

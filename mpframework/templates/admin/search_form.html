@@ -1,0 +1,20 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Prettier search form
+
+{%endcomment%}
+
+{% if cl.search_fields %}
+    <form id="changelist-search-form" action="" method="get" novalidate>
+        <input id="changelist-search" type="text" name="{{ search_var }}"
+                class="mp_search-field" value="{{ cl.query }}"
+                placeholder="Search"
+                />
+        <button type="submit" value="" class="search-button"></button>
+        {% for pair in cl.params.items %}
+            {% ifnotequal pair.0 search_var %}
+                <input type="hidden" name="{{ pair.0 }}" value="{{ pair.1 }}"/>
+            {% endifnotequal %}
+        {% endfor %}
+    </form>
+{% endif %}

@@ -1,0 +1,33 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Base static page
+
+    Provides framework for static html pages (usually error pages)
+
+{% endcomment %}
+
+<!DOCTYPE html>
+<!-- Powered by Vueocity's Mesa Platform, Copyright 2021 Vueocity LLC -->
+<html lang="{{ site.language_code }}">
+  <head>
+
+    <title>{% block static_title %}{{ settings.MP_UI_TEXT.root_name }}{% endblock %}
+        </title>
+
+    {#-- Use static style page vs. loading styles dynamically #}
+    {% block static_style %}
+        <link rel="shortcut icon" href="{{ static_url_resource }}/site_icon.png" />
+        {% include "static/style.html" %}
+    {% endblock %}
+
+  </head>
+  <body>
+
+    {% block static_body %}
+
+
+    {% endblock %}
+
+  </body>
+
+</html>

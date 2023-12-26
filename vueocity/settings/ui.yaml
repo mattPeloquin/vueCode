@@ -1,0 +1,29 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   UI config settings imported by shared.yaml
+
+MP_UI_TEXT:
+  root_name: 'Vueocity'
+  root_script_name: 'vueocity'
+  help_easy_style: |
+    <a target="_" href="
+      https://vueocity.zendesk.com/hc/en-us/articles/360002313971-EasyStyle
+      ">EasyStyle reference</a>
+  help_sb_options: ''
+  help_site_options: ''
+  help_site_taxes: ''
+  help_license_tags: |
+    <a target="_" href="
+      https://vueocity.zendesk.com/hc/en-us/articles/360049998412-ContentMatching
+      ">Read more about content matching</a>
+  help_license_pricing: |
+    <a target="_" href="
+      https://vueocity.zendesk.com/hc/en-us/articles/360049998312-Pricing
+      ">Read more about pricing</a>
+  help_license_metering: |
+    <a target="_" href="
+      https://vueocity.zendesk.com/hc/en-us/articles/360002314551-UsageMetering
+      ">Read more about usage metering</a>
+  help_license_rules: ''
+  help_templates: ''
+  help_proxy_options: ''

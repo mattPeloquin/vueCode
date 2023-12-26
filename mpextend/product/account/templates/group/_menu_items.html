@@ -1,0 +1,23 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    GA admin menu items
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% with css=css|default:'' %}
+
+    {% usemacro menu_user 'Overview' 'fa-dashboard' 'ga_overview' account.ga_id css %}
+    {% usemacro menu_user 'Invite users' 'fa-sign-in' 'ga_invite' account.ga_id css %}
+    {% usemacro menu_user 'Content usage' 'fa-book' 'ga_content' account.ga_id css %}
+    {% usemacro menu_user 'Licenses' 'fa-usd' 'ga_licenses' account.ga_id css %}
+    {% usemacro menu_user 'Users' 'fa-user' 'ga_users_summary' account.ga_id css %}
+
+    {% if user.has_test_access %}
+        {% usemacro menu_user 'Plans' 'fa-map' 'ga_plans' account.ga_id css %}
+        {% usemacro menu_user 'Settings' 'fa-cog' 'ga_settings' account.ga_id css %}
+    {% endif %}
+
+{% endwith %}

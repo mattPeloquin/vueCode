@@ -1,0 +1,70 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    User profile editing screen
+
+{% endcomment %}
+
+{% block page_ready_script %}
+
+    {% include "_/field_errors.html" with form=form %}
+
+    mp.set_watermark("#{{ form.first_name.auto_id }}", "First Name")
+    mp.set_watermark("#{{ form.last_name.auto_id }}", "Last Name")
+    mp.set_watermark("#{{ form.organization.auto_id }}", "Organization, company, team, group, etc.")
+    mp.set_watermark("#{{ form.title.auto_id }}", "Title, occupation, or responsibility")
+    mp.set_watermark("#{{ form.external_tag.auto_id }}", "Custom tag 1 for group reports")
+    mp.set_watermark("#{{ form.external_tag2.auto_id }}", "Custom tag 2 for group reports")
+    mp.set_watermark("#{{ form.external_tag3.auto_id }}", "Custom tag 3 for group reports")
+    mp.set_watermark("#{{ form.comments.auto_id }}", "Other comments about yourself")
+
+    mp.ajax_submit_form_images( '#profile_update', mpurl.user_media_url )
+
+{% endblock %}
+
+{% block panel_body %}
+
+    <div class="es_user_profile">
+
+        {# Enctype setting necessary for supporting image upload #}
+        <form id="profile_update" enctype='multipart/form-data' method="post"
+                class="mp_form" data-parsley-validate
+                >
+            {% csrf_token %}
+
+            <h2>Name</h2>
+            <div>
+                <span>{{ form.first_name }}</span>
+                <span>{{ form.last_name }}</span>
+                </div>
+            <div>{{ form.organization }}</div>
+            <div>{{ form.title }}</div>
+
+            <h2>Screen avatar</h2>
+            <div class="mp_flex_column">
+                <p>Upload an image to display with your name (small, square ones work best)</p>
+                {{ form.image }}
+                </div>
+
+            {% if sb_options.site.show_user_tags %}
+                <h2>Account tags</h2>
+                <div class="es_user_external">
+                    <div>{{ form.external_tag }}</div>
+                    <div>{{ form.external_tag2 }}</div>
+                    <div>{{ form.external_tag3 }}</div>
+                    </div>
+            {% endif %}
+
+            {% if sb_options.site.show_user_comments %}
+                <div class="es_user_comments">
+                    {{ form.comments }}
+                    </div>
+            {% endif %}
+
+            <input type="submit" class="es_button" name="update_profile"
+                    value="Update user information" />
+
+            </form>
+        </div>
+
+{% endblock %}

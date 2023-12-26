@@ -1,0 +1,41 @@
+{% mp_extends 'panel_tabs' %}
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display collection's items and children under portal type tabs
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/nav_macros.html" %}
+
+{% block panel_class %} es_panel_tabs_type {% endblock %}
+
+{% block panel_nav %}
+
+    <!-- ko foreach: mpp.vm_main.types() -->
+        {% usemacro nav_tab %}
+    <!-- /ko -->
+
+{% endblock %}
+
+{% block panel_content %}
+
+    <!-- ko foreach: mpp.vm_main.types() -->
+        <section {% usemacro nav_attr '' 'nested_nav' %} >
+
+            {#-- Show nested collection content that matches type #}
+            <!-- ko with: $parent -->
+                <!-- ko let: {
+                        itemfn: {
+                            name: 'core_type',
+                            arg1: $parent.model.id,
+                            },
+                        } -->
+                    {% mp_include "collection_node" %}
+                <!-- /ko -->
+            <!-- /ko -->
+
+            </section>
+    <!-- /ko -->
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    HTML User welcome / verification / activation email
+
+{% endcomment %}
+
+
+{% if email_subject %}
+
+    Welcome to {{ site.name }}
+
+{% else %}
+
+    {% mp_include "email_welcome" %}
+
+{% endif %}

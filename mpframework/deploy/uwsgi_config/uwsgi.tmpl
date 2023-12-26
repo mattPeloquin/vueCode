@@ -1,0 +1,158 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   uwsgi config template
+#
+
+uwsgi:
+    # Fail to load if congfig is bad
+    strict: True
+    need-app: True
+
+    # Good defaults, which are not currently set
+    single-interpreter: True
+    die-on-term: True
+    py-call-osafterfork: True
+    vacuum: True
+
+    # Run master with child processes
+    # Always enable threads so they can be used inside app.
+    master:         True
+    enable-threads: True
+
+    pidfile: {{ path_uwsgi }}/uwsgi.pid
+    socket: {{ path_uwsgi }}/uwsgi.sock
+    daemonize: {{ path_uwsgi }}/uwsgi.log
+    chmod-socket: 666
+    chown-socket: ec2-user:ec2-user
+
+    processes: {{ MP_UWSGI.PROCESSES }}
+    threads: {{ MP_UWSGI.THREADS }}
+    {% if MP_UWSGI.LISTEN_MAX %}
+        listen: {{ MP_UWSGI.LISTEN_MAX }}
+    {% endif %}
+    {% if MP_UWSGI.CPU_AFFINITY %}
+        cpu-affinity: {{ MP_UWSGI.CPU_AFFINITY }}
+    {% endif %}
+
+    {% if MP_UWSGI.LIMITAS %}
+        limit-as: {{ MP_UWSGI.LIMITAS }}
+    {% endif %}
+
+    {% if MP_UWSGI.THREADS > 1 %}
+        # Recommended setting for multiple processes and threads, adds locking
+        # to access of connection
+        # Leads to benign deadlock errors when used with max-requests
+        thunder-lock: True
+    {% endif %}
+
+    chdir: {{ path_home }}
+    home: {{ path_home }}/.venv
+
+    gid:            ec2-user
+    uid:            ec2-user
+    logfile-chown:  ec2-user
+    master-fifo:    {{ path_uwsgi }}/master.fifo
+
+    max-requests: {{ MP_UWSGI.MAX_REQUESTS }}
+    # FUTURE - uwsgi 2.1 feature
+    #max-requests-delta: {{ MP_UWSGI.MAX_REQUESTS_DELTA|default:1 }}
+    harakiri: {{ MP_UWSGI.HARAKIRI }}
+    reload-mercy: {{ MP_UWSGI.HARAKIRI }}
+
+    # Shared import is used for early setup of all processes
+    shared-import: mpframework.deploy.uwsgi_config.shared
+    module: mpframework.deploy.uwsgi_config.wsgi:wsgi_app
+    import: mpframework.deploy.uwsgi_config.worker
+    spooler-import: mpframework.deploy.uwsgi_config.spooler
+
+    # Setup caches for interprocess in-memory local buffering
+    # Key and block values are hardcoded here because the assumptions in them
+    # need to hold across all servers and are dependent on how code
+    # uses the caches.
+    # NOTE - when purge_lru set, sweeper not used
+    # so EXPIRATION OF ITEMS WILL NOT BE HONORED.
+    # Outside of one request/response, effectiveness and memory efficiency
+    # affected by sticky sessions, number of servers, larger servers, etc.
+
+    # Small buffer for version caching and some high-frequency items
+    # IMPORTANT for version performance of tiered-invalidation
+    cache2: name=local_small,keysize=256,blocksize=256,{{ MP_UWSGI.CACHE_SMALL_OPTIONS }}
+
+    # Medium used primarily for request information
+    # Relies on version invalidation or has items that can persist, so no expiration
+    cache2: name=local_medium,purge_lru=1,keysize=512,blocksize=2048,{{ MP_UWSGI.CACHE_MEDIUM_OPTIONS }}
+
+    # Large cache used to buffer general MPF Redis caching
+    # Uses slower bitmap cache to handle variable size items
+    # Relies on version invalidation, so no expiration
+    cache2: name=local_large,bitmap=1,purge_lru=1,keysize=1024,{{ MP_UWSGI.CACHE_LARGE_OPTIONS }}
+
+    # Sweeper frequency sets floor for expiration
+    # ONLY used if lazy_expire or purge_lru is NOT set for at least one queue
+    cache-expire-freq: 2
+
+    # NOTE - would prefer lazy_expire and sweep_on_full, as below, but had instability
+    # issues due to deadlocks on cache filling up:
+    # Use undocumented 'lazy_expire' option with 'sweep_on_full' to run without sweeper thread,
+    # removing expired items as they are accessed, and if cache fills remove all.
+    # If cache config is expected to have longer-lived items that won't
+    # expire, add 'purge_lru' to remove least recently used.
+    # See uwsgi core/cache.c for more info
+    # cache2: name=local_small,lazy_expire=1,sweep_on_full=1{{ MP_UWSGI.CACHE_SMALL_OPTIONS }}
+    # cache2: name=local_medium,lazy_expire=1,sweep_on_full=1{{ MP_UWSGI.CACHE_MEDIUM_OPTIONS }}
+    # cache2: name=local_large,lazy_expire=1,sweep_on_full=1{{ MP_UWSGI.CACHE_LARGE_OPTIONS }}
+
+    # Setup spoolers to support local and SQS worker processing
+    {% if MP_UWSGI.SPOOL_PROCESSES %}
+        spooler: {{ path_uwsgi }}/spooler
+        spooler-processes: {{ MP_UWSGI.SPOOL_PROCESSES }}
+        spooler-frequency: {{ MP_UWSGI.SPOOL_FREQ }}
+        spooler-max-tasks: {{ MP_UWSGI.SPOOL_MAX_TASKS }}
+        spooler-harakiri: {{ MP_UWSGI.SPOOL_HARAKIRI }}
+        spooler-ordered: True
+    {% endif %}
+
+    # Logging
+    # Keep spooler and http events off by default.
+    {% if not MP_UWSGI.LOG_EVENTS %}
+        disable-logging: True
+        spooler-quiet: True
+    {% endif %}
+    {% if MP_UWSGI.LOG_LOCAL %}
+        logto: {{ path_uwsgi }}/uwsgi.log
+    {% endif %}
+
+{% if not DEBUG %}
+
+    # Strip asserts and docstrings from Python bytecode
+    # (optimize: 1 just does asserts)
+    optimize: 2
+
+{% endif %}
+
+{% if DEBUG %}
+
+    # Extra logging
+    cache-report-freed-items: True
+
+    # For uwsgitops
+    stats: {{ path_uwsgi }}/stats.socket
+
+    # Get current traceback by
+    #   uwsgi --connect-and-read uwsgi/traceback1
+    py-tracebacker: {{ path_uwsgi }}/traceback
+
+{% endif %}
+
+# Option for lazy load and not fork worker apps
+{% if MP_UWSGI.LAZY_APPS %}
+    lazy-apps: True
+{% endif %}
+
+# Option that will bypass MPF shutdown
+{% if MP_UWSGI.NO_THREAD_WAIT %}
+    no-threads-wait: True
+{% endif %}
+
+# FUTURE -- integrate running Django in uwsgi with python profiler
+#profiler: pycall

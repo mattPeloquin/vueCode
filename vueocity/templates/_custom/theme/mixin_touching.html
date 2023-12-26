@@ -1,0 +1,47 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Make content fill screen with no space between
+
+{%endcomment%}
+
+<style>
+
+    .es_content {
+        flex-grow: 1;
+        }
+
+    .es_theme_card {
+        min-width: var(--es_card_width);
+        }
+    .es_theme_list {
+        min-width: var(--es_list_width);
+        }
+
+    .es_portal_nav.es_theme_panel {
+        padding: 0;
+        }
+
+    .es_theme_content {
+        margin: 0;
+        padding: 0;
+        width: auto;
+        max-width: auto;
+        border-radius: 0px;
+        }
+    .es_theme_content .es_content_body {
+        margin: 0;
+        padding: 0;
+        border-radius: 0px;
+        }
+
+    :is( .es_width_medium, .es_width_large ) .es_content_card {
+        flex-basis: 33%;
+        }
+    .es_width_xlarge .es_content_card {
+        flex-basis: 25%;
+        }
+    .es_width_small .es_content_card {
+        flex-basis: 50%;
+        }
+
+</style>

@@ -1,0 +1,70 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Reusable nav code for displaying content
+    in more complex ways such as tabs.
+
+    The organizing principle is mapping collection nodes to
+    mp_nav_panel elements that are linked to by mp_nav_link elements.
+    Nav links must be rendered at load (through KO binding) to fully
+    work (in particular, to return to address on refresh), so don't
+    place nav links inside lazy bindings.
+
+    These macros use both server and client scripting; provide
+    server variables in the macro calls to hard-code either a
+    specific KO call or fixed value.
+    Or leave blank and KO default calls will be used.
+
+{%endcomment%}
+
+{% load macros %}
+
+{% macro _nav_id nav_id %}
+    {% if nav_id %}
+        attr: { id: mpp.NAV_NO_CONTENT + '{{ nav_id }}' },
+    {% else %}
+        attr: { id: $data.slug },
+    {% endif %}
+{% endmacro %}
+
+{% macro nav_attr nav_id options css %}
+    class="{% if css %}{{ css }}{% endif %} mp_flex_column"
+    data-bind="
+        {#-- Add id first, so bind_nav_panel can update if needed #}
+        {% usemacro _nav_id nav_id %}
+        {% if 'nested_nav' in options %}
+            bind_nav_panel_nest: $data,
+        {% else %}
+            bind_nav_panel: $data,
+        {% endif %}
+        {% if 'show' in options %}bind_nav_show: true,{% endif %}
+        "
+    {% if 'nested_nav' in options %}
+        data-no_breadcrumbs='true'
+    {% endif %}
+{% endmacro %}
+
+{% macro _nav_anchor nav_id nav_name %}
+    <a class="mp_nav_anchor" data-bind="
+            html: {% if nav_name %} '{{ nav_name }}'
+                {% else %} sbt('{{ nav_id }}') || $data.name {% endif %},
+            ">
+        </a>
+{% endmacro %}
+
+{% macro nav_tab nav_id tab_name %}
+    <nav class="es_portal_tab" data-bind="
+            {% usemacro _nav_id nav_id %}
+            bind_nav_link_nest: $data,
+            ">
+        {% usemacro _nav_anchor nav_id tab_name %}
+        </nav>
+{% endmacro %}
+
+{% macro nav_open nav_id %}
+    <nav class="es_portal_open es_button" data-bind="
+            {% usemacro _nav_id nav_id %}
+            bind_nav_link_nest: $data,
+            ">
+        {% usemacro _nav_anchor nav_id %}
+        </nav>
+{% endmacro %}

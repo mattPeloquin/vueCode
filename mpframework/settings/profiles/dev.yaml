@@ -1,0 +1,19 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Default dev settings, dev supports single dev/test
+#   server in production environment with separate playpen
+#
+
+MP_CLOUD: True
+
+# Default for dev servers is to append IP to dev sandbox
+MP_PLAYPEN_ADD_IP: True
+
+DEBUG: True
+
+MP_LOG_LEVEL_DEBUG_MIN: 1
+MP_LOG_LEVEL_INFO_MIN: 2
+MP_LOG_OPTIONS:
+    VERBOSE: True
+
+MP_EDGE_NOCACHE: ['js', 'css']

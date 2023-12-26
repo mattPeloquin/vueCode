@@ -1,0 +1,77 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Collection node viewer
+    Shows core items for current collection node next to viewer
+
+        1) Assumes context has node and root methods
+
+{%endcomment%}
+
+<pane class="es_viewer es_viewer_node es_theme_background
+        mpp_viewer_fullscreen mp_print_hidden">
+
+    {% if sb_options.site.banner.viewer %}
+        {% include "_base/layout/banner.html" %}
+    {% endif %}
+
+    <div class="mp_flex mp_flex_nowrap mpr_flex_col_rev">
+
+        {# The Collection list display  #}
+        <div class="es_viewer_nav" data-bind="
+                with: node()
+                ">
+            <div class="es_portal_return es_button_text mpp_back" data-bind="
+                    html: sbt('back_panel') || ( sbt('back_prefix') +
+                            mpp.item_name( my_root(), '{{ site.name }}' ) ),
+                    ">
+                </div>
+
+            {# One collection's content #}
+            <div class="es_viewer_items mpp_viewer_items" data-bind="
+                    if: id
+                    ">
+                <panel data-bind="
+                        bind_content_panel: $data,
+                        class: css_classes(),
+                        ">
+                    <h2 class="es_title1" data-bind="
+                            html: sb('name')
+                            ">
+                        </h2>
+                    {% mp_include "items" with column=True brief=True default_template="item_compact" opt_template="viewer" %}
+                    {% include "portal/controls/content.html" %}
+                    </panel>
+                </div>
+
+            {# Previous-Next buttons #}
+            <div class="mp_flex">
+                <div class="es_button_flat" data-bind="
+                        visible: !!mpp.prev_node(),
+                        click: function() {
+                            mpp.prev_node_core_item( function( item, node ) {
+                                item.user_access_action( node )
+                                })
+                            },
+                        attr: { title: mpp.item_name( mpp.prev_node() ) },
+                        html: sbt('previous'),
+                        ">
+                    </div>
+                <div class="es_button_flat" data-bind="
+                        visible: !!mpp.next_node(),
+                        click: function() {
+                            mpp.next_node_core_item( function( item, node ) {
+                                item.user_access_action( node )
+                                })
+                            },
+                        attr: { title: mpp.item_name( mpp.next_node() ) },
+                        html: sbt('next'),
+                        ">
+                    </div>
+                </div>
+            </div>
+
+        <div class="es_viewer_box mpp_viewer_box">
+            </div>
+
+        </div>
+    </pane>

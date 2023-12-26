@@ -1,0 +1,247 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Base portal content layout
+
+    Only FUNDAMENTAL base styling should be present here;
+    layout defaults should be defined in:
+
+        portal\defaults_mpframework.html.css
+
+    Visual specializations should be placed in style and mixin templates.
+
+    HACK - It is not ideal to have some coupling here with configurable
+    portal templates. But there needs to be some baseline and adding an
+    additional efficient injection mechanism for CSS related to specific
+    content templates does not seem worth it.
+ */
+
+.es_search_hidden
+    display: none !important
+
+/*
+    Item layout
+
+    Default "hardscape" style for item display templates.
+    items.html assumes flexbox layout, which can be adjusted based
+    on the selected item type.
+
+    Item styling is driven from es_theme_content for shared styles, and
+    es_theme_card, es_theme_list for card/list variants.
+    Each item template type may specialize further, but those should be in
+    defaults_mpframework.html.css
+
+    Default assumption is an item layout will follow a fixed
+    configurable size (or flex within a fixed constraint).
+    This means child elements will generally try to fill their width.
+    The item parent will define the ultimate size.
+
+    Many layouts use lists with flexboxes with item width set to
+    100% with es_content_full, which allows row list to flow vertically.
+    This is because the es_items container for an item display doesn't
+    know if it will have card or list items (because they can be
+    overridden), and there can be a combination of both. So items control
+    row vs. column in many views by controlling their width.
+ */
+
+.es_items
+    position: relative
+    display: flex
+    width: 100%
+    .es_items_container
+        display: flex
+        flex-wrap: wrap
+        justify-content: space-evenly
+        width: 100%
+        &.es_items_row
+            flex-direction: row
+        &.es_items_column
+            flex-direction: column
+    .es_card_controls
+        position: absolute
+        z-index: 2
+        top: 1em
+        right: 1em
+        .fa
+            line-height: 1
+            margin: 0.1em
+            padding: 0.4em 0.35em 0.2em 0.35em
+            border-radius: 50% !important
+    .es_items_horizontal
+        display: flex
+        overflow: hidden
+        margin: 0.2em 0em
+        max-width: 90vw
+        .es_items_container
+            flex-direction: row
+            flex-wrap: nowrap
+            width: auto
+    .es_slider_left, .es_slider_right
+        font-size: 200%
+        position: absolute
+        top: 0
+        bottom: 0
+        z-index: 3
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 1em
+        line-height: 1em
+        font-weight: bold
+    .es_slider_left
+        left: 0em
+    .es_slider_right
+        right: 0em
+
+.es_content_full
+    width: 100%
+    min-height: inherit
+
+.es_theme_content
+    padding: 0
+    .es_content_body, .es_content_wrapper
+        position: relative
+        width: 100%
+        height: 100%
+        min-height: inherit
+        overflow: hidden
+    .es_content_title
+        width: 100%
+    .es_content_image
+        position: relative
+        img
+            // Make content images follow the size of outer container
+            width: 100%
+            height: 100%
+            object-fit: cover
+    .es_content_text
+        overflow: hidden
+    .es_text_limit
+        .es_item_title, .es_item_text1, .es_item_text2, .es_item_text3, .es_item_text4
+            // Make all content text 2 line max with ellipsis by default
+            display: -webkit-box
+            overflow: hidden
+            text-overflow: ellipsis
+            max-height: calc( var(--es_item_text_rows) * var(--es_item_line-height) )
+            line-height: var(--es_item_line-height)
+            -webkit-line-clamp: var(--es_item_text_rows)
+            -webkit-box-orient: vertical
+            margin: 0.1em 0.2em
+        .es_item_title
+            -webkit-line-clamp: var(--es_item_title_rows)
+            max-height: calc( var(--es_item_title_rows) * var(--es_item_line-height) )
+    .es_item_state
+        font-size: calc( var(--es_item_font-size) * var(--es_item_title_size) )
+        // State varies between absolute and block positioning
+        top: 0
+        right: 0
+        z-index: 1
+        line-height: 1
+        padding: 0.2em
+    .es_item_heading
+        position: relative
+        width: 100%
+    .es_item_title
+        font-size: calc( var(--es_item_font-size) * var(--es_item_title_size) )
+    .es_item_text1
+        font-size: var(--es_item_font-size)
+    & :is( .es_item_text2, .es_item_text3, .es_item_text4 )
+        font-size: calc( var(--es_item_font-size) * 0.8 )
+
+.es_theme_card
+    .es_card_body
+        width: 100%
+        height: 100%
+        +es_pointer
+    .es_content_body, .es_content_image, .es_content_text
+        display: flex
+        flex-wrap: nowrap
+        flex-direction: column
+        align-items: center
+        justify-content: center
+    .es_content_image
+        height: var(--es_card_image_height)
+    .es_item_title
+        font-size: calc( var(--es_item_font-size) * 1.3 )
+    .es_content_text
+        width: 100%
+        height: calc( var(--es_card_height) - var(--es_card_image_height) )
+        padding: var(--es_item_pad)
+    .es_item_state
+        position: absolute
+
+.es_theme_list
+    width: var(--es_list_width)
+    min-width: var(--es_list_min-width)
+    height: var(--es_list_height)
+    .es_list .es_content_image
+        flex: 0 0 calc( var(--es_list_max-height) * var(--es_list_image_aspect) )
+        height: var(--es_list_max-height)
+    .es_content_title
+        +es_pointer
+    .es_item_state
+        // Keep wide enough to handle widest icon and padding
+        overflow: hidden
+        width: 1.4em
+        min-width: 1.4em
+
+/*
+    Collection panel pieces
+ */
+
+.es_sidebar
+    position: relative
+    flex-shrink: 0
+    .es_sidebar_title
+        margin-top: 2em
+        padding: 1em
+    .es_progress
+        margin-top: 1em
+    .es_sidebar_sub
+        padding: 1em
+
+/*
+    Hard coded to match up with dynamic KO bindings
+    Padding used for indent vs margins to avoid issues with body width
+    getting too wide and causing horizontal scroll bars.
+ */
+.es_tree_depth1
+    padding-left: 1em
+.es_tree_depth2
+    padding-left: 2em
+.es_tree_depth3
+    padding-left: 3em
+.es_tree_depth4
+    padding-left: 4em
+.es_tree_depth5
+    padding-left: 5em
+
+/*
+    Miscellaneous
+ */
+
+// Progress bar
+.es_progress
+    position: absolute
+    bottom: 0
+    left: 0
+    right: 0
+    .es_progress_bar
+        font-size: 70%
+        position: relative
+        width: 100%
+        height: 1.4em
+        padding: 0
+        border: none
+        border-radius: 0
+        > div
+            position: absolute
+            border: none !important
+            width: 100%
+            height: 100%
+            border-radius: 0
+        > .es_progress_bar_front
+            z-index: 1
+        > .es_progress_bar_text
+            z-index: 2
+            text-align: center
+

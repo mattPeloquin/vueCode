@@ -1,0 +1,36 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Vueocity default design style
+
+{%endcomment%}
+
+{% mp_include "mixin_scroll_none" %}
+{% mp_include "mixin_card_imagetext" with color='white' size='110%' %}
+{% mp_include "mixin_hover_grow" with speed='0.4' growth='1.25' %}
+{% mp_include "mixin_user_float" %}
+
+<style>
+    :root {
+        --es_theme_border-radius: 0.3em;
+        --es_theme_border-radius_content: 0.3em;
+        --es_theme_border-radius_control: 0.2em;
+        }
+
+    {#-- Provide contrast for UI elements #}
+    .mp_input {
+        background-image:
+            linear-gradient( var(--gradient), rgba(var(--shadow),0.04), rgba(var(--shadow),0) );
+        }
+    .es_button, .mp_input, .es_theme_card {
+        box-shadow: 1px 1px 3px rgba(var(--shadow),0.24);
+        transition: box-shadow 0.14s ease-out;
+        }
+        :is( .es_button, .mp_input ):is(:hover,:focus,:active) {
+            box-shadow: 2px 2px 4px rgba(var(--shadow),0.24), 3px 3px 6px rgba(var(--shadow),0.16);
+            }
+
+    .es_tabs .es_tabs_menu {
+        width: fit-content;
+        }
+
+</style>

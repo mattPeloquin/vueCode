@@ -1,0 +1,12 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Add to end of the content menu
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% if user.access_high %}
+    {% usemacro menu_item 'Badges' 'fa-trophy' 'staff_admin:usercontent_badge_changelist' %}
+{% endif %}

@@ -1,0 +1,26 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Shows all items with NO COLLECTIONS on one screen
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/macros.html" %}
+
+<pane class="es_pane_items"
+        {% usemacro add_pane_context pane %}
+        >
+    {% mp_include "home_html" with featured_group='home_items' %}
+
+    <article class="es_content es_theme_panel" data-bind="
+            bind_items: true,
+            ">
+        <div class="es_no_results mp_hidden mp_no_results" data-bind="
+                html: mpp.sbt( 'no_results', $element ),
+                ">
+            </div>
+        {% mp_include "items" with items=pane.items %}
+        {% mp_include "widget_toggle" %}
+        </article>
+
+    </pane>

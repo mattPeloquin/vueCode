@@ -1,0 +1,7 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Server pip items
+#
+
+# WSGI application server -- this installs the application binary
+uWSGI==2.0.19.1

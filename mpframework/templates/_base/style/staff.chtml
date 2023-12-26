@@ -1,0 +1,76 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Admin CSS styling
+
+    This is loaded in ADDITION to the main CSS styles
+
+    THIS FILE NEEDS TO BE SAVED WITH UNIX STYLE LF LINE TERMINATIONS
+    FOR USE IN WINDOWS/LINUX ENVIRONMENT WITH django-compressor
+
+{%endcomment%}
+
+{% load compress_mp %}
+
+{% compress_mp css admin %}
+
+    {#-- Codemirror CSS #}
+    <link rel="stylesheet" href="{{ static_url }}editors/codemirror.css" />
+    <link rel="stylesheet" href="{{ static_url }}editors/codemirror_addon/search/matchesonscrollbar.css" />
+    <link rel="stylesheet" href="{{ static_url }}editors/codemirror_addon/scroll/simplescrollbars.css" />
+    <link rel="stylesheet" href="{{ static_url }}editors/codemirror_addon/dialog/dialog.css" />
+    <link rel="stylesheet" href="{{ static_url }}editors/codemirror_addon/display/fullscreen.css" />
+
+    {#-- Other packages #}
+    <link rel="stylesheet" href="{{ static_url }}libs/s3direct/dist/index.css" />
+
+    {#-- Staff CSS transpiled under mpf-css  #}
+    <link rel="stylesheet" href="{{ static_url }}mpf-css/staff-{{ code_rev }}.css" />
+
+{% endcompress %}
+
+<style>
+
+    @media( min-width: {{ sb_options.breakpoints.width_large }}px ) {
+
+        {#-- Make admin take full width in single column #}
+
+        }
+
+    @media( max-width: {{ sb_options.breakpoints.width_medium }}px ) {
+
+        {#-- Make admin take full width in single column #}
+        .mp_module .mp_row:not(tr).mp_cells {
+            flex-flow: column;
+            }
+        .mp_row:not(tr).mp_cells .mp_cell {
+            min-width: max( 26em, calc( 100vw - 2em ) ) !important;
+            max-width: max( 26em, calc( 100vw - 2em ) ) !important;
+            }
+        .mp_row:not(tr).mp_cells .mp_cell .mp_input {
+            width: max( 28em, calc( 100vw - 6em ) ) !important;
+            max-width: max( 28em, calc( 100vw - 6em ) ) !important;
+            }
+        .mp_module.mp_collapse .mp_row > div {
+            width: calc( 100vw - 2em ) !important;
+            min-width: inherit !important;
+            max-width: none !important;
+            }
+        .mp_module.mp_collapse .mp_row:not(tr).mp_cells .mp_cell+.mp_cell {
+            padding-left: 0;
+            }
+        }
+
+    @media( max-width: {{ sb_options.breakpoints.width_small }}px ) {
+
+        {#-- Shrink admin on tiny screens, but won't be that usable #}
+        .mp_module .mp_row input,
+        .mp_module .mp_row select,
+        .mp_module .mp_row textarea,
+        fieldset.mp_module .mp_row label,
+        .mp_module .mp_row .mp_help_staff {
+            font-size: 0.85rem !important;
+            }
+
+        }
+
+    </style>

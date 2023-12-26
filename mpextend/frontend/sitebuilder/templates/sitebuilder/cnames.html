@@ -1,0 +1,27 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    FUTURE - Support adding sandbox hosts for external CNAMES
+
+{% endcomment %}
+
+
+{% block page_ready_script %}
+
+    {% include "_/field_errors.html" with form=form %}
+
+{% endblock %}
+
+
+{% block panel_body %}
+
+    <form method="post" class="mp_form"  data-parsley-validate>
+        {% csrf_token %}
+        <div>
+            {{ form.comments }}
+            </div>
+        <input type="submit" class="es_button" name="add_cname"
+                value="Add new CNAME" />
+        </form>
+
+{% endblock %}

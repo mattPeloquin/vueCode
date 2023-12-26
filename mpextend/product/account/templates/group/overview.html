@@ -1,0 +1,93 @@
+{% extends 'group/_page.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Group Account admin overview and reporting screen
+
+{% endcomment %}
+
+
+{% block head-no_cache %}
+    {{ block.super }}
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" />
+{% endblock %}
+
+{% block page-no_cache %}
+    {{ block.super }}
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+{% endblock %}
+
+{% block group_page_body %}
+    <div class="es_chart_group mp_flex">
+
+        <div class="es_chart_container">
+            <a href="{% url 'ga_users_summary' ga_id %}" class="es_chart es_button_flat">
+                <div>{{ uses.user_count }} users, recent use per week
+                    </div>
+                <div id="chart_uses" class="ct-chart">
+                    </div>
+                </a>
+            </div>
+
+        <div class="es_chart_container">
+            <a href="{% url 'ga_content' ga_id %}" class="es_chart es_button_flat">
+                <div>{{ completion.total }} content items used
+                    </div>
+                <div id="chart_completion" class="ct-chart">
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    <div class="es_chart_group mp_flex">
+
+        <div class="es_chart_container">
+            <a href="{% url 'ga_content' ga_id %}" class="es_chart es_button_flat">
+                <div>Content usage
+                    </div>
+                <div id="chart_usage_content" class="ct-chart">
+                    </div>
+                </a>
+            </div>
+
+        <div class="es_chart_container">
+            <a href="{% url 'ga_users_summary' ga_id %}" class="es_chart es_button_flat">
+                <div>Recent content usage per week
+                    </div>
+                <div id="chart_usage_time" class="ct-chart">
+                    </div>
+                </a>
+            </div>
+
+        </div>
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    {% include "_/chartist.html.js" %}
+
+    new Chartist.Bar( '#chart_uses', {{ uses.data | json }}, {
+            seriesBarDistance: 10,
+            onlyInteger: true,
+            })
+
+    new Chartist.Pie( '#chart_completion', {{ completion.data | json }}, {
+            total: {{ completion.total }},
+            })
+
+    new Chartist.Bar( '#chart_usage_content', {{ usage_content.data | json }}, {
+            seriesBarDistance: 10,
+            stackBars: true,
+            horizontalBars: true,
+            onlyInteger: true,
+            axisY: {
+                offset: 200,
+                }
+            })
+
+    new Chartist.Bar( '#chart_usage_time', {{ usage_time.data | json }}, {
+            seriesBarDistance: 10,
+            onlyInteger: true,
+            })
+
+{% endblock %}

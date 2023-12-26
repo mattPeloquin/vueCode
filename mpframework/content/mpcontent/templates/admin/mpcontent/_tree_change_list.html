@@ -1,0 +1,99 @@
+{% extends 'admin/change_list.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Tree base changelist, with MPTT drag/drop support
+
+{%endcomment%}
+
+{% block head-no_cache %}
+    {{ block.super }}
+    <style>
+
+        .field-mptt_name {
+            min-width: 33vw !important;
+            }
+
+        {#-- Overrides of MPTT draggable support #}
+        .field-list_actions {
+            padding: 2px;
+            }
+            .field-list_actions .drag-handle {
+                font-size: 140%;
+                cursor: move;
+                color: rgba(107,192,72,0.8);
+                background-image: none;
+                margin: 0 0.4em 0 0.2em;
+                }
+                .field-list_actions .drag-handle:after {
+                    content: "\f047";
+                    font-family: "FontAwesome" !important;
+                    }
+            .field-list_actions .tree-node {
+                font-size: 160%;
+                cursor: pointer;
+                padding-left: 0.2em;
+                color: rgba(107,192,72,0.8);
+                }
+                .field-list_actions .tree-node.children {
+                    background-image: none;
+                    }
+                    .field-list_actions .tree-node.children:after {
+                        font-family: "FontAwesome" !important;
+                        content: "\f107";
+                        }
+                {#-- Closed overrides children, so must come after #}
+                .field-list_actions .tree-node.closed {
+                    background-image: none;
+                    }
+                    .field-list_actions .tree-node.closed:after {
+                        font-family: "FontAwesome" !important;
+                        content: "\f105";
+                        }
+
+        #result_list tbody tr:focus {
+            background-color: white !important;
+            outline: 0px;
+            }
+
+        #drag-ghost {
+            background: rgba(0,49,225,0.4);
+            opacity: 0;
+            position: absolute;
+            z-index: 9;
+            font-size: 80%;
+            width: 80%;
+            }
+
+        #drag-line {
+            font-size: 0px;
+            position: absolute;
+            z-index: 9;
+            height: 5px;
+            background-color: rgba(253,130,4,0.8);
+            }
+            #drag-line:before {
+                content: ' ';
+                display: block;
+                position: absolute;
+                height: 12px;
+                width: 12px;
+                color: rgba(107,192,72,0.8);
+                margin: -4px 0 0 -2px;
+                border-radius: 11px;
+                }
+            #drag-line span {
+                font-size: 16px;
+                display: block;
+                position: absolute;
+                left: 12px;
+                bottom: 5px;
+                width: 250px;
+                height: 18px;
+                color: rgba(107,192,72,0.8);
+                background: rgba(242,242,242,0.88);
+                padding-left: 8px;
+                border-radius: 4px;
+                }
+
+        </style>
+{% endblock %}

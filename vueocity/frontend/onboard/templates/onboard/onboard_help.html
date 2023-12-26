@@ -1,0 +1,98 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Widget for onboarding new providers
+
+    Resources specific to the tool are loaded here, which includes
+    loading standard page scripts into portal.
+    Performance impact ok since sites with tool on have small amount of content.
+
+{% endcomment %}
+
+{% if is_portal %}
+    {% include "_base/script/standard.chtml" %}
+{% endif %}
+
+<link rel="stylesheet" href="{{ static_url }}fonts/elegant-icons.css" />
+
+<div id="onboard_help_wrapper">
+    <tool id="onboard_help" class="onboard_tool es_tool mp_flex_column">
+
+        <div class="onboard_heading mp_button_text mp_tooltip">
+            <span>Trial helper</span>
+            <tooltip>
+                Links to get you started and change pricing tier feature level.
+                </tooltip>
+            </div>
+
+        <div class="onboard_panel mp_hidden">
+
+            <div class="mp_flex_column">
+                <a class="mp_button_text mp_tooltip" title=
+                    "Opens the theme builder to explore mix-and-match style
+                    and layout options."
+                    href="{% url 'easy_portal_all' %}">
+                    Explore themes</a>
+                <a class="mp_button_text mp_tooltip" title=
+                    "Opens the site customization panel to quickly set key
+                    site options."
+                    href="{% url 'easy_sandbox' %}">
+                    Customize site</a>
+                <a class="mp_button_text mp_tooltip" title=
+                    "Short tutorial highlighting key features."
+                    href="{{ url_portal }}?mpf_tutorial=onboard ">
+                    Tutorial</a>
+                </div>
+
+            <div class="onboard_level">
+                <select id="onboard_level">
+                    {% for level in onboard_help.levels %}
+                        <option value="{{ level.key }}"
+                                {% if level.key == user.sandbox.policy.level_key %}
+                                    selected
+                                {% endif %}
+                                mp_icon="{{ level.icon }}"
+                                >
+                            {{ level.name }}
+                            </option>
+                    {% endfor %}
+                    </select>
+                </div>
+
+            </div>
+        </tool>
+    </div>
+
+<script> 'use strict';
+    mp.when_ui_loaded( function onboard_help() {
+
+        mp.viz_set_toggle( '#onboard_help .onboard_heading',
+                    '#onboard_help .onboard_panel' )
+
+        // Toggle closed on selection
+        $("#onboard_help .onboard_panel .mp_button_text")
+            .on( 'click', function(e) {
+                $("#onboard_help .onboard_heading").click()
+            })
+
+        function format_option( option ) {
+            var rv = option.text
+            try {
+                rv = $( '<span><span class="et ' + option.element.attributes.mp_icon.value +
+                        '"></span>&nbsp;' + option.text + '</span>' )
+                }
+            catch( e ) {}
+            return rv
+            }
+        $("#onboard_level")
+            .select2({
+                dropdownParent: $('.onboard_level'),
+                minimumResultsForSearch: Infinity,
+                templateSelection: format_option,
+                templateResult: format_option,
+                })
+            .on( 'select2:select', function( e ) {
+                window.location.replace( "{% url 'change_level' %}?onboard_level=" +
+                        e.params.data.id )
+                })
+        })
+    </script>

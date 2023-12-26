@@ -1,0 +1,249 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Test data for products and agreements
+#
+
+#--------------------------------------------------------------------
+# Customizable templates
+
+- fields:
+    name: select_access
+    template_type: Z
+    orig_path: "_custom/platform/select_access.html"
+  model: sitebuilder.templatecustom
+  pk: 2101
+
+
+#--------------------------------------------------------------------
+# Agreements
+
+- fields:
+    name: Users
+    notes: Allow all users on license access for the access period
+  model: catalog.agreement
+  pk: 10
+- fields:
+    name: Points
+    rules:
+      pay-points: True
+    notes: This license charges for a pool of points
+  model: catalog.agreement
+  pk: 11
+- fields:
+    name: One-time user seats
+    rules:
+      one_time_use: True
+  model: catalog.agreement
+  pk: 12
+
+- fields:
+    name: Subscription seats
+    rules:
+      auto-renew: True
+  model: catalog.agreement
+  pk: 20
+- fields:
+    name: 'Pay-for-points'
+    rules:
+      pay-points: True
+  model: catalog.agreement
+  pk: 30
+
+#--------------------------------------------------------------------
+# Product Agreements
+
+- fields:
+    sandbox: 20
+    agreement: 10
+    _tag_matches: '*'
+    sku: BuyPA_10
+    _unit_price: 1.1
+  model: catalog.pa
+  pk: 10
+
+- fields:
+    sandbox: 20
+    agreement: 10
+    _tag_matches: '*'
+    sku: FreePA_11
+    _description: 'Free access to all materials.'
+    visibility: N
+    _unit_price: 0.0
+  model: catalog.pa
+  pk: 11
+
+- fields:
+    sandbox: 20
+    agreement: 10
+    _tag_matches: 'TP-2022, *YYZ*, 12345 323.66'
+    sku: TestPA_12
+    _description: 'Automatic free access to NOTHING {{minutes}}'
+    _unit_price: 0
+    _rules:
+      access:
+        free_public: True
+  model: catalog.pa
+  pk: 12
+
+- fields:
+    sandbox: 20
+    agreement: 10
+    _tag_matches: '*'
+    sku: TestPA_13
+    _description: 'One-time Manual free access to everything {{minutes}}'
+    _unit_price: 0
+  model: catalog.pa
+  pk: 13
+
+- fields:
+    sandbox: 20
+    _tag_matches: TESTTAG
+    agreement: 11
+    sku: TestPA_14
+    _description: 'Recurring Manual free access to TESTTAG {{minutes}}'
+    _unit_price: 0
+    _access_period: 2 min
+  model: catalog.pa
+  pk: 14
+
+- fields:
+    sandbox: 20
+    agreement: 10
+    _tag_matches: '*'
+    sku: ExpiredSku
+    _description: 'Test for expiring SKU'
+    _unit_price: 10
+    _access_period: 100 h
+    pa_expires: "2010-01-01 01:01:01+01:00"
+  model: catalog.pa
+  pk: 15
+
+- fields:
+    sandbox: 20
+    agreement: 10
+    _tag_matches: '*'
+    sku: TestPA_20
+    _description: 'Purchase product for {{price}}'
+    _unit_price: 49.95
+  model: catalog.pa
+  pk: 20
+
+- fields:
+    sandbox: 20
+    agreement: 10
+    _tag_matches: '*'
+    sku: TestPA_30
+    _description: 'For {{price}} get access to everything {{minutes}}'
+    _unit_price: 99
+    _access_period: 2 w
+  model: catalog.pa
+  pk: 30
+
+#--------------------------------------------------------------------
+# Coupons
+
+- fields:
+    sandbox: 20
+    code: Free
+    unit_price: 0
+  model: catalog.coupon
+  pk: 10
+
+- fields:
+    sandbox: 20
+    code: Free1
+    unit_price: 0
+    _access_period: 2 months
+    _description: TestCoupon1
+  model: catalog.coupon
+  pk: 11
+
+- fields:
+    sandbox: 20
+    pa: 10
+    code: DiscountPA_10
+    _description: Half-price access to PA_10
+    unit_price: 0.5
+    coupon_expires: "2030-01-01 01:01:01+01:00"
+  model: catalog.coupon
+  pk: 12
+
+- fields:
+    sandbox: 20
+    pa: 10
+    code: FreePA_10
+    unit_price: 0
+    _description: |
+        Test Coupon with a longer description that
+        won't fit well on most screens
+  model: catalog.coupon
+  pk: 13
+
+- fields:
+    sandbox: 20
+    code: Discount
+    unit_price: 0.1
+    _access_period: 1 hour
+    access_end: "2030-01-01 01:01:01+01:00"
+    coupon_expires: "2020-01-01 01:01:01+01:00"
+  model: catalog.coupon
+  pk: 14
+
+- fields:
+    sandbox: 20
+    code: test2
+    unit_price: 0.1
+    _access_period: BAD
+  model: catalog.coupon
+  pk: 15
+
+- fields:
+    sandbox: 20
+    pa: 13
+    code: ExpiredCoupon
+    unit_price: 1
+    coupon_expires: "2010-01-01 01:01:01+01:00"
+  model: catalog.coupon
+  pk: 16
+
+- fields:
+    sandbox: 20
+    agreement: 20
+    _tag_matches: '*'
+    _access_period: yearly
+    _unit_price: 0
+    sku: POINTS
+    _description: 'Points access to all materials.'
+    _rules:
+      unit_points: 3
+  model: catalog.pa
+  pk: 100
+
+- fields:
+    sandbox: 20
+    _tag_matches: "BP1"
+    agreement: 10
+    sku: lms150
+    _unit_price: 0
+  model: catalog.pa
+  pk: 150
+
+- fields:
+    sandbox: 20
+    _tag_matches: TC1
+    agreement: 10
+    sku: lms151
+    _description: 'Purchase TC1 for {{price}} over {{weeks}} weeks'
+    _unit_price: 0.99
+  model: catalog.pa
+  pk: 151
+
+- fields:
+    sandbox: 20
+    _tag_matches: "TC1"
+    agreement: 10
+    sku: lms152
+    _description: 'Purchase TC1 for {{price}} over {{minutes}} minutes'
+    _unit_price: 1000
+  model: catalog.pa
+  pk: 152

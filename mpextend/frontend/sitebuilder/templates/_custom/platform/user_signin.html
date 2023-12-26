@@ -1,0 +1,31 @@
+{% extends '_custom/platform/user_signin.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Sign-in HTML layout and urls
+
+    Support various sign-in links for portal and portal-related pages
+    that can be embedded in pages. The goal is provide support for
+    popup login and "sticking" portal pages to their content subset.
+
+{% endcomment %}
+
+{% block login_links %}
+
+    {% if is_portal %}
+
+        <a id="mpsignup" href="#_" class="es_button_text"
+                onclick="mp.login()"
+                >
+            </a>
+        <a id="mpsignin" href="#_" class="es_button_text"
+                onclick="mp.login('vu_signin=1')"
+                >
+            </a>
+
+    {% else %}
+
+        {{ block.super }}
+
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Base CSS styling
+
+    PAGE TEMPLATE FRAGMENT CACHED
+
+    SAVE WITH UNIX STYLE LINE TERMINATIONS
+    FOR USE IN WINDOWS/LINUX ENVIRONMENT WITH django-compressor
+
+{%endcomment%}
+
+{% load compress_mp %}
+
+{#-- Main CSS style download #}
+{% compress_mp css main %}
+
+    {#-- Platform specific styles #}
+    {% mp_include_files "_base/style" "defaults" ".html" %}
+
+{% endcompress %}
+
+{#-- Setup favicon based on uploaded type #}
+{% if site.icon.url %}
+    {% if site.icon.url|endswith:'ico' %}
+        <link rel="shortcut icon" type="image/x-icon" href="{{ site.icon.url }}" />
+    {% elif site.icon.url|endswith:'png' %}
+        <link rel="icon" type="image/png" href="{{ site.icon.url }}" />
+    {% else %}
+        <link rel="icon" href="{{ site.icon.url }}" />
+    {% endif %}
+{% else %}
+    <link rel="icon" type="image/png" href="{{ static_url_resource }}/site_icon.png" />
+{% endif %}
+
+{#-- Include everything specific to recreating sandbox style #}
+{% include "_base/style/sandbox.html" %}
+
+{#-- Include staff styling for staff and admin pages #}
+{% if is_page_staff %}
+    {% include "_base/style/staff.chtml" %}
+{% endif %}
+
+{#-- Placeholder for root overrides #}
+{% include "root/style.html" %}

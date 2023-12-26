@@ -1,0 +1,128 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Misc staff tool CSS
+ */
+
+a.fa
+    &:before
+        font-family: FontAwesome !important
+
+.mp_info.fa
+    font-size: 110%
+    opacity: 0.4
+    color: $cOrange
+    &:hover
+        opacity: 0.8
+
+// Style custom file upload controls
+.mp_upload
+    margin: 0 0.2em
+    .mp_file_name
+        @extend .mp_width_intrinsic
+        font-size: 90%
+        font-style: italic
+        padding: 0.4em 0.8em
+        background: $bStaff_light
+        border-radius: 2px
+        &:empty
+            padding: 0
+    &.direct
+        .mp_file_remove
+            font-size: 80%
+            margin-top: 0.1em 0.2em !important
+            color: $cRed
+            &:is(:hover,:focus,:active)
+                color: rgba( $cOrange, 1 )
+// Don't show image file name in production
+.mpf .mp_upload.image .mp_file_name
+    display: none !important
+.mp_upload.image .mp_file_name
+    font-size: 70%
+    padding: 0
+
+.s3direct, .s3direct *
+    float: none !important
+    margin: 0 !important
+    .cancel-button
+        position: absolute
+        font-size: 2em
+        top: 0
+        right: -0.8em
+        line-height: 0.6em
+
+input[type='file'], input[type='file']:hover, input[type='file']:focus
+    font-size: 90% !important
+    width: 8em !important
+    color: transparent !important
+    background: transparent !important
+    box-shadow: none !important
+    margin: 0.2em 0 0 0 !important
+    padding: 0 !important
+
+// Viz Hide/show
+.es_viz_collapsed .es_viz_icon
+    width: 0.8em
+    &:before
+        content: "\f105"
+.es_viz_expanded .es_viz_icon
+    width: 1.1em
+    &:before
+        content: "\f107"
+.es_viz_icon:before
+    font-size: 120%
+    font-family: FontAwesome !important
+    border-radius: 50%
+    transition: background 0.12s ease-out
+
+// Tooltip defaults
+tooltip
+    display: none
+.tippy-box, .tippy-arrow
+    font-size: inherit
+    line-height: inherit
+    padding: 0.2em
+.tippy-box
+    color: $cWhite
+    background-color: rgba( $cBlack, 0.9 )
+.tippy-arrow
+    color: $cBlack
+
+// Slider styles
+.mp_slider
+    display: block
+    position: relative
+    left: 0px
+    top: 0px
+    margin: 0.1em
+    height: 1.2em
+    width: 2em
+    padding: 0 0 0 2em
+    border-radius: 1.2em
+    background: rgba( $cBlack, 0.1 )
+    +es_pointer
+    > .ball
+        position: absolute
+        left: 0.18em
+        top: 0.12em
+        height: 0.96em
+        width: 0.96em
+        border-radius: 0.96em !important
+        opacity: 0.4
+        transition: background-color 0.12s, left 0.12s
+    &.slider_on > .ball
+        opacity: 1
+        left: 0.84em
+    > .text
+        font-size: 90%
+        position: absolute
+        top: 0em
+        left: 2.6em
+        font-weight: normal
+        min-width: 7em
+    &:is(:hover,:focus,:active)
+        box-shadow: 1px 1px 4px rgba( $cBlack, 0.32 ), 4px 4px 8px rgba( $cBlack, 0 ) !important
+        > .ball
+            opacity: 0.8
+        > .text
+            text-shadow: 1px 1px 2px rgba( $cBlack, 0.4 );
+

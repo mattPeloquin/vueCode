@@ -1,0 +1,73 @@
+{% extends 'group/_page.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Account admin settings screen
+
+{% endcomment %}
+
+{% block page_ready_script %}
+
+    {{ block.super }}
+
+    mp.set_watermark("#{{ form.name.auto_id }}", "Account name");
+    mp.set_watermark("#{{ form.city.auto_id }}", "City");
+    mp.set_watermark("#{{ form.state.auto_id }}", "State");
+    mp.set_watermark("#{{ form.postal_code.auto_id }}", "Postal code");
+    mp.set_watermark("#{{ form.phone.auto_id }}", "Phone 1");
+
+    {% include "_/field_errors.html" with form=form %}
+
+{% endblock %}
+
+{% block group_page_body %}
+
+    {# Note enctype setting necessary for supporting image upload #}
+    <form enctype='multipart/form-data' method="post" class="mp_form" data-parsley-validate>
+        {% csrf_token %}
+
+        <div class="mp_flex_column">
+
+            <div>
+                <span>{{ form.name }}</span>
+                </div>
+            <br>
+            <div>
+                <h3>Account image</h3>
+                <p>Upload image to display for account</p>
+                {% if account.group_account.image %}
+                    <div>
+                        <img class="es_image_large" src="{{ account.image.url }}"/>
+                        </div>
+                {% endif %}
+                <div class="mp_flex_column">
+                    {{ ga_form.image }}
+                    </div>
+                </div>
+            <br>
+            <h3>Contact information</h3>
+            <div>
+                <span>{{ form.street }}</span>
+                </div>
+            <div>
+                <span>{{ form.city }}</span>
+                </div>
+            <div>
+                <span>{{ form.state }}</span>
+                <span>{{ form.country }}</span>
+                </div>
+            <div>
+                <span>{{ form.postal_code }}</span>
+                <span>{{ form.phone }}</span>
+                </div>
+
+            </div>
+
+        <div>
+            <a href="..">Cancel</a>
+            <input type="submit" class="es_button" name="update_profile"
+                    value="Update account" />
+            </div>
+
+        </form>
+
+{% endblock %}

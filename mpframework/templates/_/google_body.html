@@ -1,0 +1,23 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Google body support
+
+    AUTH TEMPLATE FRAGMENT CACHED
+
+{%endcomment%}
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ root_google_gtm }}"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+
+{% if site.policy.google|startswith:'GTM' %}
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ site.policy.google }}"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+            </noscript>
+{% endif %}
+
+<script>
+    GTM.push({
+        'mpUser': mp.user.tag,
+        });
+    </script>

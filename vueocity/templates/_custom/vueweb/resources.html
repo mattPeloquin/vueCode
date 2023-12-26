@@ -1,0 +1,24 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Resources page displays tabbed access to child collections.
+
+{%endcomment%}
+
+
+<article id="vue_resources" class="mp_flex_column"  data-bind="
+        with: get_tag('resources'),
+        ">
+
+    {% if user.workflow_dev %}
+        {% mp_include "collection_panel" with bind="bind_content_panel" %}
+    {% else %}
+
+        <!-- ko with: mpp.vm_items().get_from_slug('recipes') -->
+
+            {% mp_include "collection_panel" with bind="bind_content_panel" %}
+
+        <!-- /ko -->
+
+    {% endif %}
+
+    </article>

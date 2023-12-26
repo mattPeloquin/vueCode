@@ -1,0 +1,27 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    User profile menu
+
+{% endcomment %}
+
+<nav class="es_top_user mp_menu_user">
+    <div class="mp_menu">
+        <div class="mp_menu_item mp_menu_header">
+            <a class="mp_tooltip" tooltip='user_menu'>
+                <script>
+                    mpt.tooltip_user_menu = function() {
+                        return `Currently logged in as ${ mp.user.name }`
+                        }
+                    </script>
+                <img class="mp_user_image es_image_user" />
+                <span class="fa fa-user mp_user_icon"></span>
+                <span class="es_menu_text">
+                    <span class="mp_user_name mpr_hide_med"></span>
+                    </span>
+                </a>
+            <div class="es_menu mp_menu mp_menu_dropdown">
+                {% mp_include_files "user/profile" "menu" ".html" %}
+                </div>
+            </div>
+        </div>
+    </nav>

@@ -1,0 +1,51 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Build breadcrumb control based on the current portal path,
+    providing access back to home pages.
+
+    There are several scenarios, since panes can be nested,
+    and the drill-down URL home page is a sibling to its children.
+
+    no_breadcrumbs is used to control cases where it is clear where location is,
+    (e.g., tabbed-ui) so breadcrumbs aren't needed.
+
+{% endcomment %}
+
+{% if not sb_options.site.hide_breadcrumbs %}
+
+    <nav class="es_top_breadcrumb" data-bind="
+            if: show_breadcrumbs,
+            ">
+        <div class="es_breadcrumbs" data-bind="
+                let: { panels: mpp.nav_path_current_panels()() }
+                ">
+            <!-- ko if: !mp.is_portal_content && panels.length <= 1 -->
+                <span class="es_breadcrumb">
+                    <a class="mp_nav_anchor mp_text_nowrap" data-bind="
+                            html: mpp.sbt( 'back_home', $element ),
+                            attr: { href: mp.nav_default() },
+                            ">
+                        </a>
+                    </span>
+            <!-- /ko -->
+            <!-- ko ifnot: panels.length <= 1 -->
+                <!-- ko foreach: panels -->
+                    <!-- ko if: $index() < panels.length - 1 -->
+                        <span class="es_breadcrumb">
+                            <a class="mp_nav_anchor mp_text_nowrap" data-bind="
+                                    html: mpp.sbt( 'back_prefix', $element ) +
+                                            $data.dataset.panel_name,
+                                    attr: {
+                                        href: mpp.nav_content_address( $data.id ) ||
+                                                mp.nav_path_full( $data.id ),
+                                        },
+                                    ">
+                                </a>
+                            </span>
+                    <!-- /ko -->
+                <!-- /ko -->
+            <!-- /ko -->
+            </div>
+        </nav>
+
+{% endif %}

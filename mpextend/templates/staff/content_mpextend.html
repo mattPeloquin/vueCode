@@ -1,0 +1,12 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Extended content menus
+
+{%endcomment%}
+
+
+{% if user.access_root_all %}
+    <hr class="mp_menu_break">
+    <a class="mp_menu_item root"  href="{% url 'root_admin:lms_package_changelist' %}">Packages</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:lms_packageroot_changelist' %}">Package roots</a>
+{% endif %}

@@ -1,0 +1,80 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Early bootstrap scripting includes config and early access
+    to logging, error handling, bootstrapping, etc.
+
+    SANDBOX TEMPLATE FRAGMENT CACHED
+
+{%endcomment%}
+
+{% load compress_mp %}
+
+{% compress_mp_inline js first_cache %}
+    <script src="{{ static_url }}_comment.js"></script>
+
+    <script> 'use_strict';
+        mp.url_bmsg = '{% url 'browser_message' %}'
+        mp.timeout_error = {{ timeout_error }} * 1000
+        mp.code_rev = {{ code_rev }}
+        mp.log_info_level = {{ log_info_level }}
+        mp.testing = {{ mp_testing | jsbool }}
+        mp.sandbox = {
+            name: '{{ site.name }}',
+            cache_group: '{{ site.cache_group }}',
+            cache_age: '{{ browser_cache_age }}',
+            }
+        mp.request = {
+            breakpoints: {
+                width: {
+                    'small': '{{ sb_options.breakpoints.width_small }}',
+                    'medium': '{{ sb_options.breakpoints.width_medium }}',
+                    'large': '{{ sb_options.breakpoints.width_large }}',
+                    },
+                height: {
+                    'small': '{{ sb_options.breakpoints.height_small }}',
+                    'medium': '{{ sb_options.breakpoints.height_medium }}',
+                    },
+                },
+            }
+        mp.options = {
+            timeout_idle: {{ timeout_idle }},
+            timeout_ping: {{ timeout_ping }},
+            refresh_debounce_delay: {{ site.options.refresh_debounce_delay|default:50 }},
+            autosave_off: {{ site.options.autosave_off | jsbool }},
+            no_text_selection: {{ site.options.no_text_selection | jsbool }},
+            }
+        mp.sb_options = {}
+        window.mpurl = {
+            host_main: '{{ site.main_host_url }}',
+            host_ssl: '{{ site.main_host_ssl }}',
+            sandbox_support_email: '{{ site.email_support }}',
+            }
+        </script>
+
+    <script src="{{ static_url }}mpf-js/first/log.js"></script>
+    <script src="{{ static_url }}mpf-js/first/capture_errors.js"></script>
+    <script src="{{ static_url }}mpf-js/first/script_ready.js"></script>
+    <script src="{{ static_url }}mpf-js/first/load_data.js"></script>
+    <script src="{{ static_url }}mpf-js/first/device.js"></script>
+    <script src="{{ static_url }}mpf-js/first/util.js"></script>
+
+    <script> 'use strict';
+        mp.log_highlight("=> LOADING " + mp.url_current )
+        mp.log_info( mp.sandbox.name + " " + mp.user.tag + ": " + mp.device.desc )
+        mp.raw_urls_load( mp.load_urls )
+        </script>
+
+{% endcompress %}
+
+{% compress_mp js first_download %}
+
+    {#-- External shared dependencies #}
+    <script defer src="{{ static_url }}{{ compress_on|yesno:"min,libs" }}/jquery.js"></script>
+    <script defer src="{{ static_url }}{{ compress_on|yesno:"min,libs" }}/lodash.js"></script>
+
+    {#-- MPF shared dependencies #}
+    <script defer src="{{ static_url }}mpf-js/first/extensions.js"></script>
+    <script defer src="{{ static_url }}mpf-js/first/ajax.js"></script>
+    <script defer src="{{ static_url }}mpf-js/first/storage.js"></script>
+
+{% endcompress %}

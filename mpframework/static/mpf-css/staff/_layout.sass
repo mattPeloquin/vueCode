@@ -1,0 +1,72 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Common layout for changelist and form panels
+ */
+
+// Fixup main admin panel layout
+#admin_top
+    font-size: 0.85rem
+    position: fixed
+    z-index: 4
+    width: 100%
+    padding: 0.8em
+    background-color: $cWhite
+#admin_top1
+    margin: 0.2em 0 0 0.6em
+#admin_top2
+    margin: 0.2em 0 0 0.6em
+#admin_top3
+    margin: 0.2em 0 0 0.6em
+#admin_main
+    font-size: 1rem
+    background-color: $cWhite
+    padding-left: 0
+    padding-right: 0
+    .mp_admin_form .mp_input
+        font-size: 1rem
+
+header .mp_module
+    padding: 0.4em 0 0 0.8em
+#mp_breadcrumbs
+    font-size: 0.85rem
+    > ul
+        padding: 0 0 0 0.4em
+        a
+            background-position: 100% -260px
+
+header#mp_header
+    #mp_navigation
+        padding: 0px
+
+.mp_messagelist
+    font-size: 90% !important
+    padding: 0 !important
+    li
+        border: none
+        border-radius: 0px
+        padding: 0.3em 0.6em !important
+        list-style: none
+
+.pagination
+    ul
+        display: flex
+        padding: 0em 1em 0 1em
+        color: rgba( $cBlack, 0.6 )
+        font-weight: normal
+        li
+            list-style: none
+            padding: 0.2em 0.3em 0.2em 0.3em
+        a
+            color: rgba( $cBlue, 0.8 )
+            &:hover
+                color: $cOrange
+
+footer.submit_row
+    padding-top: 0.8em !important
+    padding-bottom: 0em !important
+    background-image: none !important
+    li
+        background-color: inherit !important
+        margin-bottom: 0px !important
+        input
+            border: 0 !important

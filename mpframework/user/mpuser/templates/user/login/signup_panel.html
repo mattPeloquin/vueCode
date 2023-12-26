@@ -1,0 +1,21 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Layout for the signup panel
+
+{% endcomment %}
+
+{% if not site.options.user.no_create %}
+    <div id="user_create" class="mp_user_create es_login_panel">
+        <div class="mp_flex_column mp_flex_vcenter">
+
+            {% include "user/login/signup_form.html" %}
+
+            <div class="mp_flex_column mp_flex_vcenter">
+                <div class="es_user_switch es_theme_overlay es_button_flat mp_user_switch">
+                    {{ sb_options.text.existing_account|default:"Already have an account?" }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+{% endif %}

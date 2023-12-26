@@ -1,0 +1,36 @@
+{% mp_extends 'pane_drill' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display portal types on home page with drill down into item lists.
+    Collections are not used.
+
+{%endcomment%}
+
+{% block pane_name %} es_pane_type_drill_items {% endblock %}
+
+{% block pane_home_nav %}
+
+    {% mp_include "items" with items='mpp.vm_main.types()' %}
+
+{% endblock %}
+
+{% block pane_panels %}
+
+    <!-- ko foreach: mpp.vm_main.types() -->
+        <article class="es_content es_collection_header" data-bind="
+                lazy_bind_pane: $data,
+                bind_items: true,
+                class: css_classes(),
+                ">
+            <div class="es_content_panel es_theme_panel">
+                <h2 class="es_type_title" data-bind="
+                        visible: !!sb('text1'),
+                        html: sb('text1'),
+                        "></h2>
+                {% mp_include "items" with items=pane.items %}
+                </div>
+            {% include "portal/controls/content.html" %}
+            </article>
+    <!-- /ko -->
+
+{% endblock %}

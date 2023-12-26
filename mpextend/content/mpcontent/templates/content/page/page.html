@@ -1,0 +1,20 @@
+{% extends '_base/pages/style.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    HTML for displaying protected page content
+    This is served from Django directly into the viewer page; this viewer
+    inherits from page_style to capture all sandbox styles.
+
+{% endcomment %}
+
+{% block page_body %}
+
+    <div class="es_protectedpage es_protectedpage_{{ content_page.pk }}">
+
+        {% if content_page %}
+            {{ content_page.html | safe }}
+        {% endif %}
+
+        </div>
+
+{% endblock %}

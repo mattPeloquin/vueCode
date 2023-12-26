@@ -1,0 +1,22 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Vueocity extension to top menu
+
+{%endcomment%}
+
+{% if user.access_high %}
+    {% include "staff/sitebuilder_tools.html" %}
+{% endif %}
+
+{#-- Staff help is on by default and then managed by preferences #}
+<div class="mp_menu_control mp_help_staff_toggle mpr_hide_small">
+    <div class="mp_tooltip_dynamic fa fa-info-circle" tooltip="staff_help">
+        <script>
+            mpt.tooltip_staff_help = function() {
+               const help = mp.help_off() ? "off" : "on"
+               return `Click to toggle staff help text on and off.<br>
+                       Help text is currently ${ help }.`
+               }
+            </script>
+        </div>
+    </div>

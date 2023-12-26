@@ -1,0 +1,33 @@
+
+Moving Provider DB content
+
+All content associated with a provider can be exported and imported into DBs.
+Any S3 content also needs to tbe moved
+
+
+=====  Moving Provider DB content  =======
+
+To export:
+
+    > fab db-dumpscript:pid=xxx
+
+Creates a file "db_data.py" that contains python for populating provider info
+
+Move this to server using get and push files:
+
+    > fab -H 52.13.100.111 get_files mpframework/db_data.py
+    > fab -H prodmpd.vueocity.com push-files mpframework/db_data.py
+
+
+To import place file in mpframework folder of destimation:
+
+    > fab manage "runscript -v2 mpframework.db_data"
+
+
+=====  Moving Provider S3 content  =======
+
+To go across accounts, need to set up permissions on one of the buckets to allow the other...
+Note that custom metadata on large files won't transfer due to multipart copy
+
+    > aws s3 sync s3://vueocity-protected-prod/prod/lms/A s3://vueocity-protected-prod/prod/lms/B
+

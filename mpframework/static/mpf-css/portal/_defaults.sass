@@ -1,0 +1,61 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Default style for portal layout and baseline theme styling
+ */
+
+// For heros, attach image to main element
+// to support easy color grading with overlay
+.es_hero_container
+    position: relative
+    width: 100%
+    overflow: hidden
+    justify-content: center
+    background: var(--es_hero_sheen)
+    // Show one of 2 hero overlays depending on hero setting
+    &:is(.es_hero_background, .es_hero_none) .es_hero_overlay
+        display: none
+    &:not(.es_hero_background,.es_hero_none) + .es_home_body
+        .es_home_title
+            display: none
+.es_hero_image, .es_hero_video
+    @extend ._base_background_image
+    position: absolute
+    z-index: -1
+    filter: var(--es_hero_filter)
+    opacity: var(--es_hero_opacity)
+.es_horizontal .es_hero_image
+    background-size: 100% 66vw
+    background-position: center calc( -25vw + 80px )
+.es_hero_video
+    video
+        width: 100%
+        height: 100%
+        object-fit: cover
+.es_hero_none
+    display: none
+.es_hero_overlay
+    z-index: 1
+
+.es_hero_container
+    header
+        margin: 2em
+        h1
+            font-size: 2rem
+        section
+            font-size: 1.2rem
+
+.es_note
+    font-style: italic
+
+.es_footer_icon img
+    // Usually defines the height of the footer
+    max-height: 2.2em
+    display: inline-block !important
+    vertical-align: top !important
+    padding: 0.2em
+.es_footer_notice
+    font-size: 0.8rem
+    *
+        white-space: nowrap
+    a
+        margin-left: 0.6em

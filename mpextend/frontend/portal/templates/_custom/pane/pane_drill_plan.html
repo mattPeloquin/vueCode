@@ -1,0 +1,33 @@
+{% mp_extends 'pane_drill' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display top collections with drill down organized by in/out of plan.
+
+{%endcomment%}
+
+{% block pane_name %} es_plan es_pane_drill_plan {% endblock %}
+
+{% block pane_home_nav %}
+    <!-- ko with: mpp.vm_trees() -->
+
+        {#-- User logged in, show in-plan items in top section #}
+        {% if user.is_ready %}
+
+            <section class="es_plan_in">
+                <h2>My content</h2>
+                {% mp_include "items" with items='tops_plan_in()' %}
+                </section>
+            <section class="es_plan_out">
+                <h2>Explore additional content</h2>
+                {% mp_include "items" with items='tops_plan_out()' %}
+                </section>
+
+        {% else %}
+            <section class="es_logged_out">
+                <h2>Sign in to add content to your plan</h2>
+                {% mp_include "items" with items='all_tops()' %}
+                </section>
+        {% endif %}
+
+    <!-- /ko -->
+{% endblock %}

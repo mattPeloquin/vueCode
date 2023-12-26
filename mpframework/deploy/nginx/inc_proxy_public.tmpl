@@ -1,0 +1,24 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Shared block for accessing S3 public files through nginx
+    Assumes path to S3 is in $1
+
+{%endcomment%}
+
+set $mp_location 'proxy_public';
+
+{% if s.MP_CLOUD %}
+
+    proxy_cache         static_cache;
+    proxy_cache_valid   1m;
+    {{ cache_header }}
+
+    # Serve as proxy redirect to S3
+    proxy_pass $1;
+
+{% else %}
+
+    # Serve as local file
+    alias {{ path_playpen }}/$1;
+
+{% endif %}

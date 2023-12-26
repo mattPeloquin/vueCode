@@ -1,0 +1,33 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Files for loading codemirror and options
+
+    THIS FILE NEEDS TO BE SAVED WITH UNIX STYLE LINE TERMINATIONS
+    FOR USE IN WINDOWS/LINUX ENVIRONMENT WITH django-compressor
+
+{%endcomment%}
+
+{% load static %}
+
+<script defer src="{% static "editors/codemirror.js" %}"></script>
+<script defer src="{% static "editors/codemirror_addon/dialog/dialog.js" %}"></script>
+<script defer src="{% static "editors/codemirror_addon/edit/matchbrackets.js" %}"></script>
+<script defer src="{% static "editors/codemirror_addon/display/fullscreen.js" %}"></script>
+<script defer src="{% static "editors/codemirror_addon/display/autorefresh.js" %}"></script>
+<script defer src="{% static "editors/codemirror_addon/scroll/simplescrollbars.js" %}"></script>
+<script defer src="{% static "editors/codemirror_addon/scroll/annotatescrollbar.js" %}"></script>
+<script defer src="{% static "editors/codemirror_addon/mode/overlay.js" %}"></script>
+
+<script defer src="{% static "editors/codemirror_addon/search/search.js" %}"></script>
+<script defer src="{% static "editors/codemirror_addon/search/searchcursor.js" %}"></script>
+<script defer src="{% static "editors/codemirror_addon/search/jump-to-line.js" %}"></script>
+<script defer src="{% static "editors/codemirror_addon/search/matchesonscrollbar.js" %}"></script>
+<script defer src="{% static "editors/codemirror_addon/search/match-highlighter.js" %}"></script>
+
+<script defer src="{% static "editors/codemirror_mode/css/css.js" %}"></script>
+<script defer src="{% static "editors/codemirror_mode/django/django.js" %}"></script>
+<script defer src="{% static "editors/codemirror_mode/htmlmixed/htmlmixed.js" %}"></script>
+<script defer src="{% static "editors/codemirror_mode/javascript/javascript.js" %}"></script>
+<script defer src="{% static "editors/codemirror_mode/yaml/yaml.js" %}"></script>
+<script defer src="{% static "editors/codemirror_mode/xml/xml.js" %}"></script>
+

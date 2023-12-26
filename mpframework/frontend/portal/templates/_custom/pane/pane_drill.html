@@ -1,0 +1,54 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Used both as a basic home page with drill-down pane and as a base
+    template for most drill-down portal panes.
+
+    Expects a default VM context binding of mpp.vm_main, along with the
+    following pane options:
+
+      collections - VMs bag, defaults to 'all_tops'
+      nav_home - Nav id for home address under pane, defaults to home
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/macros.html" %}
+
+<pane class="{% block pane_name %} es_pane_drill {% endblock %}"
+        {% usemacro add_pane_context pane %}
+        >
+
+    {#-- Home page panel has intro and nav structure for drilling into other panels #}
+    <article id="{{ pane.nav_home|default:'home' }}"
+            class="es_home mp_nav_home mp_nav_panel
+                    mp_flex_column" data-bind="
+                bind_nav_panel: false,
+                " data-no_breadcrumbs='true'
+                >
+        {% block pane_home_header %}
+            {% if not home_hide %}
+                {% mp_include "home_html" with featured_group='home_collections' group_items='all_tops()' %}
+            {% endif %}
+        {% endblock %}
+        {#-- Nav section, defaults to cards for top collections #}
+        <section class="es_portal_nav es_theme_panel">
+            <div class="es_no_results mp_hidden mp_no_results" data-bind="
+                    html: mpp.sbt( 'no_results', $element ),
+                    ">
+                </div>
+            {% block pane_home_nav %}
+                <!-- ko with: {{ pane.collections|default:'all_tops()' | safe }} -->
+                    {% mp_include "items" with items='$data' %}
+                <!-- /ko -->
+            {% endblock %}
+            </section>
+        </article>
+
+    {#-- Nav panels for each drill-down nav item #}
+    {% block pane_panels %}
+        <!-- ko foreach: {{ pane.collections|default:'all_tops()' | safe }} -->
+            {% mp_include "collection_panel" %}
+        <!-- /ko -->
+    {% endblock %}
+
+    </pane>

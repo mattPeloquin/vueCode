@@ -1,0 +1,38 @@
+{% mp_extends 'pane_tabs' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Show items under tabs for portal types.
+    Collections are not used.
+
+{%endcomment%}
+
+{% block pane_name %} es_pane_tabs_type {% endblock %}
+
+{% block pane_tabs %}
+    <!-- ko with: mpp.vm_main.types() -->
+        {% mp_include "nav_content_tabs" %}
+    <!-- /ko -->
+{% endblock %}
+
+{% block pane_panels %}
+
+    <!-- ko foreach: mpp.vm_main.types() -->
+        <article class="es_content es_type_panel" data-bind="
+                lazy_bind_pane: $data,
+                bind_items: true,
+                class: css_classes(),
+                " data-no_breadcrumbs='true'
+                >
+            <div class="es_content_panel es_theme_panel">
+                <h2 class="es_type_title" data-bind="
+                        visible: !!sb('text1'),
+                        html: sb('text1'),
+                        "></h2>
+                {% mp_include "items" with items=pane.items %}
+                </div>
+
+            {% include "portal/controls/content.html" %}
+            </article>
+    <!-- /ko -->
+
+{% endblock %}

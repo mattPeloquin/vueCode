@@ -1,0 +1,122 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Controls CSS only loaded for admin screens
+ */
+
+// Staff field look
+.mp_input
+    margin: 0
+    padding: 0.4em 0.2em 0.5em 0.6em !important
+    font-weight: normal
+    vertical-align: middle
+    border: $cStaff_border !important
+    border-radius: 3px
+    background-color: $cStaff_field_back !important
+    box-shadow: none !important
+    background-image: none !important
+    transition: border-color 0.12s ease-out
+    &:is(:focus,:active,:hover)
+        border: 1px solid rgba( $cBlue, 0.9 ) !important
+    &.es_field_error
+        border: 1px solid rgba( $cRed, 1 ) !important
+textarea.mp_input
+    line-height: 1.2
+
+// Headings
+h1, h2, h3, h4
+    color: $cBlack
+h3
+    font-style: normal !important
+    padding-top: 8px
+
+// Editors
+.mp_editor
+    width: 100%
+    border: $cStaff_border
+    border-radius: 3px
+    box-shadow: none !important
+    background-image: none !important
+    &.mp_full
+        z-index: 999
+        border: none
+        .mp_editor_iframe, .CodeMirror
+            height: calc( 100% - 2em ) !important
+    &:is(:focus,:active,:hover)
+        border: 1px solid rgba( $cBlue, 0.6 )
+    .mp_editor_top
+        background: $bStaff_menu_back
+        width: 100%
+        .mp_button_flat
+            font-size: 80%
+            border-radius: 1px
+        .mp_editor_select
+            margin-right: 1em
+    iframe
+        width: 100%
+
+// Prevent overrides of file upload style
+input[type='file'],
+input[type='file']:hover, input[type='file']:focus, input[type='file']:active
+    font-size: 0.9rem !important
+    background: transparent !important
+    border: none !important
+    box-shadow: none !important
+    margin: 0.2em 0 0 0 !important
+    padding: 0 !important
+
+// Extra controls added at the top of admin screens
+.mp_admin_title
+    color: $cGreen !important
+    font-style: normal
+    text-shadow: 0px 0px 1px rgba( $cBlack, 0.6 )
+    a.mp_button_flat
+        margin-left: -0.4em
+    .mp_help_staff
+        text-shadow: none
+
+.mp_admin_bar
+    height: 100%
+    margin-left: 0.5em
+
+.mp_flex_line
+    > .mp_button_flat, > .mp_button
+        margin-left: 0.8em
+
+// Size read only divs to to match fields
+.mp_readonly
+    background-color: $cStaff_field_readonly !important
+    height: 2em
+    max-width: $WIDTH_FIELD
+    line-height: 1.8
+    margin: 0
+    border: 0 !important
+    font-weight: normal
+    vertical-align: middle
+    padding-left: 0.4em
+    border-radius: 2px
+
+.mp_admin_buttons
+    > input, > a
+        font-size: 1rem
+        font-style: normal
+        font-weight: bold
+        margin: 0 0.4em
+        &.mp_button
+            // Save/cancel buttons
+            border-radius: 3px
+            color: $cWhite
+            &:hover
+                background-color: rgba( $cOrange, 0.9 )
+                background-image: var(--sheen_high)
+        &.mp_button_flat, &.mp_button_text
+            color: rgba( $cBlack, 0.6 )
+
+// Other buttons
+.related-lookup, .djn-drag-handler, .delete-handler, .remove-handler
+    font-size: 160%
+    border: none !important
+    font-family: FontAwesome !important
+    background: none
+    color: rgba( $cOrange, 0.4 ) !important
+    &:hover
+        color: rgba( $cOrange, 1 ) !important

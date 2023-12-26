@@ -1,0 +1,23 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Render a set draggable tree nodes or items
+    No recursion/expansion - used in areas such as dragging tree
+    nodes to create a plan.
+
+    Expects ko context set to ViewModel derived from ItemVMs
+
+{%endcomment%}
+
+<div class="es_items mp_flex_column" data-bind="
+        foreach: {{ content|default:'all_tops()' }},
+        ">
+    <item class="es_drag es_pointer" data-bind="
+            update_draggable: true,
+            class: css_classes(),
+            ">
+        <h3 class="es_item_title" data-bind="
+                html: sb('name'),
+                ">
+            </h3>
+        </item>
+    </div>

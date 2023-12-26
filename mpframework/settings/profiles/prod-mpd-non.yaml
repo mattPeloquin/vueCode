@@ -1,0 +1,12 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Make dev server run in non-debug mode
+#
+
+
+DEBUG: False
+
+MP_COMPRESS:
+    CSS: True
+    JS: True
+MP_EDGE_NOCACHE: []

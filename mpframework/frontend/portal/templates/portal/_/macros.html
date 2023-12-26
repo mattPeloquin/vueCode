@@ -1,0 +1,21 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    General macros for small code snippets
+
+{%endcomment%}
+
+{% load macros %}
+
+{%comment%}
+    Inject pane config into context, which is MERGED with VM.
+    Can then be accessed as vm.pane
+    MUST BE PROPER JSON
+{%endcomment%}
+{% macro add_pane_context pane %}
+
+    data-pane_context='{
+        "options": {{ pane.options | json }},
+        "sb_options": {{ pane.sb_options | json }}
+         }'
+
+{% endmacro %}

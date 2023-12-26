@@ -1,0 +1,51 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Default Vueocity light color palette
+
+{%endcomment%}
+
+<style>
+    :root {
+        --text: rgb(88,89,107,0.85);
+        --back: white;
+        --overlay: rgba(88,89,107,0.6);
+        --highlight: rgba(253,130,4,0.8);
+        --variant: rgba(107,192,72,0.6);
+
+        --heading_text: rgb(88,89,107);
+        --list_title: rgb(88,89,107,0.95);
+        --card_title: rgb(88,89,107,0.95);
+        --list_text: rgb(88,89,107,0.8);
+        --card_text: rgb(88,89,107,0.8);
+
+        --highlight_text: white;
+        --hover_text: rgb(107,192,72);
+
+        --overlay_title: rgb(250,208,0);
+        --overlay_text: rgba(255,255,255,0.8);
+
+        --list_hover: rgba(107,192,72,0.3);
+        --current: rgba(107,192,72,0.6);
+
+        --popup_back: rgba(88,89,107,.95);
+        --popup_text: rgb(250,208,0);
+        --tooltip_back: rgba(128,129,147,.95);
+
+        --menu_text: rgb(88,89,107);
+        --menu_back: rgba(255,255,255,.9);
+
+        --icon_color: rgb(107,192,72);
+
+        --sheen: linear-gradient( var(--gradient), rgba(220,220,220,0.2), rgba(220,220,220,0) );
+        --sheen_high: linear-gradient( var(--gradient), rgba(88,89,107,0), rgba(88,89,107,0.2) ),
+                        linear-gradient( var(--gradient), rgba(255,255,255,0.1), rgba(255,255,255,0) );
+
+        --shadow: 88,89,107;
+        --shadow_overlay: rgba(88,89,107,1);
+        --shadow_highlight: rgba(88,89,107,0.24);
+        }
+
+    {# Make buttons and icons match Vueocity staff scheme #}
+    {% include "_/add_color.html.css" with class='.es_button' text='white' back='rgba(253,130,4,0.66)' %}
+
+</style>

@@ -1,0 +1,28 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Links to content add acreens
+
+    KEEP IN SYNC WITH: menu-content_addcollection_mpextend.html
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% usemacro menu_item 'Video' 'fa-film' 'staff_admin:mpcontent_video_add' %}
+{% usemacro menu_item 'PDF' 'fa-file-pdf-o' 'staff_admin:mpcontent_pdf_add' %}
+{% usemacro menu_item 'Web page' 'fa-desktop' 'staff_admin:mpcontent_protectedpage_add' %}
+{% usemacro menu_item 'Live event' 'fa-hourglass-2' 'staff_admin:mpcontent_liveevent_add' %}
+{% usemacro menu_item 'Audio' 'fa-music' 'staff_admin:mpcontent_audio_add' %}
+{% if user.access_high %}
+    {% usemacro menu_item 'Link' 'fa-link' 'staff_admin:mpcontent_proxylink_add' %}
+    {% usemacro menu_item 'LMS package' 'fa-file-archive-o' 'staff_admin:mpcontent_lmsitem_add' %}
+    {% usemacro menu_item 'Embed' 'fa-code' 'staff_admin:mpcontent_embed_add' %}
+    {% if user.has_test_access %}
+        {% usemacro menu_item 'Quiz' 'fa-graduation-cap' 'staff_admin:mpcontent_quiz_add' %}
+    {% endif %}
+{% endif %}
+{% if user.access_all %}
+    {% usemacro menu_item 'Portal item' 'fa-square-o' 'staff_admin:mpcontent_portalitem_add' %}
+    {% usemacro menu_item 'Web app' 'fa-picture-o' 'staff_admin:mpcontent_proxyapp_add' %}
+{% endif %}

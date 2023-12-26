@@ -1,0 +1,17 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Page shown if problems activating new user and user isn't known
+
+{% endcomment %}
+
+{% block panel_body %}
+
+    <h1>This link is no longer valid</h1>
+
+    <p>Please try signing into an existing account or creating a new one.
+        </p>
+    <a class="es_button" href="{{ site.portal_url }}">
+        Sign into {{ site.name }}</a>
+
+{% endblock %}

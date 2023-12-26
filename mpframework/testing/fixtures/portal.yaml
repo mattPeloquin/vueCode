@@ -1,0 +1,198 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Portal test data
+#   These are for dev/test, but should be close to production
+
+- fields:
+    name: viewer_full
+    template_type: F
+    orig_path: "_custom/layout/viewer_full.html"
+  model: sitebuilder.templatecustom
+  pk: 151
+- fields:
+    name: viewer_all
+    template_type: F
+    orig_path: "_custom/layout/viewer_all.html"
+  model: sitebuilder.templatecustom
+  pk: 153
+
+- fields:
+    name: pane_items
+    template_type: P
+    orig_path: "_custom/pane/pane_items.html"
+  model: sitebuilder.templatecustom
+  pk: 201
+- fields:
+    name: pane_drill
+    template_type: P
+    orig_path: "_custom/pane/pane_drill.html"
+  model: sitebuilder.templatecustom
+  pk: 202
+
+- fields:
+    name: collection_nodes
+    template_type: W
+    orig_path: "_custom/structure/collection_nodes.html"
+  model: sitebuilder.templatecustom
+  pk: 220
+- fields:
+    name: collection_node
+    template_type: W
+    orig_path: "_custom/structure/collection_node.html"
+  model: sitebuilder.templatecustom
+  pk: 222
+- fields:
+    name: collection_panel
+    template_type: W
+    orig_path: "_custom/structure/collection_panel.html"
+  model: sitebuilder.templatecustom
+  pk: 224
+- fields:
+    name: collection_root
+    template_type: W
+    orig_path: "_custom/structure/collection_root.html"
+  model: sitebuilder.templatecustom
+  pk: 226
+
+- fields:
+    name: node_list
+    template_type: R
+    orig_path: "_custom/layout/node_list.html"
+  model: sitebuilder.templatecustom
+  pk: 230
+- fields:
+    name: node_list_tree
+    template_type: R
+    orig_path: "_custom/layout/node_list_tree.html"
+  model: sitebuilder.templatecustom
+  pk: 232
+
+- fields:
+    name: panel_page
+    template_type: Q
+    orig_path: "_custom/layout/panel_page.html"
+  model: sitebuilder.templatecustom
+  pk: 240
+- fields:
+    name: panel_tabs
+    template_type: Q
+    orig_path: "_custom/layout/panel_tabs.html"
+  model: sitebuilder.templatecustom
+  pk: 242
+
+- fields:
+    name: home_html
+    template_type: T
+    orig_path: "_custom/layout/home_html.html"
+  model: sitebuilder.templatecustom
+  pk: 251
+- fields:
+    name: portal_group
+    template_type: T
+    orig_path: "_custom/layout/portal_group.html"
+  model: sitebuilder.templatecustom
+  pk: 254
+
+- fields:
+    name: items
+    template_type: W
+    orig_path: "_custom/structure/items.html"
+  model: sitebuilder.templatecustom
+  pk: 260
+- fields:
+    name: item_wrapper
+    template_type: W
+    orig_path: "_custom/structure/item_wrapper.html"
+  model: sitebuilder.templatecustom
+  pk: 261
+- fields:
+    name: Card items
+    _script_name: item_card
+    template_type: I
+    orig_path: "_custom/layout/item_card.html"
+  model: sitebuilder.templatecustom
+  pk: 262
+- fields:
+    name: List items
+    _script_name: item_list
+    template_type: I
+    orig_path: "_custom/layout/item_list.html"
+  model: sitebuilder.templatecustom
+  pk: 264
+- fields:
+    name: Listcard items
+    _script_name: item_listcard
+    template_type: I
+    orig_path: "_custom/layout/item_listcard.html"
+  model: sitebuilder.templatecustom
+  pk: 266
+- fields:
+    name: item_compact
+    template_type: I
+    orig_path: "_custom/layout/item_compact.html"
+  model: sitebuilder.templatecustom
+  pk: 268
+
+- fields:
+    name: nav_wrapper
+    template_type: W
+    orig_path: "_custom/structure/nav_wrapper.html"
+  model: sitebuilder.templatecustom
+  pk: 270
+- fields:
+    name: nav_card
+    template_type: N
+    orig_path: "_custom/layout/nav_card.html"
+  model: sitebuilder.templatecustom
+  pk: 275
+- fields:
+    name: nav_list
+    template_type: N
+    orig_path: "_custom/layout/nav_list.html"
+  model: sitebuilder.templatecustom
+  pk: 276
+
+- fields:
+    name: content_state
+    template_type: W
+    orig_path: "_custom/structure/content_state.html"
+  model: sitebuilder.templatecustom
+  pk: 280
+- fields:
+    name: content_progress
+    template_type: W
+    orig_path: "_custom/structure/content_progress.html"
+  model: sitebuilder.templatecustom
+  pk: 284
+- fields:
+    name: content_adorn
+    template_type: W
+    orig_path: "_custom/structure/content_adorn.html"
+  model: sitebuilder.templatecustom
+  pk: 286
+- fields:
+    name: content_access
+    template_type: W
+    orig_path: "_custom/structure/content_access.html"
+  model: sitebuilder.templatecustom
+  pk: 288
+
+- fields:
+    name: widget_search
+    template_type: W
+    orig_path: "_custom/structure/widget_search.html"
+  model: sitebuilder.templatecustom
+  pk: 290
+- fields:
+    name: widget_toggle
+    template_type: W
+    orig_path: "_custom/structure/widget_toggle.html"
+  model: sitebuilder.templatecustom
+  pk: 292
+- fields:
+    name: widget_breadcrumbs
+    template_type: W
+    orig_path: "_custom/structure/widget_breadcrumbs.html"
+  model: sitebuilder.templatecustom
+  pk: 294
+

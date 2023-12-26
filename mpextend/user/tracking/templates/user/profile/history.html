@@ -1,0 +1,156 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    User profile history screen
+
+{%endcomment%}
+
+{% block head-no_cache %}
+    {{ block.super }}
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" />
+    <style>
+
+        </style>
+
+{% endblock %}
+
+{% block page-no_cache %}
+    {{ block.super }}
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+{% endblock %}
+
+{% block panel_body %}
+
+    <div>
+        {% if not user.access_staff_view %}
+            {% if account.is_group %}
+                You are a member of the {{ account.name }} group account
+            {% else %}
+                You have a personal account
+            {% endif %}
+        {% endif %}
+        </div>
+
+    {% if apas %}
+        <br>
+        <div id="licenses">
+            <h2>License history</h2>
+
+            <table class="es_report_table">
+                <thead>
+                    <tr class="es_heading">
+                        <th style="width: 6%" class="mp_sort es_textcenter">Active</th>
+                        <th style="width: 28%" class="mp_sort es_textleft"
+                                data-sort="name">Name</th>
+                        <th style="width: 10%" class="es_textleft">Price</th>
+                        <th style="width: 14%" class="mp_sort" data-sort="started">Purchase type</th>
+                        <th style="width: 6%" class="mp_sort" data-sort="started">Trial</th>
+                        <th style="width: 8%" class="mp_sort" data-sort="started">Coupon</th>
+                        <th style="width: 15%" class="mp_sort" data-sort="start">Start</th>
+                        <th style="width: 15%" class="mp_sort" data-sort="end">End</th>
+                        </tr>
+                    </thead>
+                <tbody class="es_report_body mp_report">
+                    {% for a in apas %}
+                        <tr class="es_row">
+                            <td class="active es_textcenter"><span class="fa
+                                fa-{% if apa.active %}check-circle{% else %}times-circle{% endif %}">
+                                </span></td>
+                            <td class="name">{{ a.name }}</td>
+                            <td class="price es_textcenter">{{ a.access_price }}</td>
+                            <td class="purchase_type es_textcenter">{{ a.purchase_type }}</td>
+                            <td class="trial es_textcenter"><span class="fa
+                                fa-{% if apa.trial %}check-circle{% else %}times-circle{% endif %}">
+                                </span></td>
+                            <td class="coupon es_textcenter">{{ a.coupon }}</td>
+                            <td class="start es_textcenter">{{ a.period_start }}</td>
+                            <td class="end es_textcenter">{{ a.period_end }}</td>
+                            </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    {% endif %}
+
+    {% if usage %}
+        <br>
+        <div id="usage_report">
+            <h2>Usage history</h2>
+
+            <div class="es_report_head mp_flex_line">
+                <input class="mp_search" placeholder="Search" />
+                <p class="mp_locale_value">
+                    {{ usage|length }} items used
+                    </p>
+                </div>
+
+            <table class="es_report_table">
+                <thead>
+                    <tr class="es_heading">
+                        <th style="width: 16%" class="mp_sort es_textleft"
+                                data-sort="tree">Collection</th>
+                        <th style="width: 22%" class="mp_sort es_textleft"
+                                data-sort="name">Item name</th>
+                        <th style="width: 10%" class="mp_sort" data-sort="completed">Completed</th>
+                        <th style="width: 8%" class="mp_sort" data-sort="uses">Uses</th>
+                        <th style="width: 10%" class="mp_sort" data-sort="minutes">Minutes</th>
+                        <th style="width: 14%" class="mp_sort es_textleft"
+                                data-sort="license">License</th>
+                        <th style="width: 10%" class="mp_sort" data-sort="started">Started</th>
+                        <th style="width: 10%" class="mp_sort" data-sort="last_use">Last use</th>
+                        </tr>
+                    </thead>
+                <tbody class="es_report_body mp_report">
+                    {% for u in usage %}
+                        <tr class="es_row">
+                            <td class="tree">{{ u.tree }}</td>
+                            <td class="name">{{ u.name }}</td>
+                            <td class="completed es_textcenter">{{ u.completed }}</td>
+                            <td class="uses es_textcenter">{{ u.uses }}</td>
+                            <td class="minutes es_textcenter">{{ u.minutes }}</td>
+                            <td class="license">{{ u.license }}</td>
+                            <td class="started es_textcenter">{{ u.started }}</td>
+                            <td class="last_use es_textcenter">{{ u.last_use }}</td>
+                            </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    {% include "_/field_errors.html" with form=form %}
+
+    {% if usage %}
+        const usage_list = new List( 'usage_report', {
+                listClass: 'mp_report',
+                searchClass: 'mp_search',
+                sortClass: 'mp_sort',
+                valueNames: [
+                    'tree', 'name', 'uses', 'completed', 'license',
+                    'minutes', 'started', 'last_use',
+                    ]
+                })
+        usage_list.sort( 'last_use', { order: 'desc' } )
+    {% endif %}
+
+    {% if apas %}
+        const license_list = new List( 'licenses', {
+                listClass: 'mp_report',
+                searchClass: 'mp_search',
+                sortClass: 'mp_sort',
+                valueNames: [
+                    'name', 'active', 'price', 'purchase_type', 'trial', 'coupon',
+                    'period_start', 'period_end',
+                    ]
+                })
+        license_list.sort( 'period_end', { order: 'desc' } )
+    {% endif %}
+
+    $(".mp_sort").addClass('es_button_text')
+
+{% endblock %}

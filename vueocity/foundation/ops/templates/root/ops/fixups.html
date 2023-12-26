@@ -1,0 +1,44 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Admin support tasks
+
+{%endcomment%}
+
+{% block panel_body %}
+
+    <form class="mp_form" method="post">
+        {% csrf_token %}
+
+        <h1>Specific account tasks</h1>
+
+        <input name="migrate_ga" type="text" placeholder="GroupAccountID"/>
+        <input type="submit" class="mp_button" name="account_migrate"
+                value="Force Conversion of all GA users (moves inactive, deletes users)" />
+        <br>
+
+        <input name="merge_user" type="text" placeholder="AccountUserID" />
+        <input name="merge_account" type="text" placeholder="TargetAccountID"/>
+        <input type="submit" class="mp_button" name="account_merge"
+                value="Merge Account user into account" />
+        <br>
+
+    <form class="mp_form" method="post">
+        {% csrf_token %}
+
+        <h1>Health Updates</h1>
+
+        <input name="sandbox_ids" type="text" placeholder="Limit to sandbox IDs" />
+        <br>
+        <input name="validate" type="text" placeholder="Commit phrase" />
+        <br>
+
+        <input type="submit" class="mp_button" name="health_users"
+                value="Update User Health" />
+        <br>
+        <input type="submit" class="mp_button" name="health_content"
+                value="Update Content Health" />
+
+        </form>
+
+{% endblock %}

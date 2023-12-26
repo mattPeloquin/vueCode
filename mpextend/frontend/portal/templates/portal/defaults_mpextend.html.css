@@ -1,0 +1,43 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    mpExtend portal style default extensions
+
+{% endcomment %}
+
+:root {
+    --es_itemview_min-height: 8em;
+    --es_itemview_width_image: 40%;
+    }
+
+.es_itemview .es_content_body {
+    background: var(--popup_back,var(--overlay));
+    }
+.es_itemview .es_content_title {
+    padding: 0 0.4em;
+    }
+.es_itemview .es_content_image {
+    min-height: var(--es_itemview_min-height);
+    width: var(--es_itemview_width_image);
+    }
+.es_itemview .es_content_text {
+    min-height: var(--es_itemview_min-height);
+    padding: 0.5em 0.5em 1em 0.5em;
+    width: calc( 100% - var(--es_itemview_width_image) );
+    color: var(--overlay_text);
+    }
+.es_vertical .es_itemview .es_content_body {
+    flex-direction: column;
+    }
+.es_vertical .es_itemview :is( .es_content_image, .es_content_text ) {
+    width: 100%;
+    }
+.es_itemview .es_content_text .es_item_title {
+    color: var(--overlay_title);
+    }
+.es_itemview .es_content_text :is( .es_item_title, .es_item_text1 ) {
+    padding: 0.5em;
+    }
+.es_itemview .es_item_access {
+    margin: 1em 0 1em 0.5em;
+    max-width: 12em;
+    }

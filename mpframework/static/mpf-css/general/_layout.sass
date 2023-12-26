@@ -1,0 +1,200 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+    Shared layout
+ */
+
+/*
+    Container holds main body content
+    Set as absolute inside the relative body to allow for scrolling
+    inside fixed header and footers in desktop mode.
+
+    To support full height backgrounds min-height is inherited down
+    through the elements that make up display panels, while
+    the height is normally allowed to follow the content.
+ */
+
+html
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+body
+    width: 100%
+iframe
+    display: block
+
+// 'main_page' holds portal or staff view, while 'main' is in-between top bar
+// and footer. JS adds margin used to offset fixed top and bottom bars.
+main_page
+    display: block
+    position: absolute
+    z-index: 1
+    left: 0
+    right: 0
+    margin-top: 0
+    mptools
+        user-select: none
+        -webkit-user-select: none
+    .mp_main
+        min-height: inherit
+        .mp_main_menu
+            padding: 0.4em 0.4em 0.4em 0.8em
+    .mp_bottom
+        // Footer position may switch depending on height
+        position: absolute
+        z-index: 1
+        left: 0
+        top: auto
+        right: 0
+        bottom: 0
+.es_height_small
+.es_height_large
+    .mp_bottom
+        position: fixed
+
+pane, panel, item
+    display: block
+pane, panel
+    // panes present top-level nav pages in the portal
+    // panels are top-level pages outside of portal nav
+    position: relative
+    width: 100%
+    min-height: inherit
+
+// For screens using background, force height of main page
+// Don't do everywhere, because it can cause scroll bars on staff pages
+body.es_theme_background
+    main_page
+        min-height: 100vh
+
+.es_theme_panel
+    position: relative
+    z-index: 1
+    width: 100%
+    line-height: 1.4
+
+.es_theme_page
+    font-size: 1.2rem
+    padding: 2em
+
+._base_background_image
+    width: 100%
+    height: 100%
+    background-size: cover
+    background-repeat: no-repeat
+    background-attachment: fixed
+    background-position: 50% 50%
+// For backgrounds, attach to :before so image attributes
+// can be modified without affecting main element
+.es_background_image
+    background-size: 0
+    &:before
+        @extend ._base_background_image
+        position: fixed
+        z-index: -1
+        content: ''
+        background-image: inherit
+        filter: var(--es_background_image_filter)
+        opacity: var(--es_background_image_opacity)
+
+/*
+    Support for top items
+        Staff bar (top admin menu)
+        Toolbar (floating) items
+        Top bar (Narrow format, return to portal)
+        Top portal (bars inside the portal layout)
+ */
+.es_top
+    .es_top_bar_left, .es_top_bar_right
+        position: relative
+        top: 0
+        .mpr_collapse_inline
+            flex-wrap: nowrap
+    .es_top_bar_left
+        left: 0
+    .es_top_bar_right
+        right: 0
+    .mp_staff_bar
+        font-size: 0.9rem
+        position: fixed
+        z-index: 802   // Layer staff menus are shown on
+        top: 0
+        left: 0
+        right: auto
+        bottom: auto
+        height: 2em
+        width: 100%
+        .es_staff_bar
+            height: 100%
+
+.es_top_banner
+    font-size: 1.5rem
+    min-height: 2em
+    padding: 0 1em
+body:is( .es_width_small, .es_height_small )
+    .mp_top_banner
+        display: none !important
+
+// Responsive columns
+// Flip display from side by side to vertical stacked
+.es_vertical
+    .mpr_flex_col
+        flex-direction: column
+    .mpr_flex_col_rev
+        flex-direction: column-reverse
+        justify-content: flex-end
+
+// Responsive general collapse defaults
+// Works with both CSS mpr values to hide at breakpoints,
+// AND JS for showing/hiding based on clicks
+// mpr_collapse_hide element may be under mpr_collapse or
+// not connected by ID in "data-collapse"
+.mpr_collapse
+    position: relative
+    display: flex
+    align-items: center
+    &.mpr_collapse_open
+        .mpr_collapse_toggle
+            opacity: 0.3
+    .mpr_collapse_toggle
+        display: none
+        opacity: 0.6
+        padding: 0.2em 0.6em
+        &.fa
+            font-size: 130%
+        &:is(:hover,:focus,:active)
+            opacity: 1 !important
+    .mpr_collapse_inline
+        flex-wrap: wrap
+
+// Overlay items
+
+.mp_full
+    position: fixed
+    z-index: 601
+    top: 0
+    left: 0
+    bottom: 0
+    right: 0
+    border: 0 !important
+    margin: 0 !important
+
+.mp_overflow_none
+    overflow: hidden !important
+
+#mp_style_divs, #mp_welcome
+    position: absolute
+    z-index: -100
+    top: 0px
+    opacity: 0
+
+// Setup justified spacing of elements in a row using CSS text layout
+.mp_justify
+    text-align: justify
+    line-height: 0
+    // Force text-align justify to work by ensuring line-wrap is triggered
+    &:after
+        content: ''
+        display: inline-block
+        vertical-align: top
+        width: 100%
+

@@ -1,0 +1,147 @@
+#--- Vueocity platform, Copyright 2021 Vueocity LLC
+#
+#   Baseline for production servers AND
+#   Front Of House (FOH) server configuration.
+#
+#   Deployment assumptions:
+#    - Using ELB target groups for FOH, BOH, FT, and adding OSK
+#    - FOH uses short ELB sticky sessions to optimize
+#      uwsgi server buffer caching.
+#
+
+MP_ROOT:
+
+  DB:
+    # Serverless doesn't have read/write endpoints
+    MAIN_HOST: 'prod-db1-cluster.cluster-cbt3vzok9hts.us-west-2.rds.amazonaws.com'
+    MAIN_READ: ''
+
+  # FUTURE SECURE - move payment service into secrets
+  PAYMENT:
+    paypal_nvp:
+      url_api: 'https://api-3t.paypal.com/nvp'
+      url_interactive: 'https://www.paypal.com'
+      username: 'mattp_api1.sfv-online.com'
+      password: '76Q5CV492Q4LFRN8'
+      signature: 'Ady3..xIlwddbs8lTTbYXDqtKleAAK0aCBvgSEgYsnk-1z607JkRGih7'
+      timeout: 8
+    stripe_connect:
+      client_id: ca_COxFKSuOclgXNNOBLCZyKgLJ0BmkEg6M
+      secret_key: sk_live_u0j69AdssxPwbXsZDzg8Zloj00sYjjtvRs
+      public_key: pk_live_Mxc0hBY23A6xIlEzAurFC9OL
+      oauth_url: https://connect.stripe.com/oauth/authorize
+      max_network_retries: 2
+      timeout: 6
+
+MP_ROOT_URLS:
+  URL_STATIC: 'vuepub.vueocity.com'
+  URL_STATIC_COMP: 'd45exs2xsyt2.cloudfront.net'
+  URL_PUBLIC: 'vuepub.vueocity.com'
+  URL_PUBLIC_COMP: 'd45exs2xsyt2.cloudfront.net'
+  URL_EDGE_PROTECTED: 'vueprt.vueocity.com'
+  URL_EDGE_PROTECTED_COMP: 'd271v8jzlihffs.cloudfront.net'
+  URL_EDGE_PROTECTED_PUBLIC: 'd7v9v4isakd5.cloudfront.net'
+
+MP_ROOT_AWS:
+  ELB_TARGET_GROUP: 'FOH'
+  S3_BUCKET_PUBLIC: 'vueocity-public-prod'
+  S3_BUCKET_PROTECTED: 'vueocity-protected-prod'
+
+MP_LOG_OPTIONS:
+  SYSLOG: True
+
+# Maximum time for external proxy endpoint to respond
+MP_PROXY:
+  DEFAULT_TIMEOUT: 2
+  MAX_TIMEOUT: 16
+
+DEFAULT_FROM_EMAIL: 'prod@vueocity.com'
+
+# Django hash for passwords
+# TBD SECURE - MOVE INTO SECRETS
+SECRET_KEY: 'mppfgasdgrty24hrthwfvb vbty84utyjrgfnrylyi763rt4qwexsd'
+
+#--------------------------------------------------------------------
+# Processing - based on AWS t3.small (2 core, 2GB) using sticky sessions
+# Normal cases will not have a large number of connections, but support
+# surges and attacks
+
+MP_SERVER:
+
+  # Connection age is tricky with serverless RDS; must assume all processing
+  # 'channels' (uwsgi worker and spooler threads) are active at the same time,
+  # so need at least that many connections available.
+  # If all connections are open, and EC2 servers are added, connection
+  # requests will spike. If RDS serverless has not scaled and connection
+  # limit is reached (currently increments by 90) there will be a period
+  # where connection errors occur.
+  DB_CONNECTION_AGE: 80
+
+  # Setup max connection age close to a minute
+  CONNECTION_TIMEOUT_ELB: 50
+
+MP_NGINX:
+  PROCESSES: 1
+  CONNECTIONS: 2000
+  MAX_FILES: 3000
+  CONNECTION_TIMEOUT: 55
+  # If uwsgi or other proxy can't respond fast to START connection request,
+  # reject connection request since downstream is overloaded
+  CONNECTION_TIMEOUT_START: 5
+
+MP_UWSGI:
+
+  # Boost connections and reset frequency to better handle attacks
+  LISTEN_MAX: 1000
+  MAX_REQUESTS: 2000
+
+  # Tests with t3.small shows 10 processes do not slow down overall throughput
+  # within memory/DB connection limits. (peak occurs around 4 and is steady)
+  # Prod traffic should not have much DB or IO beyond caching requests for
+  # ongoing site traffic -- initial site cold caching hits can take longer
+  PROCESSES: 4
+  THREADS: 1
+  SPOOL_PROCESSES: 0
+  CPU_AFFINITY: 2
+
+  # Front-end processes should never get hung up long
+  HARAKIRI: 15
+
+  # Boost local cache to benefit from sticky sessions
+  CACHE_SMALL_OPTIONS: "items=16384"
+  CACHE_MEDIUM_OPTIONS: "items=16384"
+  CACHE_LARGE_OPTIONS: "items=16384,blocks=24576,blocksize=4096"
+
+MP_TUNING:
+  # Throttle count shared across ALL ELB servers, requires uwsgi
+  # This is only for requests that aren't blocked at WAF
+  # FUTURE - automate update of WAF after a threshold
+  THROTTLE:
+    PERIOD: 20
+    THRESHOLD: 400
+    THRESHOLD_BOOST: 25
+    WARN_SECONDS: 60
+    BAN_THRESHOLD: 3
+    BAN_SECONDS: 600
+    BAN_AGE: 86400 # 1 day
+    LOCAL_SECONDS: 30
+
+#--------------------------------------------------------------------
+# Tenant config
+
+# Defines the sandbox ID that an onboard request can be made from, along
+# with a set of groups that can be selected as onboarding roles
+MP_ROOT_ONBOARD_SETUP:
+  23:
+    NoCode:
+      sandbox_to_clone: 503
+      start_level: Free
+      max_level: SiteBuilderPro
+    SomeCode:
+      sandbox_to_clone: 503
+      start_level: SiteBuilder
+      max_level: SiteBuilderPro
+    All:
+      sandbox_to_clone: 503
+      start_level: SiteBuilderPro
+      max_level: SiteBuilderPro

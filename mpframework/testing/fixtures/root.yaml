@@ -1,0 +1,60 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Data necessary to setup an empty root
+#
+
+- fields:
+    name: mpFramework Root
+    system_name: mproot
+    resource_path: mproot
+    hist_created: "2018-01-01 11:13:25+00:00"
+    policy:
+      test: 'TestValueForRootProvider'
+  model: tenant.provider
+  pk: 1
+
+- fields:
+    provider_optional: 1
+    name: Root site
+    frame_type: Z
+    structure:
+       frame_template: no_portal.html
+  model: sitebuilder.frame
+  pk: 1
+
+- fields:
+    _provider: 1
+    frame_site: 1
+    name: 'mpFramework Root Admin'
+    email_support: 'support@mp.com'
+    _email_staff: 'admin@mp.com'
+    hero_image: login.png
+    terms_html: ROOT TERMS
+    html1: Root privacy
+    hist_created: "2018-01-01 11:13:25+00:00"
+    _policy:
+      test_sandbox_policy: 'TestValueForRootSandbox'
+  model: tenant.sandbox
+  pk: 1
+
+- fields: { _host_name: 'mproot.127.0.0.1', sandbox: 1, main: true }
+  model: tenant.sandboxhost
+  pk: 1
+
+- fields:
+    email: root@mp.com
+    _provider: 1
+    _staff_level: 99
+    sandboxes_level: 99
+    _is_owner: true
+    is_superuser: true
+    first_name: Root (ཱཱིུུྲྀ)
+    last_name: Admin
+    password: pbkdf2_sha256$10000$opWPvE6rrySB$VVAYsrgHevnuLfJzWkzxdu0rxvKtl+cAfWWGqXJXPNg=
+    hist_created: "2018-04-16 11:13:25+00:00"
+    email_changed: "2018-12-18 07:30:27+00:00"
+    email_verified: true
+    init_terms: true
+    init_activation: ROOT BOOT
+  model: mpuser.mpuser
+  pk: 1

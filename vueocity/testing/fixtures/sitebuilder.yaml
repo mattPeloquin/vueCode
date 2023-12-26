@@ -1,0 +1,368 @@
+#--- Vueocity platform, Copyright 2021 Vueocity LLC
+#
+#   Vueocity sitebuilder resources
+#
+
+- fields:
+    provider_optional: 11
+    name: Side by side login
+    template_type: L
+    orig_path: _custom/login/side_by_side.html
+  model: sitebuilder.templatecustom
+  pk: 905
+
+#--------------------------------------------------------------------
+# Themes
+
+- fields:
+    name: Vue theme - test
+    notes: Default theme used for dev testing
+    frame_site: 9101
+    _style: 1032
+    _font: 1010
+    _color: 1092
+    sb_options:
+      ui:
+        signup_text: "YO, MAKE AN ACCOUNT!"
+    _background_image: Alpental.jpg
+  model: sitebuilder.theme
+  pk: 1001
+- fields:
+    name: Vue theme - LMS
+    notes: Test the LMS teme
+    frame_site: 1010
+  model: sitebuilder.theme
+  pk: 1003
+
+#--------------------------------------------------------
+# VuePortal frames
+
+- fields:
+    name: LMS
+    frame_type: P
+    structure:
+      frame_template: tab_panes.html
+      nav_default: dashboard
+      panes:
+      -
+        name: Dashboard
+        template: pane_dashboard
+        default_panel: panel_viewer
+      -
+        name: Planning
+        template: pane_drill_plan
+        default_panel: panel_viewer
+        sb_options:
+          portal:
+            home_hide: true
+      -
+        name: All content
+        template: pane_drill_progress
+        default_panel: panel_viewer
+        slug: all
+        sb_options:
+          portal:
+            home_hide: true
+  model: sitebuilder.frame
+  pk: 1010
+- fields:
+    name: Progress pane
+    frame_type: P
+    structure:
+      pane:
+        template: pane_drill_progress
+  model: sitebuilder.frame
+  pk: 1020
+- fields:
+    name: Group pane
+    frame_type: P
+    structure:
+      pane:
+        template: pane_drill_group
+  model: sitebuilder.frame
+  pk: 1022
+- fields:
+    name: TypePages
+    frame_type: P
+    structure:
+      pane:
+        template: pane_type_drill_items
+  model: sitebuilder.frame
+  pk: 1030
+- fields:
+    name: TypeTabs
+    frame_type: P
+    structure:
+       pane:
+         template: pane_tabs_type
+  model: sitebuilder.frame
+  pk: 1031
+- fields:
+    name: CategoryPages
+    frame_type: P
+    structure:
+      pane:
+        template: pane_drill_category
+  model: sitebuilder.frame
+  pk: 1040
+- fields:
+    name: CategoryTabs
+    frame_type: P
+    structure:
+      frame_template: tab_category.html
+      pane:
+        template: pane_drill
+  model: sitebuilder.frame
+  pk: 1041
+
+#--------------------------------------------------------------------
+# Theme templates
+
+- fields:
+    name: font_opensans
+    template_type: A
+    orig_path: "_custom/theme/font_opensans.html"
+  model: sitebuilder.templatecustom
+  pk: 1010
+- fields:
+    name: font_laila
+    template_type: A
+    orig_path: "_custom/theme/font_laila.html"
+  model: sitebuilder.templatecustom
+  pk: 1013
+- fields:
+    name: font_raleway
+    template_type: A
+    orig_path: "_custom/theme/font_raleway.html"
+  model: sitebuilder.templatecustom
+  pk: 1014
+- fields:
+    name: font_baumans
+    template_type: A
+    orig_path: "_custom/theme/font_baumans.html"
+  model: sitebuilder.templatecustom
+  pk: 1015
+- fields:
+    name: font_material
+    template_type: A
+    orig_path: "_custom/theme/font_material.html"
+  model: sitebuilder.templatecustom
+  pk: 1016
+- fields:
+    name: font_metropolis
+    template_type: A
+    orig_path: "_custom/theme/font_metropolis.html"
+  model: sitebuilder.templatecustom
+  pk: 1017
+- fields:
+    name: font_jakarta_text
+    template_type: A
+    orig_path: "_custom/theme/font_jakarta_text.html"
+  model: sitebuilder.templatecustom
+  pk: 1018
+- fields:
+    name: font_jakarta_display
+    template_type: A
+    orig_path: "_custom/theme/font_jakarta_display.html"
+  model: sitebuilder.templatecustom
+  pk: 1019
+- fields:
+    name: font_merriweather
+    template_type: A
+    orig_path: "_custom/theme/font_merriweather.html"
+  model: sitebuilder.templatecustom
+  pk: 1020
+- fields:
+    name: font_ubuntu
+    template_type: A
+    orig_path: "_custom/theme/font_ubuntu.html"
+  model: sitebuilder.templatecustom
+  pk: 1021
+- fields:
+    name: font_roboto_slab
+    template_type: A
+    orig_path: "_custom/theme/font_roboto_slab.html"
+  model: sitebuilder.templatecustom
+  pk: 1022
+
+- fields:
+    name: style_vueocity
+    template_type: B
+    orig_path: "_custom/theme/style_vueocity.html"
+  model: sitebuilder.templatecustom
+  pk: 1030
+- fields:
+    name: style_vue2
+    template_type: B
+    orig_path: "_custom/theme/style_vue2.html"
+  model: sitebuilder.templatecustom
+  pk: 1031
+- fields:
+    name: style_vue3
+    template_type: B
+    orig_path: "_custom/theme/style_vue3.html"
+  model: sitebuilder.templatecustom
+  pk: 1032
+- fields:
+    name: style_round
+    template_type: B
+    orig_path: "_custom/theme/style_round.html"
+  model: sitebuilder.templatecustom
+  pk: 1034
+- fields:
+    name: style_bootstrap
+    template_type: B
+    orig_path: "_custom/theme/style_bootstrap.html"
+    staff_level: 90
+  model: sitebuilder.templatecustom
+  pk: 1039
+
+- fields:
+    name: Polaroid cards
+    _script_name: mixin_card_polaroid
+    template_type: D
+    orig_path: "_custom/theme/mixin_card_polaroid.html"
+  model: sitebuilder.templatecustom
+  pk: 1042
+- fields:
+    name: No-text cards
+    _script_name: mixin_card_notext
+    template_type: D
+    orig_path: "_custom/theme/mixin_card_notext.html"
+  model: sitebuilder.templatecustom
+  pk: 1044
+- fields:
+    name: Full screen content
+    _script_name: mixin_content_full
+    template_type: D
+    orig_path: "_custom/theme/mixin_content_full.html"
+  model: sitebuilder.templatecustom
+  pk: 1048
+- fields:
+    name: No space between content
+    _script_name: mixin_touching
+    template_type: D
+    orig_path: "_custom/theme/mixin_touching.html"
+  model: sitebuilder.templatecustom
+  pk: 1050
+- fields:
+    name: Thin scroll bars
+    _script_name: mixin_scroll_thin
+    template_type: D
+    orig_path: "_custom/theme/mixin_scroll_thin.html"
+  model: sitebuilder.templatecustom
+  pk: 1052
+- fields:
+    name: Hide scroll bars
+    _script_name: mixin_scroll_none
+    template_type: D
+    orig_path: "_custom/theme/mixin_scroll_none.html"
+  model: sitebuilder.templatecustom
+  pk: 1054
+- fields:
+    name: Text in card image
+    _script_name: mixin_card_imagetext
+    template_type: D
+    orig_path: "_custom/theme/mixin_card_imagetext.html"
+  model: sitebuilder.templatecustom
+  pk: 1060
+- fields:
+    name: Item size fits image and text
+    _script_name: mixin_item_grow
+    template_type: D
+    orig_path: "_custom/theme/mixin_item_grow.html"
+  model: sitebuilder.templatecustom
+  pk: 1062
+- fields:
+    name: Item size fits text
+    _script_name: mixin_item_grow_text
+    template_type: D
+    orig_path: "_custom/theme/mixin_item_grow_text.html"
+  model: sitebuilder.templatecustom
+  pk: 1064
+- fields:
+    name: Hover grow
+    _script_name: mixin_hover_grow
+    template_type: D
+    orig_path: "_custom/theme/mixin_hover_grow.html"
+  model: sitebuilder.templatecustom
+  pk: 1070
+
+- fields:
+    name: color_dark
+    template_type: C
+    orig_path: "_custom/theme/color_dark.html"
+  model: sitebuilder.templatecustom
+  pk: 1080
+- fields:
+    name: color_dark2
+    template_type: C
+    orig_path: "_custom/theme/color_dark2.html"
+  model: sitebuilder.templatecustom
+  pk: 1081
+- fields:
+    name: color_light
+    template_type: C
+    orig_path: "_custom/theme/color_light.html"
+  model: sitebuilder.templatecustom
+  pk: 1082
+- fields:
+    name: color_light2
+    template_type: C
+    orig_path: "_custom/theme/color_light2.html"
+  model: sitebuilder.templatecustom
+  pk: 1083
+- fields:
+    name: color_gray
+    template_type: C
+    orig_path: "_custom/theme/color_gray.html"
+  model: sitebuilder.templatecustom
+  pk: 1084
+- fields:
+    name: color_pink
+    template_type: C
+    orig_path: "_custom/theme/color_pink.html"
+  model: sitebuilder.templatecustom
+  pk: 1085
+- fields:
+    name: color_bright
+    template_type: C
+    orig_path: "_custom/theme/color_bright.html"
+  model: sitebuilder.templatecustom
+  pk: 1086
+- fields:
+    name: color_indigo
+    template_type: C
+    orig_path: "_custom/theme/color_indigo.html"
+  model: sitebuilder.templatecustom
+  pk: 1088
+- fields:
+    name: color_teal
+    template_type: C
+    orig_path: "_custom/theme/color_teal.html"
+  model: sitebuilder.templatecustom
+  pk: 1089
+- fields:
+    name: color_earth
+    template_type: C
+    orig_path: "_custom/theme/color_earth.html"
+  model: sitebuilder.templatecustom
+  pk: 1090
+- fields:
+    name: color_ocean
+    template_type: C
+    orig_path: "_custom/theme/color_ocean.html"
+  model: sitebuilder.templatecustom
+  pk: 1092
+- fields:
+    name: color_sky
+    template_type: C
+    orig_path: "_custom/theme/color_sky.html"
+  model: sitebuilder.templatecustom
+  pk: 1096
+- fields:
+    name: color_forest
+    template_type: C
+    orig_path: "_custom/theme/color_forest.html"
+  model: sitebuilder.templatecustom
+  pk: 1098

@@ -1,0 +1,93 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+	Vueocity marketing website frame, loads website as 1-page app
+
+{%endcomment%}
+
+{#-- Menu items #}
+<nav id="vue_menu" class="mp_flex_line mp_top_bar">
+
+    <div id="vue_menu_logo">
+        <a class="mp_nav_link es_nav_anchor mp_nav_anchor" href="{{ url_portal }}/home" data-bind="
+                with: mpp.vm_trees().get_tag('home_main'),
+                ">
+            <img data-bind="attr: { src: sb('image1') }"/>
+            </a>
+        </div>
+
+    <div class="mp_flex_line">
+        <div class="vue_menu_items">
+            <div class="mpr_collapse" data-collapse="vue_menu_adj">
+                <div class="fa fa-bars mpr_collapse_toggle">
+                    </div>
+                <div id="vue_menu_adj" class="mpr_collapse_hide">
+                    <a class="es_button_text mp_nav_link es_nav_anchor mp_nav_anchor"
+                            href="{{ url_portal }}/demo">
+                        <span class="textname">Demo</span>
+                        </a>
+                    <a class="es_button_text mp_nav_link es_nav_anchor mp_nav_anchor"
+                            href="{{ url_portal }}/pricing">
+                        <span class="textname">Pricing</span>
+                        </a>
+                    <a class="es_button_text mp_nav_link es_nav_anchor mp_nav_anchor"
+                            href="{{ url_portal }}/features">
+                        <span class="textname">Features</span>
+                        </a>
+                    <a class="es_button_text mp_nav_link es_nav_anchor mp_nav_anchor"
+                            href="{{ url_portal }}/customers">
+                        <span class="textname">Customers</span>
+                        </a>
+                    <a class="es_button_text mp_nav_link es_nav_anchor mp_nav_anchor"
+                            href="{{ url_portal }}/resources">
+                        <span class="textname">Resources</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div id="vue_menu_signup" class="mp_flex mp_flex_right">
+        <div data-mpitem="vue_signup">
+            <a class="highlight_button es_button mp_nav_link es_nav_anchor mp_nav_anchor"
+                href="{{ url_portal }}/sign_up">
+                    <span class="mpr_hide_small">Start for free</span>
+                    <span class="mpr_show_small">Start free</span>
+                    </a>
+            </div>
+        </div>
+
+    </nav>
+
+{#-- Panels for each menu page  #}
+<div id="nav_home" class="mp_nav_home mp_nav_panel mp_tooltip_boundary top">
+    {% mp_include "home" %}
+    </div>
+<div id="nav_features" class="mp_nav_panel top" data-bind="
+        lazy_bind_top_panel: $data">
+    {% mp_include "features" %}
+    </div>
+<div id="nav_pricing" class="mp_nav_panel top" data-bind="
+        lazy_bind_top_panel: $data">
+    {% mp_include "pricing" %}
+    </div>
+<div id="nav_demo" class="mp_nav_panel top" data-bind="
+        lazy_bind_top_panel: $data">
+    {% mp_include "demo" %}
+    </div>
+<div id="nav_customers" class="mp_nav_panel top" data-bind="
+        lazy_bind_top_panel: $data">
+    {% mp_include "customers" %}
+    </div>
+<div id="nav_resources" class="mp_nav_panel top" data-bind="
+        lazy_bind_top_panel: $data">
+    <article id="vue_resources" class="mp_flex_column"  data-bind="
+            with: get_tag('resources'),
+            ">
+        {% mp_include "collection_panel" with bind="bind_content_panel" %}
+        </article>
+    </div>
+<div id="nav_sign_up" class="mp_nav_panel top">
+    {% mp_include "signup" %}
+    </div>
+
+{% include "_base/script/standard.chtml" %}

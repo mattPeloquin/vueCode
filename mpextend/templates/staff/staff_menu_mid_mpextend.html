@@ -1,0 +1,17 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Extend top menu with items in the middle
+
+{%endcomment%}
+
+{% if user.sees_licensing %}
+    <div class="mp_menu_item licensing mp_menu_header">
+        <a id="menu_licensing">
+            <span class="fa fa-usd"></span>
+            <span class="mp_menu_text mpr_hide_med">Licensing</span>
+            </a>
+        <div class="mp_menu mp_menu_dropdown">
+            {% mp_include_files "staff" "licensing" ".html" %}
+            </div>
+        </div>
+{% endif %}

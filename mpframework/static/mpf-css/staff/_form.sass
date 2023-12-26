@@ -1,0 +1,214 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Staff form styling
+ */
+
+// Items on forms
+fieldset.mp_module
+    & :is( .mp_module, .mp_group )
+        position: static
+        width: $WIDTH_SCREEN
+        margin: 0
+        border-radius: 0
+        background-color: $cWhite
+
+    .mp_collapse_handler.mp_button
+        color: $cWhite
+        text-align: left
+        padding-left: 0.8em
+
+    &.mp_closed :is( .mp_row, .inline-group )
+        display: none !important
+
+    .mp_group
+        padding: inherit
+        &.mp_closed
+            margin: inherit
+            border: none !important
+            &:hover
+                margin: inherit
+    .mp_row
+        > div
+            padding: 0.6em 1em 0.6em 1.4em !important
+        &.mp_cells
+            display: flex
+            .mp_cell
+                position: relative
+                display: flex
+                flex-direction: column
+                white-space: nowrap
+                overflow: visible
+        .mp_admin_field
+            // Setup grid layout
+            min-width: $WIDTH_COL
+            &:not(.mp_cell)
+                width: $WIDTH_SCREEN
+                max-width: $WIDTH_SCREEN
+            &.mp_cell .mp_field
+                max-width: $WIDTH_FIELD
+                flex-grow: 1
+                display: flex
+                flex-direction: column
+                justify-content: stretch
+                >:is(textarea):first-child
+                    flex-grow: 1
+                &.mp_field_checkbox
+                    > div
+                        flex-grow: 0
+                        display: flex
+            .mp_label
+                // Setup top field label
+                max-width: $WIDTH_FIELD
+                padding: 0 0 0.2em 0.1em
+                label
+                    font-size: 90%
+                    display: flex
+                    margin: 0.1em
+                    color: rgba( $cBlack, 0.8 )
+                    font-weight: bold
+            // Setup top field label
+            &:is(:hover,:focus,:active)
+                label
+                    transition: color 0.12s ease-out
+                    color: rgba( $cBlue, 0.8 ) !important
+                .mp_input
+                    border: 1px solid rgba( $cBlue, 0.6 ) !important
+                    &:is(:hover,:focus,:active)
+                        border: 1px solid rgba( $cBlue, 0.9 ) !important
+                input[type='file'].mp_input
+                    border: none !important
+                .mp_help_staff
+                    transition: color 0.12s ease-out
+                    color: rgba( $cBlack, 0.9 ) !important
+            .mp_input
+                width: $WIDTH_FIELD
+                max-width: $WIDTH_FIELD
+                input[type='file'].mp_input
+                    width: 8em
+            // Misc adjustments
+            p.datetime
+                display: flex
+                .mp_input
+                    &.vDateField
+                        width: 14em !important
+                    &.vTimeField
+                        margin-left: 1em
+                        width: 11em !important
+            input[type=checkbox], input[type=radio]
+                // Line up with top of label for other fields
+                // In general, checkboxes only look good when on rows together
+                margin-top: 0.5em
+                &+label
+                    margin-left: 0.5em
+
+        // inline Drag-drop
+        .ui-sortable-helper
+            background: rgba( $cBlue, 0.3 ) !important
+
+    .mp_help_staff
+        max-width: $WIDTH_FIELD
+        margin: 0.4em 0.2em
+    .es_error_list
+        font-size: 90%
+        margin: 0.2em !important
+    textarea.mp_input
+        width: auto
+        height: auto
+        resize: vertical
+
+    // SelectFilter side-by-side selection box
+    .selector
+        font-size: 80% !important
+        h3
+            margin-top: 0
+            padding-top: 0
+            color: rgba( $cBlack, 0.8 )
+        .mp_input
+            width: 24em
+            &.filtered
+                min-height: 10em
+        .selector-available select
+            height: 10em
+        .selector-available, .selector-filter, .selector-chosen
+            border: none !important
+            background: none !important
+        li
+            list-style: none !important
+        .selector-add, .selector-chooseall, .selector-remove, .selector-clearall
+            color: rgba( $cBlack, 0.4 ) !important
+            &.active
+                color: rgba( $cOrange, 0.4 ) !important
+                &:hover
+                    color: rgba( $cOrange, 1 ) !important
+            &.fa
+                font-size: 140%
+
+    // Checkbox fixups
+    .mp_row ul
+        li
+            list-style: none !important
+            > label
+                margin: 0.1em
+                input
+                    top: 0.2em
+
+// Inline look
+.djn-tabular
+    .djn-fieldset
+        h2
+            display: none
+    .djn-table
+        margin-left: 0.6em
+        .djn-th, .djn-td
+            padding: 0.2em 0.3em
+            vertical-align: middle !important
+            text-align: center
+        .djn-thead .djn-th
+            font-size: 100%
+            font-weight: normal
+            color: rgba( $cBlack, 0.8 )
+        .djn-inline-form
+            .original
+                width: 1.8em
+                p
+                    display: none
+            .djn-td
+                > div
+                    width: 100%
+                input, select
+                    width: 100%
+                    max-width: inherit
+        .mp_input
+            padding: 0.2em 0.1em 0.3em 0.3em !important
+        .djn-delete-handler
+            input
+                width: 100%
+                max-width: inherit
+        .add-row
+            height: 2.6em
+            a
+                margin-left: 1em
+
+// Other form setup which need different setup
+.related-lookup,
+    font-size: 120%
+    vertical-align: middle
+    &:before
+        content: "\f00e"
+td
+    .related-lookup,
+        position: absolute
+        top: 0.75em
+        right: 0.3em
+
+// Hide the field add button
+.related-widget-wrapper
+    .related-widget-wrapper-link
+        display: none
+
+#root-action
+    font-size: 80%
+    position: absolute
+    right: 1em
+    top: 6em
+    z-index: 9

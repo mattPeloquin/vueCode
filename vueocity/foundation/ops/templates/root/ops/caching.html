@@ -1,0 +1,61 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Caching support
+
+{%endcomment%}
+
+
+{% block panel_body %}
+
+    <form class="mp_form" method="post">
+        {% csrf_token %}
+
+        <h1>Performance Caches</h1>
+        <p>Be careful in production; although no data will be lost,
+            can cause a major load spike as the caches are repopulated.
+            </p>
+        <br>
+        <input type="submit" class="mp_button" name="reset_perf_default"
+                value="Reset Default" />
+        <br>
+        <input type="submit" class="mp_button" name="reset_perf_version"
+                value="Reset Version" />
+        <br>
+        <input type="submit" class="mp_button" name="reset_perf_template"
+                value="Reset Template" />
+        <br>
+        <input type="submit" class="mp_button" name="reset_perf_all"
+                value="Reset ALL performance" />
+        <br><br>
+
+        <h1>Invalidate current sandbox</h1>
+        <p>Clear cached items for the current sandbox (save as saving)
+            </p>
+        <br>
+        <input type="submit" class="mp_button" name="reset_sandbox"
+                value="Reset Sandbox" />
+        <br><br>
+
+        <h1>Reset specific users</h1>
+        <p>Type space delimited IDs to invalidate caching on specific users:
+            </p>
+        <br>
+        <input name="ids" type="text" />
+        <br>
+        <input type="submit" class="mp_button" name="reset_users"
+                value="Reset User's sessions" />
+        <br><br>
+
+        <h1>Session Cache</h1>
+        <p>Reset ALL USER SESSIONS, which will require everyone to log back in
+        <p>Type pass phrase and press button:</p>
+        <br>
+        <input name="validate" type="text" />
+        <br>
+        <input type="submit" class="mp_button" name="reset_sessions"
+            value="Reset ALL session info" />
+
+        </form>
+
+{% endblock %}

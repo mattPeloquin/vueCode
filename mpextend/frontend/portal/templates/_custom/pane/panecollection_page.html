@@ -1,0 +1,15 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Single collection portal
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/macros.html" %}
+
+<pane class="{% block pane_name %} es_panecollection_page {% endblock %}"
+        {% usemacro add_pane_context pane %} data-bind="
+        with: mpp.vm_trees().get_id( mp.request_content ),
+        ">
+    {% mp_include "collection_panel" %}
+    </pane>

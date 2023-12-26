@@ -1,0 +1,39 @@
+{% extends '_base/pages/scripting.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    LmsItem wrapper
+
+    This runs in iframe or window, providing support for wrapping SCORM packages
+    so events can be sent back to MPF via no-host edge requests
+
+{%endcomment%}
+
+{% block page_body %}
+
+   <div class="es_lms es_lms_{{ lms_item.pk }}">
+
+         <iframe src="{{ lms_url }}">
+            </iframe>
+
+        </div>
+
+    <script> 'use strict';
+        (function(mpl) {
+
+            const cfLmsItem = mpp.LmsItem.extend({
+                urlRoot : '{% url 'cflms_origin_user_items' sandbox_id=site.pk %}'
+                })
+
+            const lms_item = new cfLmsItem({
+                id: '{{ lms_item.pk }}',
+                name: '{{ lms_item.name }}',
+                tag: '{{ lms_item.tag }}',
+                progress_data: '{{ cui.progress_data }}',
+                })
+
+            mpl.start_lms_item( lms_item )
+
+            })(window.mpl = window.mpl || {});
+        </script>
+
+{% endblock %}

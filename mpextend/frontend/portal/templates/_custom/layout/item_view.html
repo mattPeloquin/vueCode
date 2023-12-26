@@ -1,0 +1,22 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Shows item view on its own (no list or card styling)
+    Good for embedded and page views.
+
+{%endcomment%}
+
+<div class="es_pageview es_content_full es_theme_content" data-bind="
+        style: {
+            '--es_item_font-size': sb_option('portal.item_font_size', $element),
+            },
+        ">
+    <div class="es_content_wrapper">
+
+        <h3 class="es_item_title" data-bind="
+                html: sb('name'),
+                ">
+            </h3>
+        {% mp_include "content_itemview" %}
+
+        </div>
+    </div>

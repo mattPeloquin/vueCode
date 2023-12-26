@@ -1,0 +1,21 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Make list rows bigger
+
+{%endcomment%}
+
+<style>
+
+    .es_theme_content {
+        font-size: {{ size | default:'1.4rem' }};
+        }
+
+    .es_list.es_theme_content {
+        margin: 0.4em 0;
+        }
+    .es_list.es_theme_content .es_content_body {
+        --es_list_max-height: 5em;
+        padding: 0.4em;
+        }
+
+</style>

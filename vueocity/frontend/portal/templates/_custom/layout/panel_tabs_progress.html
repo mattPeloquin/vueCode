@@ -1,0 +1,35 @@
+{% mp_extends 'panel_tabs' %}
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Group items by progress tabs
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/nav_macros.html" %}
+
+{% block panel_class %} es_panel_tabs_progress {% endblock %}
+
+{% block panel_nav %}
+
+    {% usemacro nav_tab 'progress_in' %}
+    {% usemacro nav_tab 'progress_remaining' %}
+    {% usemacro nav_tab 'progress_completed' %}
+
+{% endblock %}
+
+{% block panel_content %}
+
+    <section {% usemacro nav_attr 'progress_in' 'nested_nav' 'es_progress_in' %} >
+        {% mp_include "collection_node" with itemfn='all_in_progress' %}
+        </section>
+
+    <section {% usemacro nav_attr 'progress_remaining' 'nested_nav' 'es_progress_remaining' %} >
+        {% mp_include "collection_node" with itemfn='all_remaining' %}
+        </section>
+
+    <section {% usemacro nav_attr 'progress_completed' 'nested_nav' 'es_progress_completed' >
+        {% mp_include "collection_node" with itemfn='all_completed' %}
+        </section>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Shared layout for displaying content descriptions
+
+{%endcomment%}
+
+<div class="es_content_body mp_flex_line mp_flex_stretch
+        {% if brief %} es_content_brief {% endif %}
+        ">
+    {% if not no_image %}
+        <!-- ko if: sb('image2') || sb('image1') -->
+            <div class="es_content_image">
+                <img class="es_style_hover" data-bind="
+                        attr: { src: sb('image2') || sb('image1') }
+                        "/>
+                </div>
+        <!-- /ko -->
+    {% endif %}
+
+    <div class="es_content_text mp_flex_column">
+        <!-- ko if: !{{ no_title | jsbool }} && ( {{ title_always | jsbool }} ||
+                ( sb('image2') || sb('image1') ) ) -->
+            <h3 class="es_item_title" data-bind="
+                    html: sb('name'),
+                    ">
+                </h3>
+        <!-- /ko -->
+        <!-- ko if: sb('html1') -->
+            <div class="es_item_html1">
+                <div data-bind="html: sb('html1')">
+                    </div>
+                </div>
+        <!-- /ko -->
+        <!-- ko ifnot: sb('html1') -->
+            <!-- ko if: sb('text1') -->
+                <div class="es_item_text1" data-bind="
+                        html: sb('text1'),
+                        ">
+                    </div>
+            <!-- /ko -->
+            {% if not brief %}
+                <!-- ko if: sb('text2') -->
+                    <div class="es_item_text2" data-bind="
+                            html: sb('text2'),
+                            ">
+                        </div>
+                <!-- /ko -->
+            {% endif %}
+        <!-- /ko -->
+        {% if not no_access %}
+            {% mp_include "content_access" %}
+        {% endif %}
+        </div>
+
+    </div>

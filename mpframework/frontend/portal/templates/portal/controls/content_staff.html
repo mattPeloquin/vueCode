@@ -1,0 +1,87 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Client template setting up staff controls
+
+{% endcomment %}
+
+{% load macros %}
+
+<script id="template_content_staff" type="text/template">
+    <!-- ko if: type_db == 'tree' -->
+        <!-- ko template: {
+            name: 'template_content_staff_tree'
+            } -->
+        <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko ifnot: type_db == 'tree' -->
+        <!-- ko template: {
+            name: 'template_content_staff_item'
+            } -->
+        <!-- /ko -->
+    <!-- /ko -->
+    </script>
+
+{% macro edit %}
+    <div class="es_content_tool mp_staff_content_edit">
+        <div class="mp_button_text" data-bind="
+                click: ( item, event ) =>
+                    mp.content_edit( item, event, {{ is_portal_content | jsbool }} )
+                ">
+            Edit
+            </div>
+        </div>
+{% endmacro %}
+
+{% macro info %}
+    <div class="es_content_tool mpp_tool_popup mp_staff_content_info">
+        <div class="mp_button_text">Info</div>
+        <div class="es_content_tool_popup mp_hidden" data-bind="
+                lazy_bind_mphidden: $data,
+                ">
+            <div class="es_tool_popup" data-bind="
+                    template: { name: 'template_content_staff_info' },
+                    ">
+                </div>
+            </div>
+        </div>
+{% endmacro %}
+
+<script id="template_content_staff_item" type="text/template">
+    {% usemacro edit %}
+    {% usemacro info %}
+    <!-- ko if: item_content -->
+        <div class="es_content_tool mp_staff_content_copy">
+            <div class="mp_button_text" data-bind="
+                    click: mp.content_copy
+                    ">
+                Copy
+                </div>
+            </div>
+    <!-- /ko -->
+    {% mp_include_files "portal/controls" "staff_item" ".html" %}
+    </script>
+
+<script id="template_content_staff_tree" type="text/template">
+    {% usemacro edit %}
+    {% usemacro info %}
+    <div class="es_content_tool mpp_tool_popup mp_staff_content_add
+                mp_menu_staff" data-bind="
+            bind_menu: true
+            ">
+        <div class="mp_menu_float mp_menu">
+            <div class="mp_menu_item mp_menu_header">
+                <span class="mp_menu_text">New item</span>
+                <div class="es_content_tool_popup
+                            mp_menu mp_menu_dropdown" data-bind="
+                        template: { name: 'template_content_staff_add' },
+                        ">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% mp_include_files "portal/controls" "staff_tree" ".html" %}
+    </script>
+
+<script id="template_content_staff_add" type="text/template">
+    {% mp_include_files "content" "menu-content_addcollection" ".html" %}
+    </script>

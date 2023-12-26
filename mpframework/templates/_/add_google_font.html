@@ -1,0 +1,19 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Optimized Google font load by name and apply as theme default
+
+    Use custom templates for more complex font needs.
+
+{%endcomment%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family={{ name }}&display=swap" rel="stylesheet">
+
+{% if not no_set %}
+    <style>
+        body {
+            font-family: '{{ name2|default:name }}', sans-serif;
+            }
+    </style>
+{% endif %}

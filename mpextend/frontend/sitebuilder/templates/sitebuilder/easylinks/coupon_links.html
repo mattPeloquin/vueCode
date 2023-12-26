@@ -1,0 +1,65 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Coupon links
+
+{%endcomment%}
+
+{% block panel_body %}
+<div id="list">
+    <h2>Coupon EasyLinks</h2>
+
+    <div class="es_report_head mp_flex_line">
+        <input class="mp_search" placeholder="Search" />
+        <p class="mp_locale_value">
+            {{ coupons|length }} total coupons
+            </p>
+        </div>
+
+    <table class="es_report_table">
+        <thead>
+            <tr class="es_heading">
+                <th style="width: 20%" class="mp_sort es_textleft"
+                        data-sort="code">Code</th>
+                <th style="width: 20%" class="mp_sort"
+                        data-sort="coupon_expires">Coupon expires</th>
+                <th style="width: 60%" class="mp_sort es_textleft"
+                        data-sort="login_url">Invite url</th>
+                </tr>
+            </thead>
+        <tbody class="es_report_body mp_report">
+            {% for c in coupons %}
+            <tr class="es_row">
+                <td class="code">{{ c.code }}</td>
+                <td class="coupon_expires es_textcenter">{{ c.coupon_expires }}</td>
+                <td class="login_url">
+                    <div class="mp_clipboard">
+                        <a target="_" href="{{ site.main_host_url }}{{ c.login_url }}"
+                                class="mp_easylink mp_ellipsis">
+                            {{ c.login_url }}
+                        </a></div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    const list = new List( 'list', {
+            listClass: 'mp_report',
+            searchClass: 'mp_search',
+            sortClass: 'mp_sort',
+            valueNames: [
+                'code', 'coupon_expires', 'login_url',
+                ]
+            })
+    list.sort( 'code', { order: 'asc' } )
+
+    $(".mp_sort").addClass('es_button_text')
+
+{% endblock %}
+

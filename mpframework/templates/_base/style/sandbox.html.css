@@ -1,0 +1,51 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    CSS affected by theme options
+
+    PAGE TEMPLATE FRAGMENT CACHED
+
+    Loads CSS templates inline with CSS_CONTENT_ONLY, which only loads text
+    between <style> tags.
+
+    Styles load last to support CSS overriding of defaults, color, and font.
+
+{%endcomment%}
+
+{#-- Load server-managed CSS from options/defaults first #}
+
+{% mp_include_files "" "options" ".html.css" %}
+{% mp_include_files "" "responsive" ".html.css" %}
+{% if is_portal %}
+    {% mp_include_files "portal" "defaults" ".html.css" %}
+{% endif %}
+
+{#-- CSS var() color structure is defined in set_colors #}
+{% include "_/set_colors.html.css" %}
+
+{#-- Pick default or alternative color #}
+{% if request_skin.color2 and user.options.color2 %}
+    {% mp_include request_skin.color2 with template_option=CSS_CONTENT_ONLY %}
+{% elif request_skin.color %}
+    {% mp_include request_skin.color with template_option=CSS_CONTENT_ONLY %}
+{% endif %}
+
+{#-- Font system defaults defined here #}
+{% if request_skin.font %}
+    {% mp_include request_skin.font with template_option=CSS_CONTENT_ONLY %}
+{% else %}
+    html { font-family: sans-serif; }
+{% endif %}
+
+{#-- Styles default to none #}
+{% if request_skin.style %}
+    {% mp_include request_skin.style with template_option=CSS_CONTENT_ONLY %}
+{% endif %}
+{% if request_skin.mixin %}
+    {% mp_include request_skin.mixin with template_option=CSS_CONTENT_ONLY %}
+{% endif %}
+{% if request_skin.mixin2 %}
+    {% mp_include request_skin.mixin2 with template_option=CSS_CONTENT_ONLY %}
+{% endif %}
+{% if request_skin.mixin3 %}
+    {% mp_include request_skin.mixin3 with template_option=CSS_CONTENT_ONLY %}
+{% endif %}

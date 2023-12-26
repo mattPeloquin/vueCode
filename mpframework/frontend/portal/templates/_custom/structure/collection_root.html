@@ -1,0 +1,17 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Base of default recursive top collection display
+
+{%endcomment%}
+
+<div class="es_no_results mp_hidden mp_no_results" data-bind="
+        html: sbt( 'no_results', $element ),
+        ">
+    </div>
+
+<section class="es_collection_top" data-bind="
+        bind_tree_node: $data,
+        class: css_classes(),
+        ">
+    {% mp_include "collection_node" with itemfn=items arg1=arg1 arg2=arg2 featured_area='featured' %}
+    </section>

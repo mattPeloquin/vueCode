@@ -1,0 +1,37 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display a portal group.
+
+    ASSUMES NAV ELEMENTS (any collections in group)
+    HAVE PANELS RENDERED within the nav scope.
+
+{%endcomment%}
+
+{% with group_items=group_items|default:'all_content()' %}
+
+    <!-- ko with: mpp.vm_groups().get_name('{{ group }}') -->
+        <!-- ko if: $data.id && ( sb_option('portal.show_empty') ||
+                    ko.length( {{ group_items }} ) ) -->
+            <section class="es_portal_group es_theme_panel" data-bind="
+                    class: css_classes(),
+                    ">
+                {#-- Add group header text or html #}
+                <!-- ko if: sb('html') -->
+                    <div data-bind="
+                            html: sb('html'),
+                            "></div>
+                <!-- /ko -->
+
+                {% mp_include "items" with items=group_items %}
+
+                <!-- ko if: sb('text1') -->
+                    <div data-bind="
+                            visible: !!sb('text1'),
+                            html: sb('text1'),
+                            "></div>
+                <!-- /ko -->
+                </section>
+        <!-- /ko -->
+    <!-- /ko -->
+
+{% endwith %}

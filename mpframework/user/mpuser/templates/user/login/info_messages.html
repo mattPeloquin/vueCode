@@ -1,0 +1,23 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Frontporch messages
+
+    If user is entering with extra info links the login_extra
+    object will be presentan contain:
+
+        name - A string that is always present, describing the link
+
+    And one of:
+
+        template - Optional template to use to display extra information
+        description - Text describing the link
+
+{% endcomment %}
+
+<div class="es_login_messages es_login_info mp_flex_column">
+    {% if login_extra.template %}
+         {% mp_include login_extra.template %}
+     {% elif login_extra.description %}
+         {{ login_extra.description | safe }}
+     {% endif %}
+     </div>

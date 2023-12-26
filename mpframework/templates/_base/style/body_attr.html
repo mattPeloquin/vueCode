@@ -1,0 +1,77 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Attributes added to body to reflect page type and app/user state
+
+    EMBEDDED IN <body> TAG
+
+{%endcomment%}
+
+class="
+    {#-- Is page: portal site, content page/embed, staff/admin, or user #}
+    {% if is_portal %}
+        es_portal
+        {% if is_portal_content %}
+            es_portal_content
+            es_portal_{{ portal_content }}
+        {% else %}
+            es_portal_site
+        {% endif %}
+    {% else %}
+        es_page
+        {% if is_page_content %}
+            es_page_content
+        {% elif is_page_staff %}
+            es_page_staff
+            {% if is_page_admin %}
+                es_page_admin
+            {% endif %}
+        {% else %}
+            es_page_user
+        {% endif %}
+    {% endif %}
+
+    {#-- Add theme background to any non-staff pages (some may not use style) #}
+    {% if not is_page_staff %}
+        es_theme_background
+    {% endif %}
+
+    {#-- User state #}
+    es_workflow_{{ user.workflow_name | lower }}
+    es_user_{{ user.is_authenticated | yesno:'authorized,visitor' }}
+    es_user_{{ user.is_staff | yesno:'staff,customer' }}
+    es_user_email_{{ user.email }}
+    {% if user.account %}
+        es_user_{{ user.account.is_group | yesno:'group,individual' }}
+        {% if user.account.is_group %}
+            es_user_group_{{ user.account.name }}
+        {% endif %}
+    {% endif %}
+
+    {#-- Note Sitebuilder styles #}
+    es_sb_theme_{{ request_skin.theme.slug_name }}
+    es_sb_portal_{{ request_skin.frame.slug_name }}
+    es_sb_style_{{ request_skin.style.slug_name }}
+    es_sb_font_{{ request_skin.font.slug_name }}
+    {% if request_skin.color2 and user.options.color2 %}
+        es_sb_color_{{ request_skin.color2.slug_name }}
+    {% else %}
+        es_sb_color_{{ request_skin.color.slug_name }}
+    {% endif %}
+    {% if request_skin.mixin %}
+        es_sb_mixin_{{ request_skin.mixin.slug_name }}
+    {% endif %}
+    {% if request_skin.mixin2 %}
+        es_sb_mixin_{{ request_skin.mixin2.slug_name }}
+    {% endif %}
+    {% if request_skin.mixin3 %}
+        es_sb_mixin_{{ request_skin.mixin2.slug_name }}
+    {% endif %}
+
+    {% if is_popup %} popup {% endif %}
+    {% if debug %} mpd {% else %} mpf {% endif %}
+    {% if mp_testing %} mp_testing {% endif %}
+
+    {% if page_id %}
+        es_pageid_{{ page_id }}
+    {% endif %}
+    "

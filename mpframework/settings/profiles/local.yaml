@@ -1,0 +1,55 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Run a local development environment
+#
+
+# Temp debugging things, can also do with fab e XXX xxx
+#MP_LOG_SUB: ['http']
+
+MP_CACHE_AGE:
+
+    # Turn down option local caching to take effect quickly
+    OPTIONS: 8
+
+    # Increase buffer version to catch issues where same server isn't
+    # invalidating correction
+    BUFFER_VERSION: 6
+
+    # Leave other options as in production to detect problems; caching
+    # is in memory, so will be cleared with every restart
+    # Adjust these for debugging cache issues
+    #TIMEWIN_USER: 32
+    #TIMEWIN_CONTENT: 32
+    #PERFORMANCE: 0
+    #HTML: 0
+    #LOCAL_SMALL_VERSION: 0
+
+MP_TUNING:
+  # Increase client ping frequency for debugging
+  CLIENT_IDLE_WAIT: 20
+  CLIENT_PING_FREQUENCY: 10
+
+#--------------------------------------------------------------------
+# Debug/Testing/Logging
+
+DEBUG: True
+
+MP_DEV_IPS:
+  - "0.0.0.0"       # Default route
+  - "127.0.0.1"     # Local loop
+  - "192.168/16"    # Local network testing
+  - "10/8"          # Local network testing
+
+# Turn on Django template debugging
+MP_TEMPLATE_DEBUG: True
+
+# Generally want less cluttered logs when debugging interactively
+MP_LOG_LEVEL_DEBUG_MIN: 0
+MP_LOG_LEVEL_INFO_MIN: 1
+MP_LOG_OPTIONS:
+    VERBOSE: False
+    LOCALFILE: local.log
+
+EMAIL_PORT: 25
+EMAIL_TIMEOUT: 1
+EMAIL_MP_RETRYS: 1

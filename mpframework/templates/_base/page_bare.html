@@ -1,0 +1,84 @@
+{% load strip_spaces %}{% strip_spaces compress_on %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Base bare-bones page
+    For iframes (and pages) that don't need full MPF script and style support,
+    and used as the base for style and scripting pages.
+    This includes most protected content (which occurs in iframes),
+
+{% endcomment %}
+
+{% load cache %}
+
+<!DOCTYPE html>
+<!-- Powered by Vueocity's Mesa Platform, Copyright 2021 Vueocity LLC -->
+<html lang="{{ site.language_code }}">
+    <head>
+        {% block page_head %}
+            <title>{% if page_title %}{{ page_title }}{% else %}{{ site.name }}{% endif %}</title>
+            <base target="_parent" /> {#-- Force open in parent window by default #}
+            <style>
+                * { margin: 0; padding: 0; border: 0; outline: 0; box-sizing: border-box; }
+                {%comment%}
+                    For show protected content in viewers, to allow content to define
+                    its size based on width it is important to allow the body to adjust
+                    to fit content size and hide overflow on html
+                {% endcomment %}
+                html { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+                body { position: relative; width: 100%; }
+                iframe { display: block; width: 100%; }
+                .mp_overflow_none { overflow: hidden !important; }
+                </style>
+
+            {% if page_add_style %}
+{% cache ttime bare-style template_cache_sandbox %}{% strip_spaces compress_on %}
+                {% include "_base/style/main.chtml" %}
+{% end_strip_spaces %}{% endcache %}
+            {% endif %}
+
+            {% if page_add_script %}
+                {% include "_base/script/first_nocache.html" %}
+{% cache ttime bare-script template_cache_sandbox %}{% strip_spaces compress_on %}
+                {% include "_base/script/first_cache.chtml" %}
+                {#-- Flag indicating JS has been parsed #}
+                <script defer src="{{ static_url }}mpf-js/script_loaded.js"></script>
+{% end_strip_spaces %}{% endcache %}
+            {% endif %}
+
+        {% endblock %}
+
+        {#-- Inject sandbox CSS to allow overrides in all frames/pages #}
+        <style>
+            {% if request_skin.css_head %}
+                {{ request_skin.css_head | safe }}
+            {% endif %}
+            </style>
+
+        {#-- Inject any shared content templates into iframes #}
+        {% if is_page_content %}
+            {% if sb_options.site.content_template_head %}
+                {% mp_include sb_options.site.content_template_head %}
+            {% endif %}
+        {% endif %}
+        </head>
+    <body {% block body_attr %}
+               {% include "_base/style/body_attr.html" %}
+          {% endblock %}>
+        {% block page_body %}
+            {% if body_html %}
+                {{ body_html | safe }}
+            {% endif %}
+        {% endblock %}
+
+        {% if is_page_content %}
+            {% if sb_options.site.content_template_body %}
+                {% mp_include sb_options.site.content_template_body %}
+            {% endif %}
+        {% endif %}
+
+        {% if mp_testing %}
+            {% include "root/test/page_testing.html" %}
+        {% endif %}
+        </body>
+    </html>
+{% end_strip_spaces %}

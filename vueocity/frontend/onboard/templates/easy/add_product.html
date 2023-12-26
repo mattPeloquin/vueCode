@@ -1,0 +1,90 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    EasyVue Product/Content item add
+
+{% endcomment %}
+
+{% block page-no_cache %}
+    {{ block.super }}
+    {{ form.media }}
+{% endblock %}
+
+{% block page_ready_script %}
+
+    {% include "_/field_errors.html" with form=form %}
+
+    mp.set_watermark("#{{ form.name.auto_id }}", "Product name")
+    mp.set_watermark("#{{ form.price.auto_id }}", "Price")
+    mp.set_watermark("#{{ form.trial_min.auto_id }}", "Trial minutes")
+    mp.set_watermark("#{{ form.coupon_code.auto_id }}", "Coupon code")
+    mp.set_watermark("#{{ form.coupon_price.auto_id }}", "Coupon price")
+
+{% endblock %}
+
+{% block panel_body %}
+
+    {# Enctype setting necessary for supporting image upload #}
+    <form enctype="multipart/form-data" method="post" class="mp_form"
+            data-parsley-validate
+            >
+        {% csrf_token %}
+
+        <h1>Add a new product to your site</h1>
+        <p>This screen creates a basic content item along with licensing options, which together
+            define your new product.
+            </p>
+
+        <div class="mp_easy_content">
+            <div>
+                {{ form.name }}
+                </div>
+            <h3>Upload content</h3>
+            <div>
+                {{ form.content_file }}
+                </div>
+            <h3>Upload optional image</h3>
+            <div>
+                {{ form.image }}
+                </div>
+            </div>
+
+        <div class="mp_easy_purchase">
+
+            <h3>Pricing option</h3>
+            <p>Set the billing period and price for this product.<br>
+                You can add more options later if needed.
+                </p>
+            <div>
+                <select name="billing">
+                    <option value="">Select payment...</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="year">One Year</option>
+                    </select>
+                {{ form.price }}
+                </div>
+
+            <h3>Free Trial</h3>
+            <p>Add a free trial by entering length in minutes below.<br>
+                Leave blank for no trial.
+                </p>
+            <div>
+                {{ form.trial_min }}
+                </div>
+
+            <h3>Coupon</h3>
+            <p>Enter a code and price to add a coupon for this product.<br>
+                Leave blank for no coupon.</p>
+            <div>
+                {{ form.coupon_code }}
+                {{ form.coupon_price }}
+                </div>
+
+            </div>
+        <input type="submit" class="mp_button_flat" name="add_product"
+                value="Add new product" />
+        <input type="submit" class="mp_button_flat" name="add_another"
+                value="Save and add another" />
+        </form>
+
+{% endblock %}

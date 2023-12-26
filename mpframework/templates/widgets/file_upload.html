@@ -1,0 +1,14 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Custom file upload widget
+
+{%endcomment%}
+
+<div class="mp_file_control mp_flex_line">
+    <input type="{{ widget.type }}" name="{{ widget.name }}"
+        {% include "django/forms/widgets/attrs.html" %} />
+    {% if not widget.required and widget.value %}
+        <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}" />
+        <label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
+    {% endif %}
+    </div>

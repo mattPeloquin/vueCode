@@ -1,0 +1,90 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Per-page script loading for admin screens
+
+{%endcomment%}
+<script> 'use_strict';
+
+    {#-- Need to explicitly expand add state, as jsbool not called #}
+    mp.admin_add_screen = {% if add %}true{% else %}false{% endif %}
+
+    {#-- Send over any CSS to be added to admin elements #}
+    mp.admin_cl_header_css = {
+        {% for header, classes in cl.mp_css.headers.items %}
+            {{ header }}: '{{ classes }}',
+        {% endfor %}
+        }
+    mp.admin_cl_field_css = {
+        {% for field, classes in cl.mp_css.fields.items %}
+            {{ field }}: '{{ classes }}',
+        {% endfor %}
+        }
+
+    mp.when_ui_loaded( function admin_fixup() {
+
+        {#-- Harmless if this isn't a change form, so don't bother to differntiate #}
+        $('.add-another').click(function(e) {
+            e.preventDefault()
+            showAddAnotherPopup(this)
+            })
+        $('.related-lookup').click(function(e) {
+            e.preventDefault()
+            showRelatedObjectLookupPopup(this)
+            })
+
+        {#-- Textbox resizing - never store less than two lines of height #}
+        $("textarea").on( 'mouseup mouseout', function() {
+            mp.preference_store(
+                '#{{ opts.model_name }}_form ' + $(this).mpselector(),
+                'css', { height: Math.max( $(this).height(), 50 ) },
+                'staff' )
+            })
+
+        {#-- Override admin form submit #}
+        $("#{{ opts.model_name }}_form").submit( function( event ) {
+            var form = this
+
+            {#-- Check if Normal Django full trip should be done #}
+            if( !mp._save_continue_{{ opts.model_name }} ||
+                    !{{ can_ajax_save | jsbool }} ) {
+                mp._save_continue_{{ opts.model_name }} = false
+                return true
+                }
+
+            {#-- Otherwise do Ajax submit #}
+            event.preventDefault()
+            $(".mp_messagelist > *").remove()
+
+            mp.ajax_submit_form( form, {
+
+                {#-- Show progress bar in message list #}
+                progress: function( xhr ) {
+                    mp.ajax_progress( xhr, $(".mp_messagelist"),
+                                '{{ opts.model_name }}_upload' )
+                    },
+
+                {#-- Show outcome message and do any field updates #}
+                finished: function( values ) {
+                    $("#{{ opts.model_name }}_upload").remove()
+                    $(".mp_messagelist").append("<li></li>")
+                    if( values ) {
+                        $(".mp_messagelist li").last()
+                            .html( values.msg )
+                            .addClass('success')
+                        delete values.msg
+
+                        {#-- Any items left are file fields to update #}
+                        mp.ajax_update_values( form, values )
+
+                        }
+                    else {
+                        $(".mp_messagelist li").last()
+                            .html("An error occurred, please try refreshing")
+                            .addClass('error')
+                        }
+                    },
+                })
+
+            })
+        })
+    </script>

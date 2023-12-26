@@ -1,0 +1,27 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Table-like layout for lists with columns
+
+{%endcomment%}
+
+<div class="es_listrow es_theme_list es_theme_content" data-bind="
+        click: user_access,
+        style: {
+            '--es_item_font-size': sb_option('portal.item_font_size', $element),
+            },
+        ">
+    <div class="es_content_body mp_list_row mp_flex_line">
+        <div class="es_item_title mp_list1" data-bind="
+                html: sb('name'),
+                " data-column="Name">
+            </div>
+        <div class="es_item_state mp_list2" data-bind="
+                html: state_text(),
+                " data-column="State">
+            </div>
+        <div class="es_item_text2 mp_list3" data-bind="
+                html: sb('text2'),
+                " data-column="Description">
+            </div>
+        </div>
+    </div>

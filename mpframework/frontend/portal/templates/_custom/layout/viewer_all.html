@@ -1,0 +1,79 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    All collection viewer
+    Shows entire set of nested collections and their items underneath the
+    current top-level collection.
+
+        1) Uses current VM context for an item. Adjusts for whether the item
+        part of a root tree node or a treeless collection.
+
+{%endcomment%}
+
+<pane class="es_viewer_all es_viewer es_theme_background mp_print_hidden
+        mp_flex_column mpp_viewer_fullscreen">
+
+    {% if sb_options.site.banner.viewer %}
+        {% include "_base/layout/banner.html" %}
+    {% endif %}
+
+    <div class="es_viewer_display mp_flex_item_grow
+                mp_flex mp_flex_nowrap mpr_flex_col_rev">
+
+        <div class="es_viewer_nav mpp_viewer_nav mp_flex_column">
+            <div class="es_portal_return es_button_text es_viewer_top_nav mpp_back" data-bind="
+                    html: mpp.sbt( 'viewer_close', $element, root() )
+                    ">
+                </div>
+            <!-- ko if: root() -->
+                <!-- ko with: root() -->
+                    <div class="es_viewer_items mpp_viewer_items" data-bind="
+                            if: id
+                            ">
+                        <panel class="mp_flex_column" data-bind="
+                                bind_content_panel: $data,
+                                class: css_classes(),
+                                ">
+                            {% mp_include "collection_node" with column=True brief=True default_template="item_compact" opt_template="viewer" %}
+                            {% include "portal/controls/content.html" %}
+                            </panel>
+                        </div>
+                <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko ifnot: root() -->
+                <div class="es_viewer_items mpp_viewer_items" data-bind="
+                        with: mpp.vm_main,
+                        bind_items: true,
+                        ">
+                    {% mp_include "items" with column=True brief=True default_template="item_compact" opt_template="viewer" %}
+                    </div>
+            <!-- /ko -->
+            </div>
+
+        <div class="es_viewer_main mp_flex_column">
+
+            <div class="es_viewer_box mpp_viewer_box">
+                </div>
+
+            <div class="es_viewer_content mpp_viewer_aux">
+                <!-- ko with: mpp.vm_current.item() || vm.current.node() -->
+                    <!-- ko if: $data && $data.sb && sb('html3') -->
+                        <div class="es_viewer_content_item" data-bind="
+                                html: sb('html3'),
+                                ">
+                            </div>
+                    <!-- /ko -->
+                    <!-- ko ifnot: $data && $data.sb && sb('html3') -->
+                        <!-- ko if: $parent && $parent.sb && $parent.sb('html3') -->
+                        <div class="es_viewer_content_node" data-bind="
+                                html: $parent.sb('html3'),
+                                ">
+                            </div>
+                        <!-- /ko -->
+                    <!-- /ko -->
+                <!-- /ko -->
+                </div>
+
+            </div>
+
+        </div>
+    </pane>

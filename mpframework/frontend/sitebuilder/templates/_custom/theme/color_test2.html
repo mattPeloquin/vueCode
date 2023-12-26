@@ -1,0 +1,47 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    High-contrast color palette to see how themes map onto screen
+    Use the default below, or add your own
+
+{%endcomment%}
+
+<style>
+
+    body {
+        background: red;
+        }
+
+    .es_theme_root {
+        color: white;
+        }
+    .es_theme_background {
+        background: green;
+        }
+    .es_theme_popup {
+        background: purple;
+        }
+    .es_theme_overlay {
+        color: yellow;
+        background: rgba( 0, 255, 0, 0.5 );
+        }
+
+    .es_theme_current {
+        color: white;
+        background: orange;
+        }
+
+    .es_theme_highlight,
+    :is( .es_button, .es_button_flat ):is(:hover,:focus,:active) {
+        color: pink;
+        background: white;
+        }
+
+    h1, h2, h3, h4 {
+        color: red;
+        }
+
+    .es_portal {
+        color: blue;
+        }
+
+    </style>

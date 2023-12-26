@@ -1,0 +1,37 @@
+{% extends '_base/pages/style.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Confirmation page for payment success
+
+{%endcomment%}
+
+{% block page_body %}
+
+    <div class="es_theme_page">
+
+        {% if amount %}
+
+            <p>Thank you for your payment of ${{ amount }}.
+                </p>
+
+        {% endif %}
+
+        <h1>You now have access to {{ apa.pa.name }}.
+            </h1>
+
+        <a class="es_button_text" href="{{ site.portal_url }}"
+            >
+            Return to {{ site.name }}
+            </a>
+
+        {% if debug %}
+            <br>
+            <div class="mp_mono">
+                {{ response|linebreaks }}
+                </div>
+        {% endif %}
+
+        </div>
+
+{% endblock %}
+

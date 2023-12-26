@@ -1,0 +1,49 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Django urls
+
+{%endcomment%}
+
+{% block panel_body %}
+
+    <div class="es_theme_page">
+        <h2>URLs Django Will Respond To</h2>
+        </div>
+
+    <h2>NGINX locations</h2>
+    <div class="mpdebug">
+        {% include "root/_/list.html" with items=nginx_urls %}
+        </div>
+
+    <h2>FOH Front of house / default servers</h2>
+    <div class="mpdebug">
+        {% include "root/_/list.html" with items=main_urls %}
+        </div>
+
+    <h2>FT Food truck servers (route to default if not separate)</h2>
+    <div class="mpdebug">
+        {% include "root/_/list.html" with items=ft_urls %}
+        </div>
+
+    <h2>BOH Back of house servers (route to default if not separate)</h2>
+    <div class="mpdebug">
+        {% include "root/_/list.html" with items=boh_urls %}
+        </div>
+
+    <h2>Staff admin (routes to BOH if available)</h2>
+    <div class="mpdebug">
+        {% include "root/_/list.html" with items=admin_urls %}
+        </div>
+
+    <h2>External</h2>
+    <div class="mpdebug">
+        {% include "root/_/list.html" with items=external_urls %}
+        </div>
+
+    <h2>Root admin</h2>
+    <div class="mpdebug">
+        {% include "root/_/list.html" with items=root_urls %}
+        </div>
+
+{% endblock %}

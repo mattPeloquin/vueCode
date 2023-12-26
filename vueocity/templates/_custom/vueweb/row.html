@@ -1,0 +1,27 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+	VueWeb item
+
+{%endcomment%}
+
+<item class="vue_widget row mp_flex" data-bind="
+        class: css_classes(),
+        ">
+
+    {#-- ET icon name stored in text2 #}
+    <div class="left">
+        <div class="et" data-bind="class: sb('text2')">
+            </div>
+        </div>
+
+    <div class="right mp_flex_column">
+        <div class="vue_widget_name" data-bind="html: sb('name')">
+            </div>
+        <div class="vue_widget_desc">
+            <div data-bind="html: sb('text1')">
+                </div>
+            </div>
+        </div>
+
+    {% include "portal/controls/content.html" %}
+    </item>

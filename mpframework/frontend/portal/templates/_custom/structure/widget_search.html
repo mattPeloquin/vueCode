@@ -1,0 +1,16 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Global search box
+
+    Validation threshold needs to be 1 since value is also KO observable
+
+{% endcomment %}
+
+<!-- ko ifnot: mpp.sb_option( 'portal.hide_search', $element ) -->
+
+    <input id="mp_search_box" class="es_search_box"
+            placeholder="Search"
+            onkeyup="mpp.search_value( $(this).val() );"
+            />
+
+<!-- /ko -->

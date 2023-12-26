@@ -1,0 +1,48 @@
+{% extends '_base/page_bare.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Place embed HTML content into bare page
+
+{% endcomment %}
+
+{% block page_head %}
+    {{ block.super }}
+
+    {% include "_base/script/first_nocache.html" %}
+    <script> 'use strict';
+        mp.send_message = function( event, data ) {
+            if( parent ) {
+                parent.mpp.item_trigger('user_completed')
+                }
+            // FUTURE - support API calls when not in iframe
+            }
+        mp.mark_complete = function() {
+            mp.send_message('user_completed')
+            }
+        </script>
+
+    {% if embed %}
+        {% if embed.add_style %}
+            {% include "_base/style/main.chtml" %}
+        {% endif %}
+
+        {% if head_render %}
+            {{ head_render }}
+        {% else %}
+            {{ embed.head | safe }}
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+
+{% block page_body %}
+    <div class="es_embed es_embed_{{ embed.pk }}">
+        {% if embed %}
+            {% if body_render %}
+                {{ body_render }}
+            {% else %}
+                {{ embed.body | safe }}
+            {% endif %}
+        {% endif %}
+        </div>
+{% endblock %}

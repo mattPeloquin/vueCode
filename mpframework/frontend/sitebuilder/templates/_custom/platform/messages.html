@@ -1,0 +1,15 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Messages displayed to users
+
+{%endcomment%}
+
+<ul class="es_messagelist">
+    {% if messages %}
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {{ message }}
+                </li>
+        {% endfor %}
+    {% endif %}
+    </ul>

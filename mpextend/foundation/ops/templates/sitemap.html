@@ -1,0 +1,33 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Sitemap template - view builds out urls
+
+{% endcomment %}
+
+
+{% if site.sitemap %}
+
+    {{ site.sitemap }}
+
+{% else %}
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+        {% for location in locations %}
+            <url>
+
+                <loc>{{ site_url }}{{ location.url }}</loc>
+                {% if location.priority %}
+                    <priority>{{ location.priority }}</priority>
+                {% endif %}
+                {% if location.changefreq %}
+                    <changefreq>{{ location.changefreq }}</changefreq>
+                {% endif %}
+
+            </url>
+        {% endfor %}
+
+    </urlset>
+
+{% endif %}

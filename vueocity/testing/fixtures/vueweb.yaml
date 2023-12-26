@@ -1,0 +1,159 @@
+#--- Vueocity platform, Copyright 2021 Vueocity LLC
+#
+#   Vueocity website
+#
+
+- fields:
+    name: VueWeb
+    frame_site: 2000
+    _style: 2001
+    _color: 34
+  model: sitebuilder.theme
+  pk: 2000
+
+- fields:
+    provider_optional: 12
+    name: VueWeb
+    frame_type: P
+    structure:
+       pane:
+         template: pane_vueweb
+  model: sitebuilder.frame
+  pk: 2000
+
+- fields:
+    provider_optional: 12
+    name: pane_vueweb
+    template_type: P
+    orig_path: "_custom/vueweb/pane_vueweb.html"
+  model: sitebuilder.templatecustom
+  pk: 2000
+- fields:
+    provider_optional: 12
+    name: style_vueweb
+    template_type: B
+    orig_path: "_custom/vueweb/style.html"
+  model: sitebuilder.templatecustom
+  pk: 2001
+- fields:
+    provider_optional: 12
+    name: home
+    template_type: V
+    orig_path: "_custom/vueweb/home.html"
+  model: sitebuilder.templatecustom
+  pk: 2010
+- fields:
+    provider_optional: 12
+    name: features
+    template_type: V
+    orig_path: "_custom/vueweb/features.html"
+  model: sitebuilder.templatecustom
+  pk: 2011
+- fields:
+    provider_optional: 12
+    name: pricing
+    template_type: V
+    orig_path: "_custom/vueweb/pricing.html"
+  model: sitebuilder.templatecustom
+  pk: 2012
+- fields:
+    provider_optional: 12
+    name: solutions
+    template_type: V
+    orig_path: "_custom/vueweb/solutions.html"
+  model: sitebuilder.templatecustom
+  pk: 2013
+- fields:
+    provider_optional: 12
+    name: signup
+    template_type: V
+    orig_path: "_custom/vueweb/signup.html"
+  model: sitebuilder.templatecustom
+  pk: 2015
+- fields:
+    provider_optional: 12
+    name: customers
+    template_type: V
+    orig_path: "_custom/vueweb/customers.html"
+  model: sitebuilder.templatecustom
+  pk: 2016
+- fields:
+    provider_optional: 12
+    name: demo
+    template_type: V
+    orig_path: "_custom/vueweb/demo.html"
+  model: sitebuilder.templatecustom
+  pk: 2017
+- fields:
+    provider_optional: 12
+    name: et_row
+    template_type: I
+    orig_path: "_custom/vueweb/row.html"
+  model: sitebuilder.templatecustom
+  pk: 2020
+- fields:
+    provider_optional: 12
+    name: et_card
+    template_type: I
+    orig_path: "_custom/vueweb/card.html"
+  model: sitebuilder.templatecustom
+  pk: 2022
+- fields:
+    provider_optional: 12
+    name: image_row
+    template_type: I
+    orig_path: "_custom/vueweb/image_row.html"
+  model: sitebuilder.templatecustom
+  pk: 2024
+- fields:
+    provider_optional: 12
+    name: need
+    template_type: I
+    orig_path: "_custom/vueweb/need.html"
+  model: sitebuilder.templatecustom
+  pk: 2026
+
+- fields:
+    _provider: 12
+    sandboxes: [20]
+    tag: 'whoami'
+    _name: Who
+    text1: I am a...
+  model: mpcontent.baseitem
+  pk: 6100
+- fields:
+    mptt_id: 1000
+    parent: null
+    item_template: 2026
+    mptt_level: 0
+    mptt_left: 1
+    mptt_right: 2
+  model: mpcontent.tree
+  pk: 6100
+- fields:
+    _provider: 12
+    sandboxes: [20]
+    _name: RockStar
+    sb_options:
+      needs:
+      - disp: To monetize my videos without ads
+        feat: feat_fees feat_ecommerce
+      - disp: A site customized and branded to me
+        feat: feat_templates
+      - disp: Ownership of my followers
+        feat: feat_user
+      - disp: Control over playlists
+        feat: feat_content
+      - disp: An affordable platform
+        feat: ''
+  model: mpcontent.baseitem
+  pk: 6101
+- fields: {}
+  model: mpcontent.portalitem
+  pk: 6101
+- fields:
+    item: 6101
+    tree: 6100
+  model: mpcontent.treebaseitem
+  pk: 6101
+

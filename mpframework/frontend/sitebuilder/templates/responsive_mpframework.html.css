@@ -1,0 +1,120 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Implements key responsive breakpoints driven by SiteBuilder options.
+
+      1) Only CSS may be added to this file.
+      2) Only SANDBOX server scripting (see help)
+
+{%endcomment%}
+
+@media( min-width: {{ sb_options.breakpoints.width_medium }}px ) {
+
+    {#-- Defaults for everything OVER medium #}
+
+    .mpr_width_half {
+        max-width: 48vw;
+        }
+    .mpr_width_66 {
+        max-width: 66vw;
+        }
+    .mpr_font_shrink {
+        font-size: 95%;
+        }
+    .mpr_show_small {
+        display: none !important;
+        }
+
+    }
+@media( min-width: {{ sb_options.breakpoints.width_large }}px ) {
+
+    {#-- Defaults for everything OVER large #}
+
+    .mpr_font_shrink {
+        font-size: inherit;
+        }
+
+    }
+
+@media( max-width: {{ sb_options.breakpoints.width_medium }}px ) {
+
+    {#-- Defaults UNDER medium screen #}
+
+    .mpr_hide_med {
+        display: none !important;
+        }
+    .mpr_show_small {
+        display: none !important;
+        }
+    .mpr_font_shrink {
+        font-size: 85%;
+        }
+    .mpr_width_half {
+        max-width: 64vw;
+        }
+    .mpr_width_66 {
+        max-width: 80vw;
+        }
+    .mpr_width_space {
+        left: 10vw;
+        right: 10vw;
+        }
+
+    }
+@media( max-width: {{ sb_options.breakpoints.width_small }}px ) {
+
+    {#-- ADD for small screen #}
+
+    .mpr_hide_small {
+        display: none !important;
+        }
+    .mpr_show_small {
+        display: initial !important;
+        }
+    .mpr_width_half {
+        max-width: 80vw;
+        }
+    .mpr_width_66 {
+        max-width: calc( 100vw - 2em );
+        }
+    .mpr_width_space {
+        left: 5vw;
+        right: 5vw;
+        }
+
+    {#-- Collapse menus that are automatic #}
+    .mpr_collapse_toggle {
+        display: block !important;
+        }
+    .mpr_collapse_hide.mpr_collapse_hide_all {
+        display: none !important;
+        }
+    .mpr_collapse_hide > :not(.mp_nav_current) {
+        display: none !important;
+        }
+    .mpr_collapse_show:not(.mpr_collapse_inline) {
+        position: absolute;
+        top: -0.2em;
+        left: 1.7em;
+        flex-wrap: wrap;
+        padding: 0.3em;
+        }
+    .mpr_collapse_show.mpr_collapse_left {
+        right: 1.7em;
+        left: auto;
+        }
+
+    }
+@media( min-height: {{ sb_options.breakpoints.height_medium }}px ) {
+
+    {#-- ADD for large screen #}
+
+    }
+@media( max-height: {{ sb_options.breakpoints.height_small }}px ) {
+
+    {#-- ADD for small screen #}
+
+    .mpr_font_shrink {
+        font-size: 80%;
+        }
+
+    }

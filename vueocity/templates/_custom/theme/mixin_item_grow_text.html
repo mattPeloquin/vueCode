@@ -1,0 +1,28 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Allow some content types to grow with text length
+
+{%endcomment%}
+
+<style>
+
+    :root {
+        --es_card_height: auto;
+        --es_list_max_height: auto;
+        }
+
+    .es_theme_content .es_content_text {
+        height: initial !important;
+        }
+    .es_theme_content .es_text_limit :is(
+        .es_item_title, .es_item_text1, .es_item_text2, .es_item_text3, .es_item_text4
+        ) {
+        -webkit-line-clamp: initial;
+        -webkit-box-orient: initial;
+        overflow: initial;
+        text-overflow: initial;
+        white-space: initial;
+        max-height: initial;
+        }
+
+</style>

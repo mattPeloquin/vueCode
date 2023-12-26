@@ -1,0 +1,35 @@
+{% extends 'admin/change_form.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Add HTML to the PA form
+
+{%endcomment%}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    function _pa_url( url ) {
+        if( url ) {
+            url = '{{ site.main_host_url }}' + '{% url 'login_sku' '' %}'
+                        + _.trim( url )
+            url = '<a target="_" href="' + url + '">' + url + '</a>'
+            }
+        return url
+        }
+    mp.update_url( _pa_url, '#id_sku', '#easylink_url' )
+
+    {% if original.agreement.notes %}
+        $('#help_agreement_notes').text('{{ original.agreement.notes }}')
+    {% endif %}
+    {% if original.agreement.rules.unit_points %}
+        $('#help_unit_points').text('Optionally override ' +
+            '{{ original.agreement.rules.unit_points }}')
+    {% endif %}
+
+{% endblock %}
+
+{% block admin_bar %}
+    {% if change %}
+        {% include 'admin/_/easylink_other.html' %}
+    {% endif %}
+{% endblock %}

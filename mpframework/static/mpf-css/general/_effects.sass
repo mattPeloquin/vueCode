@@ -1,0 +1,230 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    CSS effects
+ */
+
+.es_spinner
+    position: absolute
+    left: calc( 50% - 16em )
+    top: calc( 50% - 4em )
+    width: 16em
+    transform: translateY( -50% ) translateX( 50% )
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: space-evenly
+    // User border effect with rotation to create css spinner
+    spinner
+        position: relative
+        opacity: 0.6
+        width: 8em
+        height: 8em
+        spin1, spin2
+            position: absolute
+            display: block
+            border-radius: 50%
+            width: 8em
+            height: 8em
+        spin1
+            animation: spin 2s infinite
+            border: 1.2em solid transparent
+        spin2
+            animation: spin2 6s infinite
+            border: 1.2em solid transparent
+            opacity: 0.4
+    h1
+        padding: 0.6em 1.2em
+        border-radius: 20%
+        background: rgba( $cWhite, 1 )
+        box-shadow: 0 0 8vw 10vw rgba( $cWhite, 1 )
+        text-shadow: 0.02em 0.02em $cBlack
+        text-align: center
+    // Colors should get reset to theme in JS
+    spin1, spin2
+        border-color: rgba( $cOrange, 0.24 );
+    h1
+        color: rgba( $cOrange, 0.48 )
+
+.mp_effect_highlight
+    border-radius: 1px
+    animation: grow var(--es_effect_slow) cubic-bezier(.36,.07,.19,.97), flash var(--es_effect_slow) ease-out, glow var(--es_effect_slow) ease-out
+.es_effect_grow
+    animation: grow var(--es_effect_slow) ease-in-out
+.es_effect_glow
+    animation: glow var(--es_effect_slow) infinite
+
+.es_effect_wobble
+    animation: wobble var(--es_effect_med) ease-out
+.es_effect_fall_in
+    animation: fall_in var(--es_effect_fast) ease-in
+.es_effect_wiggle
+    animation: wiggle var(--es_effect_med) ease-out
+.es_effect_slide
+    animation: slide var(--es_effect_slow) ease-in-out
+.es_effect_shake
+    animation: shake var(--es_effect_fast) cubic-bezier(.36,.07,.19,.97) both
+
+// These require perspective to be set on parent
+.es_effect_parent
+    perspective: 8em
+.es_effect_bounce_in
+    animation: bounce_in var(--es_effect_fast) ease-in
+
+@keyframes grow
+    0%, 100%
+        transform: scale(1)
+    50%
+        transform: scale(1.12)
+
+@keyframes glow
+    0%
+        box-shadow:  1px 1px 6px 3px rgba( $cGray, 0.4 )
+    100%
+        box-shadow: auto
+
+@keyframes flash
+    0%
+        background-color: rgba( $cWhite, 0.6 )
+    100%
+        background-color: auto
+
+@keyframes spin
+  0%
+    transform: rotate(0deg)
+    animation-timing-function: cubic-bezier(0.3, 0.5, 0.8, 0.5)
+  100%
+    transform: rotate(360deg)
+    animation-timing-function: cubic-bezier(0.3, 0.5, 0.8, 0.5)
+
+@keyframes spin1
+  0%
+    transform: rotate(0)
+    animation-timing-function: cubic-bezier(0.3, 0.5, 0.8, 0.5)
+  20%
+    transform: rotate(140deg)
+    animation-timing-function: cubic-bezier(0.6, 0.4, 1, 0.9)
+  40%
+    transform: rotate(260deg)
+    animation-timing-function: cubic-bezier(0.3, 0.5, 0.8, 0.5)
+  60%
+    transform: rotate(420deg)
+    animation-timing-function: cubic-bezier(0.6, 0.4, 1, 0.9)
+  80%
+    transform: rotate(540deg)
+    animation-timing-function: cubic-bezier(0.3, 0.5, 0.8, 0.5)
+  100%
+    transform: rotate(720deg)
+    animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1)
+
+@keyframes spin2
+  0%
+    transform: rotate(0)
+    animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1)
+  30%
+    transform: rotate(150deg)
+    animation-timing-function: cubic-bezier(0.6, 0.2, 1, 0.4)
+  60%
+    transform: rotate(380deg)
+    animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1)
+  100%
+    transform: rotate(720deg)
+    animation-timing-function: cubic-bezier(0.6, 0.2, 1, 0.4)
+
+@keyframes pulsate
+  0%
+    font-size: 100%
+    opacity: 0.1
+  50%
+    font-size: 125%
+    opacity: 0.7
+  100%
+    font-size: 100%
+    opacity: 0.1
+
+@keyframes fall_in
+  0%
+    opacity: 0
+    transform: translateY( -3em )
+  60%
+    transform: translateY( 0 )
+  75%
+    opacity: 1
+    transform: translateY( -0.3em )
+  90%
+    transform: translateY( 0 )
+  95%
+    transform: translateY( -0.1em )
+  100%
+    transform: translateY( 0 )
+
+@keyframes bounce_in
+  0%
+    opacity: 0.4
+    transform: translate3d( 0, 0, -4em )
+  35%
+    opacity: 0.7
+    transform: translate3d( 0, -1.3em, -2em )
+  45%
+    opacity: 0.8
+    transform: translate3d( 0, -1.6em, -1.5em )
+  55%
+    opacity: 0.9
+    transform: translate3d( 0, -1.1em, -0.8em )
+  70%
+    opacity: 1
+    transform: translate3d( 0, 0, 0 )
+  84%
+    transform: translate3d( 0, -0.4em, 1em )
+  92%
+    transform: translate3d( 0, 0, 0 )
+  96%
+    transform: translate3d( 0, -0.2em, -0.4em )
+  100%
+    transform: translate3d( 0, 0, 0 )
+
+@keyframes slide
+    5%, 95%
+        transform: translate3d( 0, 0, 0 )
+    10%, 90%
+        transform: translate3d( -1px, 0, 0 )
+    20%, 80%
+        transform: translate3d( 1px, 0, 0 )
+    30%, 70%
+        transform: translate3d( -2px, 0, 0 )
+    40%, 60%
+        transform: translate3d( 3px, 0, 0 )
+    50%
+        transform: translate3d( -4px, 0, 0 )
+
+@keyframes wobble
+  0%, 100%
+    transform: rotateZ( 0 )
+  10%
+    transform: rotateZ( -16deg )
+  20%
+    transform: rotateZ( 14deg )
+  40%
+    transform: rotateZ( -10deg )
+  60%
+    transform: rotateZ( 6deg )
+  80%
+    transform: rotateZ( -4deg )
+
+@keyframes wiggle
+  0%, 100%
+    transform: rotate( 0 )
+  60%
+    transform: rotate( 5deg )
+  80%
+    transform: rotateX( -5deg )
+
+@keyframes shake
+  10%, 90%
+    transform: translate3d( -1px, 0, 0 )
+  20%, 80%
+    transform: translate3d( 2px, 0, 0 )
+  30%, 50%, 70%
+    transform: translate3d( -3px, 0, 0 )
+  40%, 60%
+    transform: translate3d( 3px, 0, 0 )
+

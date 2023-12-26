@@ -1,0 +1,66 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Viewer setup
+    Viewer height is driven by JS setting height for mpp_viewer_box based on the
+    natural height of iframe content at it's current width.
+    This means mpp_viewer_box shouldn't have CSS defined height, and the
+    iframe that is created inside it should follow the mpp_viewer_box height.
+ */
+
+.mpp_viewer_insert_here
+    width: 100%
+
+viewer, .mp_viewer_panel
+    // Defaults for wrapping components for the various viewer configs
+    .es_viewer_display
+        height: 100%
+    .es_viewer_main, .es_viewer_wrapper
+        width: 100%
+    .es_viewer_nav
+        height: 100%
+    .es_viewer_items
+        position: relative
+        overflow-y: auto
+        overflow-x: hidden
+        height: 100%
+        width: 100%
+        .es_content_collection
+            width: 100%
+
+viewer
+    display: block
+    width: 100%
+
+    // These are used for specific types of viewer wrapping
+    .mpp_viewer_fullscreen
+        @extend .mp_full
+
+    // Setup for displaying Video.js viewer
+    .mpp_viewer_box
+        position: relative
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        // Needed for iOS mobile to enable scrolling in iframe
+        -webkit-overflow-scrolling: touch
+        overflow: auto !important
+    .mpp_viewer_box > iframe
+        position: absolute
+        width: 100%
+        height: 100%
+        overflow: hidden
+
+.es_horizontal
+    .es_viewer_items
+        display: flex
+        flex-direction: column
+        align-items: center
+.es_vertical
+    .es_viewer_node
+        overflow-y: auto
+    .es_viewer_items
+        width: 100%
+
+.es_user_staff .mpp_viewer_fullscreen
+    top: 2em

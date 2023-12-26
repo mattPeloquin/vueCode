@@ -1,0 +1,93 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Composable panels for login screens.
+    The default login is to move items to the left for design
+    and to show off picture, while also adjusting for mobile.
+ */
+
+.es_login_default
+    font-size: 1.1rem
+    position: relative
+    background-repeat: no-repeat
+    background-size: cover
+    background-position: 50% 50%
+    height: 18em
+
+.es_login_basic
+    margin: 1em 0.5em;
+
+.es_login_panels
+    position: absolute
+    top: 1.6em
+    left: 1em
+
+.es_login_auth, .es_login_create
+    padding: 0.4em
+
+.es_login_error
+    font-weight: bold
+    color: $cYellow
+    text-shadow: 0.08em 0.08em 0em rgba(0,0,0,0.6)
+    li
+        list-style: none
+
+.es_login_info
+    display: inline-block
+    font-weight: bold
+    font-style: italic
+    margin: 0.6em 1.2em 0.6em 1.2em
+    padding: 0.6em 1em 0.6em 1em
+    &:empty
+        display: none
+
+.es_login_intro
+    margin: 0.6em 1.2em 0.6em 1.2em
+
+.es_login_panel
+
+    // Set the entry fields to be same style
+    input[type="text"],
+    input[type="email"],
+    input[type="password"]
+        font-size: 120%
+        width: 100%
+        margin: 0
+        padding: .3em .2em .2em .4em
+        font-weight: normal
+
+    .es_login_entry_field, .es_login_entry_email,
+    .es_login_entry_password
+        max-width: 80vw
+        margin: 0.3em 0.6em
+    .es_login_entry_email
+        width: 20em
+    .es_login_entry_password, .es_login_entry_field
+        width: 16em
+    // Make look ok in dual confirm layout
+    .es_login_password
+        &1, &2
+            width: 9em
+        &1 ul, &2 ul
+            width: 9em
+        &2
+            margin-left: 0.2em
+
+    .es_login_button
+        font-size: 120%
+        width: 10em
+        max-width: 60vw
+        font-weight: bold
+        font-style: italic
+        margin: 0.6em 0.8em
+
+    .es_login_forgot_password, .es_user_switch
+        font-size: 80%
+        margin: 0.6em 0.8em
+    .es_login_forgot_password
+        .es_button_flat
+            padding: 0.2em 0.4em
+    .es_user_switch.es_button_flat
+        padding: 0.2em 0.4em
+    .es_login_user_create_terms
+        font-size: 70%
+

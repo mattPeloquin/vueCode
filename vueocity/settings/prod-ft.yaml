@@ -1,0 +1,51 @@
+#--- Copyright 2021 Vueocity, LLC
+#
+#   Food Truck (FT) servers
+#   FTs are for risky/slower public interation that can tie up a process,
+#   usually an external service dependency that blocks response or
+#   high number of calls to DB that don't make sense to optimize out.
+#
+#   FTs rely on high thread usage in uwsgi to provide many low-cost channels
+#   for external requests and blocking operations.
+#   Do not use FTs for CPU intensive work.
+#
+
+DEFAULT_FROM_EMAIL: 'prod-ft@vueocity.com'
+
+MP_ROOT_AWS:
+    ELB_TARGET_GROUP: 'FT'
+
+MP_SERVER:
+    # Requests are sporadic across many threads, so don't hold connections
+    # open on threads because if a connection is left open it could take
+    # until the next time a request hits that thread to be closed.
+    DB_CONNECTION_AGE: 0
+
+MP_NGINX:
+  PROCESSES: 1
+  CONNECTIONS: 1500
+  MAX_FILES: 2000
+  CONNECTION_TIMEOUT_START: 10
+
+MP_UWSGI:
+  # Assuming 2 core, 1GB
+  # uWSGI throws memory errors with threads over 10ish, even though
+  # memory stats show space and there should be plenty of files
+  PROCESSES: 4
+  THREADS: 8
+  LISTEN_MAX: 500
+  LIMITAS: 1300
+  SPOOL_PROCESSES: 0
+
+  # Handle fewer requests to avoid memory issues
+  MAX_REQUESTS: 250
+  MAX_REQUESTS_RANDOM: 20
+  MAX_REQUESTS_MIN: 80
+  HARAKIRI: 30
+
+  # Food truck has short or no sticky sessions, so lower cache
+  # size as there is less benefit to longer-term user/site caching
+  # and FT tends to need more memory
+  CACHE_SMALL_OPTIONS: "items=4096"
+  CACHE_MEDIUM_OPTIONS: "items=8192"
+  CACHE_LARGE_OPTIONS: "items=4096,blocks=6144,blocksize=4096"

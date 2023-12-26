@@ -1,0 +1,384 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Portal options tool
+
+    For random operations, request tag is added as dummy
+    query string to punch through nginx caching.
+
+{% endcomment %}
+
+{% load macros %}
+
+{% url 'easy_portal_root' as url_easy %}
+{% url 'easy_portal_random' as url_random %}
+{% url 'easy_portal_random' 'style' as url_random_style %}
+
+<script> 'use strict';
+    mp.when_ui_loaded( function portal_tool() {
+
+        // Setup toggle for controls
+        mp.viz_set_toggle( '.pt_settings_toggle', '.pt_settings' )
+        {% if user.access_staff %}
+            mp.viz_set_toggle( '.pt_all_toggle', '.pt_all_settings' )
+        {% endif %}
+        $(".pt_compact .pt_settings").toggleClass( 'mp_hidden',
+                $("body").width() < mp.request.breakpoints.width.small )
+
+        mp.ui_select_change = function( type, select ) {
+            // Build out the redirect url based on location and options
+            const options = select.options[ select.selectedIndex ].value
+            // When tool is shown on normal screen, make sure
+            let url = '{{ sb_portal }}' + mp.nav_current().path + '?' + options
+            // HACK - when selecting a theme, turn mix-match off
+            if( type == 'theme' && $( select ).parent(".pt_compact_theme").length ) {
+                url = url + '&mix_match='
+                }
+            window.document.location.href = url
+            }
+
+        // Handle form submissions for various save options
+        $('.pt_close').on( 'click', function( event ) {
+            mpurl.reload_home()
+            })
+        $('.pt_save_theme').on( 'click', function( event ) {
+            $("#pt_theme_name").val('{{ pt_current_names.theme }}')
+            $("#pt_save_theme").submit()
+            })
+        $('.pt_save_theme_site').on( 'click', function( event ) {
+            $("#pt_theme_name").val('{{ pt_current_names.theme }}')
+            $("#pt_theme_apply_site").prop( 'checked', true )
+            $("#pt_save_theme").submit()
+            })
+        $('.pt_new_theme').on( 'click', function( event ) {
+            mp.dialog_html( $("#pt_save_theme_dialog"), {
+                after_open: function() {
+                    $("#pt_save_theme").parsley()
+                    },
+                })
+            })
+        $('.pt_save_site').on( 'click', function( event ) {
+            $("#pt_save_site").submit()
+            })
+        $('.pt_clear_site').on( 'click', function( event ) {
+            $("#pt_clear_site").submit()
+            })
+
+        setTimeout( () => $("#portal_tool").addClass('es_tool_fade'), 4000 )
+        })
+    </script>
+
+{# Forms used for posting #}
+
+<div id="pt_save_theme_dialog" class="mp_template">
+    <form id="pt_save_theme" method="post"
+            action="{% url 'easy_portal_theme_save' %}?{{ pt_current_opts.all }}"
+            >
+        {% csrf_token %}
+        <div class="mp_flex_column">
+            <input id="pt_theme_name" class="mp_input" required=""
+                    name="theme_name"
+                    placeholder="New theme name"
+                    data-parsley-trigger="change"
+                    data-parsley-minlength="4"
+                    data-parsley-validation-threshold="2"
+                    />
+            <div>
+                <input type="checkbox" class="mp_input"
+                        name="apply_to_site" id="pt_theme_apply_site"
+                        />
+                <label for="#pt_theme_apply_site">
+                    Apply new theme to site
+                    </label>
+                </div>
+            <input type="submit" class="es_button_text mp_input"
+                    name="pt_theme_create"
+                    value="Create theme"
+                    />
+            </div>
+        </form>
+    </div>
+
+<form id="pt_save_site" method="post" class="mp_hidden"
+        action="{% url 'easy_portal_site_save' %}?{{ pt_current_opts.all }}"
+        >
+    {% csrf_token %}
+    </form>
+
+<form id="pt_clear_site" method="post" class="mp_hidden"
+        action="{% url 'easy_portal_site_save' %}?{{ pt_current_opts.defaults }}"
+        >
+    {% csrf_token %}
+    </form>
+
+{# Shared code for theme selections #}
+
+{% macro ui_selection type options default_text %}
+    <select onChange="mp.ui_select_change( '{{ type }}', this )"
+            class="{% if type in pt_mod_names %} pt_selected {% endif %}"
+        >
+        {% with current_opts=pt_current_opts|get:type|default:'' %}
+            <option {% if not pt_current_names|get:type %} selected {% endif %}
+                value="{{ current_opts }}&{{ type }}={{ request_skin.DEFAULT }}">
+                {{ default_text|default:'Use default' }}
+                </option>
+            {% for opt in options|dictsort:'name' %}
+                <option {% if opt.name in pt_current_names|get:type %} selected {% endif %}
+                    value="{{ current_opts }}&{{ type }}={{ opt.name|query_string }}"
+                    title="{{ opt.notes }}">
+                    {{ opt.name }}
+                    </option>
+            {% endfor %}
+        {% endwith %}
+        </select>
+{% endmacro %}
+
+{# Tool template shared over various permutations #}
+
+<tool id="portal_tool" class="es_tool mp_no_iframe">
+
+    {# Show compact control for site options #}
+    {% if not pt_mix_match %}
+        <div class="pt_compact">
+            <h3 class="pt_heading pt_settings_toggle mp_button_text mp_tooltip" title=
+                "Change themes to explore different site
+                layouts and styles.
+                ">
+                Themes
+                </h3>
+            <div class="pt_settings">
+                <div class="pt_compact_theme"
+                    {% if not pt_current_names %}
+                        style="animation: wobble 1.6s ease-out;"
+                    {% endif %}>
+                    {% usemacro ui_selection 'theme' sb_themes 'Try a different theme' %}
+                    </div>
+                <div
+                    {% if not pt_current_names %}
+                        style="animation: wobble 2.8s ease-out;"
+                    {% endif %}>
+                    {% if site_flags.PORTAL_TOOL_random_style %}
+                        <a class="mp_button_text mp_tooltip" title=
+                            "See how different styles affect a base theme."
+                            href="{{ url_random_style }}?{{ request_info.tag }}">
+                            Change theme style
+                            </a>
+                    {% else %}
+                        {% usemacro ui_selection 'style' sb_styles 'Modify theme style' %}
+                    {% endif %}
+                    </div>
+                <div
+                    {% if not pt_current_names %}
+                        style="animation: wobble 2.4s ease-out;"
+                    {% endif %}>
+                    <a class="mp_button_text mp_tooltip" title=
+                        "Open the theme builder to create unique looks and reusable themes."
+                        href="{{ url_easy }}?{{ pt_current_opts.all }}">
+                        Make your own mix
+                        </a>
+                    </div>
+                <div
+                    {% if not pt_current_names %}
+                        style="animation: wobble 2s ease-out;"
+                    {% endif %}>
+                    <a class="mp_button_text mp_tooltip" title=
+                        "For fun, see a theme with random modifications."
+                        href="{{ url_random }}?{{ request_info.tag }}">
+                        Random mix!
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+    {# Full control #}
+    {% else %}
+        <div class="es_close pt_close mp_button_text">
+            </div>
+        <div class="pt_mix_match">
+            <div class="pt_heading">
+                <h2 class="pt_settings_toggle mp_button_text mp_tooltip" title=
+                    "Change theme options to explore different site
+                    layouts and styles.<br>
+                    Options reflect the selected theme until modified. They
+                    remain sticky until reset.<br>
+                    {% if user.access_staff %}
+                        Changes are only visible to you, unless saved using the links below.
+                    {% endif %}
+                    ">
+                    Theme builder
+                    </h2>
+                    {% if user.access_all %}
+                        <span class="pt_all_toggle pt_settings mp_button_text">
+                            All options
+                            </span>
+                    {% endif %}
+                </div>
+            <div class="pt_settings">
+                <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                    <h4>Theme</h4>
+                    <span class="mp_info" title="Current base theme,
+                        which can be modified with options below"
+                        ></span>
+                    {% usemacro ui_selection 'theme' sb_themes 'Build from scratch' %}
+                </div>
+                <div class="mp_textsmall">
+                    Style options
+                    </div>
+                <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                    <h4>Main style</h4>
+                    <span class="mp_info" title="Main styles combine
+                        with colors and fonts to create the site's look."
+                        ></span>
+                    {% usemacro ui_selection 'style' pt_styles %}
+                    </div>
+                <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                    <h4>Colors</h4>
+                    <span class="mp_info" title=
+                        "Change the colors used by the current theme.
+                        Create new color schemes with SiteBuilder."
+                        ></span>
+                    {% usemacro ui_selection 'color' pt_colors %}
+                    </div>
+                <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                    <h4>Fonts</h4>
+                    <span class="mp_info" title="Change the fonts used by the
+                        current theme. Create new font schemes with SiteBuilder."
+                        ></span>
+                    {% usemacro ui_selection 'font' pt_fonts %}
+                    </div>
+                <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                    <h4>Mixin style</h4>
+                    <span class="mp_info" title="Style mixins modify the main style"
+                        ></span>
+                    {% usemacro ui_selection 'mixin' pt_mixins 'No mixin style' %}
+                    </div>
+                <div class="pt_all_settings
+                        {% if not pt_all_options %} mp_hidden {% endif %}
+                        ">
+                    <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                        <h4>Alt colors</h4>
+                        <span class="mp_info" title=
+                            "Give users the option to select a dark mode or other
+                            alternative set of colors"
+                            ></span>
+                        {% usemacro ui_selection 'color2' pt_colors %}
+                        </div>
+                    <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                        <h4>Mixin 2</h4>
+                        <span class="mp_info" title="You can add more than one mixin style"
+                            ></span>
+                        {% usemacro ui_selection 'mixin2' pt_mixins 'No mixin style' %}
+                        </div>
+                    <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                        <h4>Mixin 3</h4>
+                        <span class="mp_info" title="You can add more than one mixin style"
+                            ></span>
+                        {% usemacro ui_selection 'mixin3' pt_mixins 'No mixin style' %}
+                        </div>
+                    </div>
+
+                <div class="mp_textsmall">
+                    Layout options
+                    </div>
+                <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                    <h4>VuePortal</h4>
+                    <span class="mp_info" title="Each theme has a VuePortal that
+                        defines the site's layout. Try out different VuePortals
+                        to optimize the site to your user's needs."
+                        ></span>
+                    {% usemacro ui_selection 'frame' sb_vueportals %}
+                    </div>
+                <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                    <h4>Items</h4>
+                    <span class="mp_info" title=
+                        "Change how content items are displayed
+                        (e.g., card vs. list).<br>
+                        Collections can override this setting."
+                        ></span>
+                    {% usemacro ui_selection 'default_item' pt_items %}
+                    </div>
+                <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                    <h4>Nav</h4>
+                    <span class="mp_info" title=
+                        "Change the default layout for navigation elements.<br>
+                        Collections can override this setting."
+                        ></span>
+                    {% usemacro ui_selection 'default_nav' pt_navs %}
+                    </div>
+                <div class="pt_all_settings
+                        {% if not pt_all_options %} mp_hidden {% endif %}
+                        ">
+                    <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                        <h4>Pages</h4>
+                        <span class="mp_info" title=
+                            "Change the default layout of collection pages.<br>
+                            Individual collections can override this to force a layout."
+                            ></span>
+                        {% usemacro ui_selection 'default_panel' pt_panels %}
+                        </div>
+                    <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                        <h4>Nodes</h4>
+                        <span class="mp_info" title=
+                            "Change the default layout of collection child nodes.<br>
+                            Individual collections can override this to force a layout."
+                            ></span>
+                        {% usemacro ui_selection 'default_node' pt_nodes %}
+                        </div>
+                    <div class="mp_flex mp_flex_vcenter mp_flex_between">
+                        <h4>Viewer</h4>
+                        <span class="mp_info" title=
+                            "Change the default viewer used to display content.<br>
+                            Collections can override this setting."
+                            ></span>
+                        {% usemacro ui_selection 'default_viewer' pt_viewers %}
+                        </div>
+                    </div>
+
+                <div class="pt_links mp_flex_line mp_flex_between">
+                    <a class="mp_button_text mp_tooltip" title=
+                        "Try some random looks to spark an idea."
+                        href="{{ url_random }}?{{ request_info.tag }}">
+                        Random mix
+                        </a>
+                    <a class="mp_button_text mp_tooltip" title=
+                        "Remove theme builder adjustments."
+                        href="{{ url_portal }}">
+                        Reset
+                        </a>
+                    </div>
+
+                {% if user.access_staff %}
+                    <h3 class="pt_save_theme mp_button_text mp_tooltip" title=
+                        "Save any modifications to the currently selected theme.">
+                        Save theme
+                        </h3>
+                    <h3 class="pt_new_theme mp_button_text mp_tooltip" title=
+                        "Create a new theme based on the current theme and any
+                        modifications.">
+                        Save as a new theme
+                        </h3>
+                    <div class="pt_all_settings pt_save
+                            {% if not pt_all_options %} mp_hidden {% endif %}
+                            ">
+                        <h3 class="pt_save_theme_site mp_button_text mp_tooltip" title=
+                            "Save current theme style and layout modifications,
+                            and apply the updated theme to the site.<br>
+                            Changes are visible to users.">
+                            Apply theme to site
+                            </h3>
+                        <h3 class="pt_save_site mp_button_text mp_tooltip" title=
+                            "Apply all current style and layout modifications to the site.<br>
+                            Changes are visible to users and persist until cleared.">
+                            Apply all changes to site
+                            </h3>
+                        <h3 class="pt_clear_site mp_button_text mp_tooltip" title=
+                            "Clear any site theme modifications.<br>
+                            This may change how your site appears to users.">
+                            Clear site modifications
+                            </h3>
+                        </div>
+                {% endif %}
+                </div>
+            </div>
+    {% endif %}
+    </tool>
+

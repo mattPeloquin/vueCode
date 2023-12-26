@@ -1,0 +1,35 @@
+{% extends 'admin/change_form.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Add HTML to the Coupon form
+
+{%endcomment%}
+
+{% block page_ready_script %}
+
+    {#-- Add post value for copy of read-only field #}
+    mp.admin_copy_start_override = function() {
+        var code = $("#ro_code")
+        code.html("<input name='code' value=''></input>")
+        }
+
+    {#-- Base script will do immediate save-as for copy #}
+    {{ block.super }}
+
+    function _coupon_url( url ) {
+        if( url ) {
+            url = '{{ site.main_host_url }}' + '{% url 'login_coupon' '' %}'
+                        + _.trim( url )
+            url = '<a target="_" href="' + url + '">' + url + '</a>'
+            }
+        return url
+        }
+    mp.update_url( _coupon_url, '#ro_code', '#easylink_url', '{{ original.url }}' )
+
+{% endblock %}
+
+{% block admin_bar %}
+    {% if change %}
+        {% include 'admin/_/easylink_other.html' %}
+    {% endif %}
+{% endblock %}

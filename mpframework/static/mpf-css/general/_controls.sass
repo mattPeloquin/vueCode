@@ -1,0 +1,140 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Controls used across platform
+ */
+
+// Controls Style baseline
+.es_pointer
+    +es_pointer
+.mp_button, .mp_button_flat, .mp_button_text,
+.es_button, .es_button_flat, .es_button_text
+    border: 0 !important
+    margin: 0
+    +es_pointer
+    &:focus
+        outline: 0
+.mp_button, .es_button
+    padding: 0.2em 0.4em
+    text-align: center
+.mp_button_flat, .es_button_flat
+    padding: 0.3em 0.6em
+    background-color: transparent
+    background-image: none
+    box-shadow: none !important
+
+.es_button_overlay
+    opacity: 0.2
+    &:is(:hover,:focus,:active)
+        opacity: 0.8
+
+// Buttons on staff controls and screens
+.mp_button
+    font-size: 0.9rem
+    padding: 0.15em 0.5em 0.3em 0.5em
+    color: $cWhite
+    background-color: rgba( $cOrange, 0.7 )
+    background-image: var(--sheen_high)
+    &:is(:hover,:focus,:active)
+        &, > .fa
+            +mp_button_highlight
+    &.es_theme_current, &.es_theme_current > .fa
+        background-color: rgba( $cGreen, 0.7 ) !important
+        background-image: var(--sheen_high) !important
+    &.mp_button_warn, .mp_button_default
+        color: $cWhite
+    &.mp_button_warn
+        background-color: rgba( $cReddish, 0.9 )
+    &.mp_button_default
+        background-color: rgba( $cBlue, 0.9 )
+.mp_button_text
+    background: none !important
+    &:is(:hover,:focus,:active)
+        &, > .fa
+            color: rgba( $cOrange, 0.9 ) !important
+.mp_button_flat
+    &:is(:hover,:focus,:active)
+        &, > .fa
+            +mp_button_highlight
+
+// Fields and parsley field handling
+.mp_input
+    border: none
+    padding: 0.2em 0.2em 0.3em 0.4em
+    margin: 0.6em 0.2em
+.es_field_valid
+    // Default is don't change anything on success
+.es_field_valid_show, .es_field_error_show
+    // Add this class to elements under/next to inputs that should be hidden/shown
+    // based on parsley error for the input
+    font-size: 100%
+    transition: opacity 0.2s
+.es_field_error
+    color: $cReddish !important
+.es_error_list
+    color: $cRed !important
+    cursor: default
+    li
+        list-style: none !important
+        transition: opacity 0.2s
+
+// Nav panels start hidden and are hid/shown based on nav scripting
+.mp_nav_hide
+    display: none !important
+.mp_nav_panel
+    width: 100%
+    min-height: inherit
+
+// Staff help
+.mp_help_staff
+    font-size: 85% !important
+    font-weight: normal
+    color: rgba( $cBlack, 0.65 )
+    line-height: 1.2 !important
+    white-space: normal
+    a
+        font-size: 90% !important
+        font-style: italic
+        &:hover, &:hover .fa
+            color: rgba( $cBlue, 1 )
+.mp_help_staff_toggle
+    margin-left: 0.8em
+    .fa
+        color: $cOrange !important
+        opacity: 0.8
+    &.mp_off .fa
+        color: $cGreen !important
+
+// Clipboard control
+.mp_clipboard
+    position: relative
+    &.mp_clipboard_inline
+        padding-right: 2em
+    .mp_clipboard_display
+        position: relative
+        padding-right: 2em
+    .mp_clipboard_button
+        position: absolute
+        top: 0
+        right: 0.2em
+        opacity: 0.5
+        &:before
+            font-family: "FontAwesome"
+            content: '\f24d'
+        &:hover
+            opacity: 1
+            cursor: pointer
+.es_page_staff .mp_clipboard
+    .mp_clipboard_button
+        color: rgba( $cBlack, 0.8 )
+        &:hover
+            color: rgba( $cOrange, 0.8 )
+
+// Progress bar
+.mp_progress_wrapper
+    width: 100%
+    background-color: rgba( $cBlue, 0.4 )
+    height: 0.8em
+.mp_progress_bar
+    width: 0px
+    background-color: $cBlue
+    height: 0.8em

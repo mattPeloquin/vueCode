@@ -1,0 +1,24 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Loading and error message included in base page
+
+    AUTH TEMPLATE FRAGMENT CACHED
+
+{%endcomment%}
+
+
+{#-- Never shown, intended as first text seen by scraping or if css/js problem #}
+<div id="mp_welcome">
+    <p>Welcome to {{ site.name }}</p>
+    <p>{{ site.summary | safe }}</p>
+    </div>
+
+{#-- Shown during loading process #}
+<aside id="mp_loading" class="mp_full mp_overflow_none">
+    <div style="opacity: 0.66; font-style: italic; padding: 1em">
+        Loading {{ site.name }}...
+        <noscript>
+            {{ site.name }} requires Javascript and cookies
+            </noscript>
+        </div>
+    </aside>

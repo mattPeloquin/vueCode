@@ -1,0 +1,67 @@
+#--- Vueocity platform, Copyright 2021 Vueocity LLC
+#
+#   Test data pointers to Vueocity resources
+#
+
+# Override main local test box to use some vueocity resources
+- fields:
+    name: Test Provider1 - Single Sandbox
+    system_name: prov1
+    resource_path: prov1
+    policy:
+      staff_level_max: 70
+      create_site: true
+      onboarding: true
+      site_limits:
+        max_level: SiteBuilderPro
+        max_sites: 4
+        max_users: 30
+        max_content: 100
+        clean_html: true
+  model: tenant.provider
+  pk: 11
+
+- fields:
+    _provider: 11
+    subdomain: P1Sand
+    name: 'Sandbox P1 ԢԣԭԤ'
+    timezone: 'US/Pacific'
+    theme: 1001
+    notify_level: 100
+    email_support: 'support@p1.com'
+    hero_image: P1S1 Fish2 PËÇ .jpeg
+    intro_html: |
+        <h1>HELLO KITTY!</h1>
+        User storefront 1 for test provider 11
+    login_html: |
+        <h1>STAY AWAY KITTY!</h1>
+        User storefront 1 for test provider 11
+    home_html: |
+        <br>
+        <h2>KITTY HOME PAGE!</h2>
+        This is home page text<br>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Aenean sed adipiscing diam donec adipiscing tristique risus nec
+        feugiat. Et pharetra pharetra massa massa. Viverra vitae congue
+        eu consequat ac felis donec. Eget velit aliquet sagittis id consectetur
+        purus ut faucibus. Nunc mattis enim ut tellus. Vitae ultricies leo
+        integer malesuada nunc.<br>
+        Non consectetur a erat nam at. Ultrices
+        tincidunt arcu non sodales neque. Tincidunt augue interdum velit
+        euismod. Elit eget gravida cum sociis natoque penatibus et.
+        Auctor urna nunc id cursus metus. Hendrerit dolor magna eget est
+        lorem ipsum dolor. Velit scelerisque in dictum non.
+    terms_html: |
+        <h1>THESE ARE THE TERMS</h1>
+        Live long and prosper
+        À Á Â Ã Ä Å Æ Ç È É Ê Ë
+    sb_options:
+      site:
+
+    options:
+      portal_tool: true
+    _policy:
+      verify_new_users: false
+  model: tenant.sandbox
+  pk: 20

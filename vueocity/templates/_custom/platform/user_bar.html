@@ -1,0 +1,20 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Vueocity user bar display
+
+{% endcomment %}
+
+{% if portal_content != 'item' %}
+    {% mp_include "widget_breadcrumbs" %}
+    {% mp_include "widget_search" %}
+{% endif %}
+
+{% mp_include "user_menus" %}
+{% if portal_content != 'item' %}
+    {% include "_/color2_toggle.html" %}
+    {% include "portal/_/access_options.html" %}
+{% endif %}
+
+{% if onboard_help and not is_portal_content %}
+    {% include "onboard/onboard_help.html" %}
+{% endif %}

@@ -1,0 +1,16 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Vueocity dev experimentation
+#
+
+# Locust packages
+locust
+
+# Server diagnostics
+uwsgitop
+
+# Get dependency tree from pip
+pipdeptree
+
+# Test coverage analysis
+coverage

@@ -1,0 +1,52 @@
+{% mp_extends 'item_listslide' %}
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+	One expandable panel for each VueWeb needs display
+
+{%endcomment%}
+
+{% block item_body %}
+
+    <div class="es_content_body mp_flex mp_flex_stretch es_theme_popup">
+        <div class="needs_title" data-bind="
+                html: sb('text1'),
+                ">
+            </div>
+        <div class="needs" data-bind="
+                foreach: sb('options').needs,
+                ">
+            <div class="need mp_flex_line">
+                <div class="need_summary mp_flex_line">
+                    <div class="fa fa-check-circle">
+                        </div>
+                    <div class="need_text" data-bind="html: disp">
+                        </div>
+                    </div>
+                <!-- ko if: $data.feat -->
+                    <div class="need_features mp_flex_line" data-bind="
+                            foreach: feat.split(' '),
+                            ">
+                        <div data-bind="
+                                with: mpp.vm_items().get_tag( $data ),
+                                ">
+                            <!-- ko if: sb('text2') -->
+                                <div class="need_feature es_pointer es_effect_parent mp_tooltip_fast">
+                                    <tooltip data-bind="
+                                            html: '<h2>' + sb('name') + '</h2>' +
+                                                sb('text1'),
+                                            ">
+                                        </tooltip>
+                                    <div class="et es_effect_bounce_in" data-bind="
+                                            class: sb('text2'),
+                                            ">
+                                        </div>
+                                    </div>
+                            <!-- /ko -->
+                            </div>
+                        </div>
+                <!-- /ko -->
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

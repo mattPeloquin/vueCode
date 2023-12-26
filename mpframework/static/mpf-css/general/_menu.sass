@@ -1,0 +1,172 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Menu styles
+    The classes here work with mpf-js/common/menu.js to provide the
+    various menu variations in the UI.
+
+    The default is top-row drop-down, with some variations
+    for side-panel and different display looks.
+    Menu styling for staff menus are here, while user menus are
+    styled as part of EasyStyle styling.
+
+    Staff menus can be styled per sandbox, but that is not a primary goal.
+ */
+
+.mp_menu_staff, .mp_menu_user, .mp_menu_admin
+    z-index: 801   // Layer staff menus are shown on
+
+.es_staff_bar, .mp_menu_admin, .mp_control
+    .fa
+        color: $cGreen
+    .mp_menu_highlight
+        > .fa, > .mp_menu_text
+            color: rgba( $cOrange, 1 ) !important
+            background-color: transparent !important
+            background-image: none !important
+
+.mp_menu
+    display: flex
+    flex-direction: column
+    white-space: nowrap
+
+.mp_menu_header, .mp_menu_parent
+    position: relative
+
+.mp_menu_item, .mp_menu_item > a,
+.mp_menu_control
+    display: flex
+    align-items: center
+
+a.mp_menu_item, .mp_menu_item > a,
+.mp_menu_control
+    > .fa
+        font-size: 130%
+        text-align: center
+        text-shadow: none
+    > .mp_menu_text
+        font-weight: normal
+        padding-left: 0.3em
+    &:link, &:visited
+        text-decoration: none
+a.mp_menu_item.mp_menu_highlight, .mp_menu_item.mp_menu_highlight > a
+    > .fa, > .mp_menu_text
+        text-shadow: 1px 1px 3px rgba( $cBlack, 0.4 )
+
+.mp_menu_item .mp_menu_dropdown
+    .fa, .mp_menu_text
+        text-shadow: none
+
+.mp_menu_group, .mp_menu_group_icons
+    > .mp_menu_title
+        padding: 0.4em
+    > .mp_menu_item
+        padding: 0.3em 0.4em 0.1em 0
+        margin-left: 0.2em
+    > .mp_menu_item *
+        font-size: 90% !important
+.mp_menu_group
+    margin-left: 0.8em
+    > .mp_menu_item
+        line-height: 1
+.mp_menu_group_icons
+    margin-left: 0.2em
+    > .mp_menu_item
+        line-height: 1.1
+
+.mp_menu_sub
+    .mp_menu_header > .mp_menu_text
+        margin-left: 1.2em
+    .mp_menu_item
+        padding: 0.3em 0.4em 0 0
+
+.mp_menu_break
+    background-color: $cBlack
+    opacity: 0.3
+    height: 1px
+    margin-top: 0.4em
+    margin-bottom: 0.2em
+
+// Specific staff menus - put visual styling, color, padding, etc. here as much as possible
+
+.es_staff_bar
+    background: rgba( $cBlack, 0.5 )
+    background-color: $cBlack
+    .mp_menu_header > a
+        padding: 0.4em 0.6em
+        > .mp_menu_text, > .es_menu_text
+            color: $cWhite
+    .mp_button_flat
+        color: $cWhite
+
+.mp_menu_user
+    .mp_menu_dropdown
+        right: 0
+        left: auto
+
+// Highlight top menu selection on staff screens
+body .mp_menu_active_staff
+    background-color: rgba( $cGreen, 0.5 ) !important
+    background-image: var(--sheen_high)
+    color: $cWhite !important
+    > a > .fa
+        color: $cWhite !important
+
+.mp_menu_dropdown
+
+    // Default menu look
+    line-height: 1.2
+    padding: 0.2em
+    background: $bStaff_menu_back
+    box-shadow: $mp_shadow_staff
+    .mp_menu_item
+        padding: 0.3em 0.4em 0.1em 0
+        > div
+            text-align: center
+        .fa
+            width: 2em
+        .mp_menu_text
+            color: $cBlack
+    .mp_menu_title
+        padding: 0.3em 0.4em 0 0.3em
+        font-style: italic
+        font-weight: bold
+        font-size: 85%
+        color: rgba( $cBlack, 0.6 )
+
+    // Menu vertical drop-down mechanics
+    display: none
+    z-index: 1  // Relative to menu
+    position: absolute
+    top: calc(100%)
+    left: 0     // Relative to mp_menu_header
+    transform: scaleY(0)
+    transform-origin: top center
+    opacity: 0
+    animation: drop_down ease-out 0.08s
+    // Added/removed by JS to do menu open/close
+    &.mp_menu_active
+        display: flex
+        transform: scaleY(1)
+        opacity: 1
+.mp_menu_sub
+    .mp_menu_header .mp_menu_dropdown
+        top: 1.1em
+        left: calc(50%)
+    .mp_menu_parent .mp_menu_dropdown
+        top: 1.1em
+        left: calc(75%)
+@keyframes drop_down
+    0%
+        display: flex
+        opacity: 0
+    1%
+        transform: scaleY(0.5)
+        opacity: 0.1
+    100%
+        transform: scaleY(1)
+        opacity: 1
+
+// Make menu items only seen by root look different
+.mp_menu_item.root, .mp_menu_item.root .fa
+    font-size: 80%
+    color: $cReddish !important

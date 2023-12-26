@@ -1,0 +1,15 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Optional banner across the top of the screen
+
+{%endcomment%}
+
+{% if not is_popup or sb_options.site.banner.popup %}
+
+    {% if user.is_authenticated %}
+        {% include "_base/layout/banner.html" with return_url=site.portal_url %}
+    {% else %}
+        {% include "_base/layout/banner.html" with return_url=url_login %}
+    {% endif %}
+
+{% endif %}

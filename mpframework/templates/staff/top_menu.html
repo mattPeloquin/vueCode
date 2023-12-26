@@ -1,0 +1,50 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Top row staff menu
+
+{%endcomment%}
+
+{#-- If staff user view is on, show floating button to switch back #}
+{% if user.staff_user_view and is_portal %}
+
+    <a id="mpuserview_off" class="mp_button fa fa-user-plus"
+            href="{% url 'portal_user_options' options='{"user_view":false}' %}">
+        </a>
+
+{#-- Show the normal menu #}
+{% else %}
+    <nav class="mp_staff_bar mpr_font_shrink mp_print_hidden">
+        <div class="es_staff_bar mp_flex mp_flex_between mp_flex_vcenter mp_flex_nowrap">
+
+            <div class="es_top_bar_left mp_menu_staff mp_no_iframe mp_flex_line">
+                <div id="mptopmenu" class="mp_menu mp_flex_row">
+                    {% include "staff/staff_menu.html" %}
+                    </div>
+                </div>
+
+            <div class="es_top_bar_right mp_flex_line">
+                <div class="mpr_collapse" data-collapse="mpuserbar">
+                    <div id="mpuserbar" class="mp_flex_line
+                            mpr_collapse_hide mpr_collapse_inline">
+                        {#-- Add staff tools or profile depending on portal visible #}
+                        {% if is_portal %}
+                            {% include "staff/workflow.html" %}
+                            {#-- Turn staff user view #}
+                            <a id="mpuserview_on" class="mp_button_flat mp_menu_control
+                                    fa fa-user-plus mp_tooltip"
+                                href="{% url 'portal_user_options' options='{"user_view":true}' %}"
+                                title="Turn on staff testing mode.<br>
+                                    This hides staff tools from the portal and shows
+                                    licensing options for content.">
+                                </a>
+                        {% else %}
+                            {% mp_include "user_menus" %}
+                        {% endif %}
+                        </div>
+                    <div class="fa fa-bars mpr_collapse_toggle"></div>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+{% endif %}

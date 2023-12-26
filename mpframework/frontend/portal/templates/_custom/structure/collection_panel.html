@@ -1,0 +1,40 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Render a top-level collection nav panel
+
+    The panel template used controlled by:
+        Server HTML
+        Pane options
+        The collection's page layout option
+        Request skin defaults
+
+{%endcomment%}
+
+<!-- ko let: {
+    panel_template: mpp.get_template_name(
+        {% if pane.panel %}
+            '{{ pane.panel }}'
+        {% else %}
+            mpp.pane_options( 'panel_template', $element ) ||
+            $data.sb('panel') ||
+            mp.request.default_panel
+        {% endif %}
+        ),
+    } -->
+    <article data-bind="
+            {{ bind|default:'lazy_bind_top_panel' }}: $data,
+            attr: {
+                'data-no_breadcrumbs': {{ no_breadcrumbs | jsbool }} ||
+                            mpp.sb_option( 'portal.no_breadcrumbs', $element ),
+                },
+            class: css_classes() + ' es_' + panel_template,
+            ">
+
+        <!-- ko template: {
+            name: $data.mpp_context.panel_template,
+            } -->
+        <!-- /ko -->
+
+        {% include "portal/controls/content.html" %}
+        </article>
+<!-- /ko -->

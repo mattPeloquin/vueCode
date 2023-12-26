@@ -1,0 +1,76 @@
+{%comment%}-- Vueocity Platform, Copyright 2021 Vueocity, LLC
+
+    Startup tutorial for customization
+
+{% endcomment %}
+
+
+<div class="onboard_heading mp_flex mp_flex_between">
+    <div class="mp_button_text tutorial_toggle">
+        Customizing your site
+        </div>
+    <div class="es_close tutorial_close mp_button_text">
+        </div>
+    </div>
+
+<div class="onboard_panel">
+
+    <div class="tp1 vuetool">
+        <div class="mp_viz_switch">
+            <h2>Customize site tool</h2>
+            </div>
+        <div class="mp_viz_area mp_hidden">
+            Quickly change the look and feel of your site.
+            Templates, colors, themes, and fonts can be changed independently.
+            Additional combinations can be created with SiteBuilder.
+            </div>
+        </div>
+
+    {% if user.access_high %}
+        <div class="tp2 vuetool">
+            <div class="mp_viz_switch">
+                <h2>Custom CSS</h2>
+                </div>
+            <div class="mp_viz_area mp_hidden">
+                Add custom CSS to your site.
+                EasyStyle classes ('es_' prefixes) are provided for most screen items.
+                They allow easy targeting of elements without side effects.
+                </div>
+            </div>
+    {% endif %}
+
+    <div class="tp3 vuetool">
+        <div class="mp_viz_switch">
+            <h2>Site options</h2>
+            </div>
+        <div class="mp_viz_area mp_hidden">
+            Additional options for site customization are
+            found under the Site menu.
+            </div>
+        </div>
+
+    {% if user.access_all %}
+        <div class="tp4 vuetool">
+            <div class="mp_viz_switch">
+                <h2>Custom templates</h2>
+                </div>
+            <div class="mp_viz_area mp_hidden">
+                Templates used for screens and UI widgets
+                can be overridden or created from scratch with Custom templates.
+                </div>
+            </div>
+    {% endif %}
+
+    </div>
+
+<script> 'use strict';
+    mp.when_ui_loaded( function onboard_sandbox() {
+
+        mp.set_highlight( ".tp1", "#sandbox_tool" )
+        mp.set_highlight( ".tp2", "#menu_add-css-and-html" )
+        mp.set_highlight( ".tp3", "#menu_settings" )
+        mp.set_highlight( ".tp4", "#menu_custom-templates" )
+
+    })
+</script>
+

@@ -1,0 +1,63 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    HTML to appear on the bottom of every page
+    ASSUMES SANDPAGE TEMPLATE CACHING - so footer is the same across page types
+    If something else where needed, it could be handled by JS fixup.
+
+{%endcomment%}
+
+{% if portal_content != 'item' %}
+
+    <div class="es_footer mp_flex mp_flex_between mp_flex_vcenter">
+
+        {% if site.footer_html %}
+
+            {{ site.footer_html | safe }}
+
+        {% else %}
+            <div class="mp_flex_line">
+
+            {% if site.icon %}
+                    <div class="es_footer_icon">
+                        <a {% if site.options.web_url %}
+                            href="{{ site.options.web_url }}" target="_"
+                            {% endif %}
+                            >
+                            <img src="{{ site.icon.url }}" />
+                            </a>
+                        </div>
+                {% endif %}
+
+                <div class="es_footer_notice mp_flex mpr_flex_col">
+                    {% if site.options.copyright %}
+                        <div>
+                            {{ site.options.copyright | safe }}
+                            </div>
+                    {% endif %}
+                    <div>
+                        {% if not site.icon and site.options.web_url %}
+                            <a href="{{ site.options.web_url }}" target="_" class="es_button_text">
+                                {{ site.name }}
+                                </a>
+                        {% endif %}
+                        <a class="es_button_text" href="{% url 'terms_display' %}" target="_" >
+                            Terms
+                            </a>
+                        <a class="es_button_text" href="{% url 'privacy_display' %}" target="_" >
+                            Privacy
+                            </a>
+                        <a class="es_button_text"
+                                href="mailto:{{ site.email_support }}?subject=Contact%20{{ site.name }}"
+                                >
+                            Contact&nbsp;us</a>
+                        </div>
+                    </div>
+
+                </div>
+        {% endif %}
+
+        {#-- Root branding in corner #}
+        {% include "root/brand_message.html" %}
+        </div>
+
+{% endif %}

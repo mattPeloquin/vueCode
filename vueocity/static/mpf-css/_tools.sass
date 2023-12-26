@@ -1,0 +1,136 @@
+/*--- Copyright 2021 Vueocity LLC
+
+    Vueocity tool styles
+ */
+
+// Floating tools
+.es_tool
+    position: absolute
+    z-index: 500
+    background: $bStaff_overlay
+    padding: 0.8em
+    box-shadow: $mp_shadow_staff
+    border-radius: 4px
+    transition: opacity 0.2s
+    &:hover
+        opacity: 1 !important
+    &.es_tool_fade
+        position: fixed
+        opacity: 0.1
+    h1, h2, h3, h4, a, span
+        color: rgba( $cBlue, 0.8 )
+        background: transparent
+    h1
+        padding: 0
+    h2
+        width: fit-content
+        margin: 0.5em 0 0.5em 0
+    h3
+        width: fit-content
+    .et
+        color: $cGreen
+    .mp_textsmall
+        font-size: 100%
+        font-weight: normal
+        font-style: italic
+        text-align: left
+        color: rgba( $cBlack, 0.9 )
+
+    // Select2 styling, make look like menu
+    .select2
+        font-size: 90%
+        width: 12em !important
+    .select2-container
+        font-size: 90%
+        ul li
+            margin: 0
+        .select2-results__option--selectable
+            background-color: $cWhite !important
+        .select2-results__option--highlighted[aria-selected]
+            background-color: $cWhite !important
+            span
+                color: rgba( $cOrange, 1 )
+                text-shadow: 1px 1px 2px rgba( $cBlack, 0.4 );
+
+#sandbox_tool
+    right: 1em
+    top: 10em
+    h4
+        font-weight: normal
+        color: $cBlack
+    select
+        width: 12em
+        min-width: 12em
+        margin: 0.3em
+    .es_error_list
+        font-size: 80%
+    .si_settings
+        > div
+            margin: 1em
+        span
+            margin: 0.4em
+    .sl_settings h4
+        width: 6em
+
+#portal_tool
+    top: 6em
+    right: 2em
+    padding: 0.6em 1.2em
+    select
+        width: 12em
+        min-width: 12em
+        margin: 0.1em
+    .pt_heading
+        h2
+            font-size: 100%
+            font-weight: normal
+    .pt_all_toggle
+        font-size: 80%
+        position: absolute
+        top: 1.5em
+        right: 3em
+    .pt_compact
+        .pt_settings
+            > div
+                margin-bottom: 0.4em
+                text-align: center
+            select
+                font-size: 110%
+            a
+                font-size: 110%
+                margin-bottom: 0.4em
+                width: 100%
+    .pt_mix_match
+        h3
+            margin: 0.1em 0
+        select
+            margin-left: 0.6em
+    h3
+        margin: 0
+        padding: 0
+    h4
+        font-size: 90%
+        width: 5em
+        font-weight: normal
+        color: $cBlack
+    .mp_textsmall
+        font-size: 75%
+        display: flex
+        justify-content: flex-end
+        margin: 0.2em
+    .pt_compact_theme
+        margin: 0.2em 0 0.4em 0 !important
+    .pt_links
+        margin-top: 0.4em
+        font-weight: bold
+        a
+            margin-bottom: 0.2em
+    .pt_all_settings
+        h3
+            font-weight: normal !important
+        &.pt_save
+            margin-top: 0.4em
+    .pt_selected
+        background-color: rgba( $cGreen, 0.1 )
+    .es_error_list
+        font-size: 80%

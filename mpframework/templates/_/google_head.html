@@ -1,0 +1,50 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Google GTM / Analytics support
+
+    MPF assumes GTM support for root platform
+    Sandbox google settings are added to the root GTM space.
+    If the sandbox has its own GTM, that can be used to manage the
+    events on the page.
+    If a UA tag is added, events will be fired as configured by
+    root GTM account for the sandboxUA variable.
+
+    SANDBOX TEMPLATE FRAGMENT CACHED
+
+{%endcomment%}
+
+<script>
+
+    {#-- Setup GTM dataLayer #}
+    window.GTM = window.dataLayer || [];
+    GTM.push({
+        'mpSandbox': '{{ site.subdomain }}',
+        'mpProvider': '{{ site.provider.system_name }}',
+        });
+
+    {#-- Add sandbox UA to the GTM datalayer #}
+    {% if site.google|startswith:'UA' %}
+        GTM.push({
+            'gaSandbox': '{{ site.policy.google }}',
+            });
+    {% endif %}
+
+    {#-- Root GTM block #}
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','GTM','{{ root_google_gtm }}');
+
+    {% if site.policy.google|startswith:'GTM' %}
+
+        {#-- Add sandbox GTM to the same dataLayer #}
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','GTM','{{ site.policy.google }}');
+
+    {% endif %}
+
+    </script>

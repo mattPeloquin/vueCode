@@ -1,0 +1,40 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Uses collection_node.html to recursively display collection nodes.
+
+      1) KO 'nodes' is a set of collection VMs
+      2) 'itemfn' is object in $context with name and args of items accessor
+
+{%endcomment%}
+
+<script id="template_collection_nodes" type="text/template">
+
+    <!-- ko foreach: nodes -->
+        <!-- ko if: !sb_option('portal.hide_empty') ||
+                ko.length( $data[ itemfn.name ]( itemfn.arg1, itemfn.arg2 ) ) ||
+                ko.length( node_children() ) -->
+
+            <!-- ko let: {
+                node_template: mpp.get_template_name(
+                    mpp.pane_options( 'node_template', $element ) ||
+                    sb( 'node_template', $element ) ||
+                    mp.request.default_node )
+                    } -->
+                <section data-bind="
+                        bind_tree_node: $data,
+                        class: css_classes() + ' es_' + node_template,
+                        ">
+
+                    <!-- ko template: {
+                        name: $data.mpp_context.node_template,
+                        } -->
+                    <!-- /ko -->
+
+                    {% include "portal/controls/content.html" with tooltip=True %}
+                    </section>
+            <!-- /ko -->
+
+        <!-- /ko -->
+    <!-- /ko -->
+
+    </script>

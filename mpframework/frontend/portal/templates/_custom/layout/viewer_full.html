@@ -1,0 +1,43 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Default full-screen content viewer
+    Shows content access link in iframe
+
+{%endcomment%}
+
+<pane class="es_viewer es_viewer_full es_theme_background mp_print_hidden
+        mpp_viewer_fullscreen">
+
+    <div class="es_viewer_top_bar">
+        {% if sb_options.site.banner.viewer %}
+            {% include "_base/layout/banner.html" %}
+        {% endif %}
+        <div class="es_portal_return es_button_text mpp_back" data-bind="
+                html: mpp.sbt('back'),
+                ">
+            </div>
+        </div>
+
+    <div class="es_viewer_box mpp_viewer_box">
+        </div>
+
+    <div class="es_viewer_content mpp_viewer_aux">
+        <!-- ko with: mpp.vm_current.item() || vm.current.node() -->
+            <!-- ko if: $data && $data.sb && sb('html3') -->
+                <div class="es_viewer_content_item" data-bind="
+                        html: sb('html3'),
+                        ">
+                    </div>
+            <!-- /ko -->
+            <!-- ko ifnot: $data && $data.sb && sb('html3') -->
+                <!-- ko if: $parent && $parent.sb && $parent.sb('html3') -->
+                <div class="es_viewer_content_node" data-bind="
+                        html: $parent.sb('html3'),
+                        ">
+                    </div>
+                <!-- /ko -->
+            <!-- /ko -->
+        <!-- /ko -->
+        </div>
+
+    </pane>

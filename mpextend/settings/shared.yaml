@@ -1,0 +1,93 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   mpExtend shared settings
+#
+
+YAML_INCLUDES:
+  - ui.yaml
+
+MP_ROOT:
+  # Values for external services that extension code expects
+  # to exist, but which won't be called
+  PAYMENT:
+    stripe_connect: {}
+    paypal_nvp: {}
+  IP_INFO_API:
+    URL: ''
+
+MP_REPORT:
+  USER_BLOCK_SIZE: 100
+
+MP_FLAGS:
+  # Track visitors with session cookies and tracking info
+  TRACKING_visitors: True
+  # Store information on each request for analysis and debugging
+  TRACKING_requests: False
+
+MP_TRACKING:
+  # Default value for sessions allowed for non-staff users can be adjusted
+  # in sandbox options, but not exceed the max.
+  # Maximum sets staff sessions and highest value for setting sandbox
+  # to prevent active-user billing abuse
+  SESSIONS_DEFAULT: 1
+  SESSIONS_MAX: 6
+  # Maximum number of old sessions that are kept for metrics
+  # This is NOT the limit on number of simultaneous sessions
+  SESSIONS_OLD: 8
+  # Max number of recent users considered in tracking report
+  MAX_RECENT: 200
+  # Maximum time period allowed for analysis of tracking records
+  WINDOW: 43200  # minutes
+  # HACK - How many seconds between tracking updates for the update to be considered active
+  # This is a rough way to detect cases where a user session has become inactive to
+  # prevent usage metrics from having unreasonable large amounts
+  # Instead of completely ignoring those blocks of time, fill with a placeholder
+  INACTIVE_DELTA: 444  # seconds
+  INACTIVE_PLACEHOLDER: 333  # seconds
+
+MP_EXTERNAL:
+
+  # Social media EasyLink connection info
+  facebook:
+    share_url: "https://www.facebook.com/sharer.php?u="
+  twitter:
+    share_url: "https://twitter.com/share?dnt=true&amp;related=VueocityHQ%3ADigital+Products+Made+Easy&amp;text=My+new+product+is+available%3A&amp;url="
+  linkedin:
+    share_url: "https://www.linkedin.com/sharing/share-offsite/?url="
+
+MP_CONTENT:
+
+  # Files that can be used to launch LMS package files
+  LMS_PACKAGE_LAUNCH_FILES:
+      'S':
+          - "index_lms.html"          # Storyline Scorm
+          - "index_SCORM.html"        # Older captivate
+          - "index_scorm.html"        # 9+ Captivate
+      'T':
+          - "launcher.html"           # Storyline tincan launch
+          - "index_TINCAN.html"       # Older Captivate
+          - "index_tincan.html"       # 9+ Captivate
+      'O':
+          - "story.html"              # Storyline file that allows running package outside scorm
+
+  # Live event types
+  LIVE_TYPES:
+      'aa_default':
+          name: "Invite page"
+          action: action_viewer
+          fixups: [ 'fixup_links_in_tabs' ]
+      'protected':
+          name: "Protected link"
+          proxy_options: {}
+          action: action_win
+
+  # Proxy link types
+  LINK_TYPES:
+      'aa_default':
+          name: "Public link"
+          direct: true
+          proxy_options: {}
+      'protected':
+          name: "Protected link"
+          direct: false
+          proxy_options: {}

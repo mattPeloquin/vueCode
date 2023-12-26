@@ -1,0 +1,97 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Screen for sellers to setup PayTo options
+
+{% endcomment %}
+
+{% block panel_body %}
+
+    <div class="mp_staff_panel">
+        {% if types %}
+            <select id="types">
+                </select>
+        {% endif %}
+        </div>
+
+    <form id="paypal_nvp" data-parsley-validate class="mp_form mp_hidden
+            {% if setups.paypal_nvp %} mp_setup_exists {% endif %}"
+            action="{% url 'api_payment_setup' 'paypal_nvp' %}"
+            >
+        {% csrf_token %}
+        <h2>PayPal account</h2>
+        <div>
+            <span>{{ forms.paypal_nvp.paypal_account }}</span>
+            </div>
+
+        <input type="submit" class="mp_button_text" name="update_paypal"
+                value="Update PayPal account"
+                />
+        </form>
+
+    <form id="stripe_connect" data-parsley-validate class="mp_form mp_hidden
+            {% if setups.stripe_connect %} mp_setup_exists {% endif %}"
+            action="{% url 'api_payment_setup' 'stripe_connect' %}"
+            >
+        {% csrf_token %}
+        {% if setups.stripe_connect.service_account %}
+            <h2>Stripe account</h2>
+            <div>
+                <span>{{ forms.stripe_connect.stripe_account }}</span>
+                </div>
+        {% endif %}
+        <input type="submit" class="mp_button_text" name="update_stripe" value=
+            "{% if setups.stripe_connect.config.connected %}Reconnect{% else %}Connect{% endif %} Stripe account"
+            />
+        </form>
+
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    {% include "_/field_errors.html" with form=form %}
+
+    mp.set_watermark("#{{ forms.paypal_nvp.paypal_account.auto_id }}",
+            "PayPal user ID or email")
+    mp.set_watermark("#{{ forms.stripe_connect.stripe_account.auto_id }}",
+            "Stripe account ID")
+
+    $("#types")
+        .select2({
+            width: '100%',
+            data: {{ types | json }},
+            minimumResultsForSearch: Infinity,
+            })
+        .on('select2:select', function( e ) {
+            $("form").addClass('mp_hidden')
+            $( "#" + e.params.data.id ).removeClass('mp_hidden')
+            })
+        // Force select2 to execute initial select - why so awkward?
+        .val('{{ start.id | default:types.0.id }}').trigger('change')
+        .trigger({ type: 'select2:select', params: {
+                        data: {{ start | default:types.0 | json }},
+                } })
+
+    $("form").submit( function( event ) {
+        event.preventDefault()
+        mp.ajax_submit_form_api( this, {
+            finished: function( values ) {
+                mp.show_wait_overlay( false )
+                if( !!values ) {
+                    if( values.redirect ) {
+                        window.location.replace( values.redirect )
+                        }
+                    else if( values.error ) {
+                        mp.dialog_open( values.error )
+                        }
+                    else {
+                        mp.dialog_open("Payment method has been updated")
+                        }
+                    }
+                },
+            })
+        })
+
+{% endblock %}
+

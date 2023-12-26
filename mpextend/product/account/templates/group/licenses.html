@@ -1,0 +1,113 @@
+{% extends 'group/_page.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Account admin overview and reporting screen
+
+{% endcomment %}
+
+{% block group_page_body %}
+    {% if apa_rollups %}
+        <div id="apa_report">
+            <h2>Licenses</h2>
+
+            <div class="es_report_head mp_flex_line">
+                <input class="mp_search" placeholder="Search" />
+                <div id="inactive_toggle" style="width: 8em">
+                    <div class="mp_slider">
+                        <div class="ball es_button"></div>
+                        <div class="text">Show inactive</div>
+                        </div>
+                    </div>
+                <div class="mp_flex">
+                    <div class="es_button_flat" style="margin-left: 1em"
+                            onclick="mp.ajax_dialog(
+                                '{% url 'ga_purchases_csv' ga_id %}', mpt.REPORT_CHECK_DONE
+                                )">
+                        License report
+                        </div>
+                    </div>
+                </div>
+
+            <table class="es_report_table">
+                <thead>
+                    <tr class="es_heading">
+                        <th style="width: 4%" class="mp_sort es_textcenter">Active</th>
+                        <th style="width: 16%" class="mp_sort es_textleft"
+                                data-sort="name">Name</th>
+                        <th style="width: 20%" class="mp_sort es_textleft" data-sort="user_info">Users</th>
+                        <th style="width: 10%" class="mp_sort" data-sort="started">In progress</th>
+                        <th style="width: 10%" class="mp_sort" data-sort="completed">Completed</th>
+                        <th style="width: 10%" class="mp_sort" data-sort="purchase_type">Type</th>
+                        <th style="width: 15%" class="mp_sort" data-sort="start">Start</th>
+                        <th style="width: 15%" class="mp_sort" data-sort="end">End</th>
+                        </tr>
+                    </thead>
+                <tbody class="es_report_body mp_report">
+                    {% for a in apa_rollups %}
+                        <tr class="es_row">
+                            <td class="active es_textcenter"><span class="fa
+                                fa-{% if a.apa.is_active %}check-circle{% else %}times-circle{% endif %}">
+                                </span></td>
+                            <td class="name">{{ a.apa.name }}</td>
+                            <td class="user_info">{{ a.apa.user_info }}</td>
+                            <td class="started es_textcenter">{{ a.started }}</td>
+                            <td class="completed es_textcenter">{{ a.completed }}</td>
+                            <td class="purchase_type es_textcenter">{{ a.apa.purchase_type_lookup }}</td>
+                            <td class="start es_textcenter">{{ a.apa.period_start_date }}</td>
+                            <td class="end es_textcenter">{{ a.apa.period_end_date }}</td>
+                            </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    {% else %}
+        <div>There are no currently active licenses</div>
+    {% endif %}
+
+    {% if other_uses.user_count %}
+        <br>
+        <p>{{ other_uses.user_count }} users have used
+            {{ other_uses.started|add:other_uses.completed }}
+            items outside group licenses</p>
+        <div class="es_button_flat" style="margin-left: 1em"
+                onclick="mp.ajax_dialog(
+                    '{% url 'ga_content_csv' ga_id %}', mpt.REPORT_CHECK_DONE
+                    )">
+            Run detailed usage report to see full details
+            </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+
+    {% if apa_rollups %}
+
+        const apas_list = new List( 'apa_report', {
+                listClass: 'mp_report',
+                searchClass: 'mp_search',
+                sortClass: 'mp_sort',
+                valueNames: [
+                    'active', 'name', 'user_info', 'purchase_type',
+                    'period_start', 'period_end', 'started', 'completed',
+                    ]
+                })
+        apas_list.sort( 'period_end', { order: 'desc' } )
+
+        // Setup toggle for inactive
+        let apas_show_inactive = true
+        function toggle_apas_inactive() {
+            apas_show_inactive = !apas_show_inactive
+            apas_list.filter( function( item ) {
+                return apas_show_inactive || item.values().active.includes('check')
+                })
+            $("#inactive_toggle .mp_slider").toggleClass( 'slider_on', apas_show_inactive )
+            }
+        toggle_apas_inactive()
+        $("#inactive_toggle").on( 'click', toggle_apas_inactive )
+
+        $(".mp_sort").addClass('es_button_text')
+    {% endif %}
+
+{% endblock %}

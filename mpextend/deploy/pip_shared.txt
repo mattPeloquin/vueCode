@@ -1,0 +1,10 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Packages needed for mpExtend
+#
+
+# Working with calendars, creating ICS files
+icalendar==4.0.7
+
+# Payment APIs
+stripe==2.58.0

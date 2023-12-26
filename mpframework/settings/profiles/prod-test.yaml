@@ -1,0 +1,13 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Testing a production cluster
+#
+
+# Don't share cache and SQS
+MP_PLAYPEN_CACHE: prod-test
+MP_PLAYPEN_SQS:
+    NAME: test
+    VERSION: prod-test
+
+MP_ROOT:
+    HOST_SUBDOMAINS: [ 'mptest' ]

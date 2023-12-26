@@ -1,0 +1,19 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Extend staff top menu with items at the left
+
+{%endcomment%}
+
+{% if not user.logged_into_root and not is_portal_content %}
+
+    <div class="mp_menu_item easy mp_menu_header">
+        <a id="menu_easy">
+            <span class="fa fa-cloud"></span>
+            <span class="mp_menu_text mpr_hide_med">EasyVue</span>
+            </a>
+        <div class="mp_menu mp_menu_dropdown">
+            {% mp_include_files "staff" "easy" ".html" %}
+            </div>
+        </div>
+
+{% endif %}

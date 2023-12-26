@@ -1,0 +1,20 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Edit link for PA buttons; this is processed as a template
+    on the browser, using context set in access_dialog.js
+    It also means can't use full {% url %} for change page since
+    id cannot be passed, so do hack using changelist
+
+{% endcomment %}
+
+{% if user.sees_licensing %}
+
+    <div class="mp_control">
+        <a class="es_tool_button mp_catalog_edit"
+            href="{% url 'staff_admin:catalog_pa_changelist' %}<%= id %>/change?admin_redirect=<%= location %>">
+            edit
+            </a>
+        </div>
+
+{% endif %}
+

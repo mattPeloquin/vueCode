@@ -1,0 +1,59 @@
+#--- Mesa Platform, Copyright 2021 Vueocity LLC
+#
+#   Test data shared across test fixtures
+
+
+- fields:
+    name: "Acme Company, LLC"
+    system_name: acme
+    resource_path: acme
+  model: tenant.provider
+  pk: 200
+
+#--------------------------------------------------------------------
+# Acme Test Sandboxes
+
+- fields:
+    _provider: 200
+    frame_site: 11
+    subdomain: AcmeTest1
+    _resource_path: acme
+    name: 'Acme Testing'
+    footer_html: "Acme's Company, AUTHORIZED USE ONLY"
+  model: tenant.sandbox
+  pk: 200
+- fields: { _host_name: acme.127.0.0.1, sandbox: 200, main: false }
+  model: tenant.sandboxhost
+  pk: 200
+
+- fields:
+    _provider: 200
+    frame_site: 110
+    subdomain: AcmeTest2
+    _resource_path: acme
+    name: 'Acme Customer Marketplace'
+    options:
+      copyright: 'Acme LLC'
+    intro_html: |
+        <h1>Obamacare Worries?</h1>
+        Sign up for help navigating Small Business healthcare
+  model: tenant.sandbox
+  pk: 210
+- fields: { _host_name: store1.acme.127.0.0.1, sandbox: 210, main: false }
+  model: tenant.sandboxhost
+  pk: 210
+
+- fields:
+    _provider: 200
+    frame_site: 100
+    subdomain: AcmeTest3
+    _resource_path: acme
+    name: 'Acme Customer Controlled Vue Sandbox'
+    _policy:
+      user_create_code: mptest
+  model: tenant.sandbox
+  pk: 220
+- fields: { _host_name: store2.acme.127.0.0.1, sandbox: 220, main: false }
+  model: tenant.sandboxhost
+  pk: 220
+

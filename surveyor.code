@@ -1,0 +1,21 @@
+#*****************************************************************************
+#
+#   mpFramework Surveyor Metrics
+#
+
+CONSTANT:_OUTFILE_: OUT:surveyor.csv
+CONSTANT:_IGNORE_:  OPT:IGNORE_PATHS:['\\libs\\','\\min\\','\\editors\\','\\fonts\\']
+CONSTANT:_GLOBAL_: _OUTFILE_  _IGNORE_  OPT:METADATA_ALL  OPT:MACHINE_NONE
+
+measure Code   *        *.py     python       _GLOBAL_   OPT:PYTHON_TRIPLE_COMMENTS
+measure Code   *        *.js     javascript   _GLOBAL_
+
+measure Code   *        *.css;*.sass;*.scss     web  style        _GLOBAL_
+measure Code   *        *.html;*.chtml          web  template     _GLOBAL_    \
+    OPT:COMMENT_LINE:({[#]})    \
+    OPT:COMMENT_OPEN:({%comment%})   \
+    OPT:COMMENT_CLOSE:({%endcomment%})  \
+    OPT:DEADCODE_NONE
+
+measure Code   *        *.tf;*.sh;*.bat;*.tmpl;*.htm   other  deploy    _GLOBAL_
+measure Code   *        *.yaml                         other            _GLOBAL_

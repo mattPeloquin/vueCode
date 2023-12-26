@@ -1,0 +1,74 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+
+"""--------------------------------------------------------------------
+
+    S3 Bucket Policy Templates
+
+    Bucket policies affect both connections made through AWS interfaces
+    (which know about IAM stuff) AND http requests (like nginx requesting
+    files, which doesn't know about AWS stuff).
+
+    Boto or other APIs that talk through AWS interfaces can leverage IAM.
+    Cloudfront access can use the cloudfront OAI mechanism.
+
+    When content delivery is routed through nginx, the POLICY HAS TO BE
+    BASED ON HTTP info -- it can't leverage Amazon account or IAM.
+    So for nginx content delivery, VPC endpoints are primary mechanism,
+    with some support for IP addressed in dev.
+
+    Policy settings are:
+
+        1) CloudFront origin OAI, used when CF accesses the S3 buckets. This is
+        a primary production scenario, for both public and signed URLs.
+
+        2) VPC and S3 endpoint, used for non CF scenarios such as nginx serving
+        LMS SCORM packages in an iFrame.
+
+        3) AWS Account for programmatic access
+        FUTURE SECURE - tighten AWS S3 access to include roles
+
+        4) Certain IP addresses --  for DEBUG/DEV ONLY because although this
+        proved robust in testing nginx access, it requires IP addresses or ranges
+        to be written into policy, so doesn't work with autoscaling,
+
+    NOTE -- multiple AWS policy statements are OR'ed together
+"""
+
+_bucket_policy = '''{{
+    "Id": "mpFramework-S3{name}",
+    "Statement": [
+        {{
+            "Sid": "mpFramework-CloudFrontOAI",
+            "Effect": "Allow",
+            "Principal": {{
+                "CanonicalUser": "{cloud_id}"
+                }},
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::{bucket}/*"
+            }},
+        {{
+            "Sid": "mpFramework-VPC",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": [ "s3:GetObject", "s3:PutObject" ],
+            "Resource": "arn:aws:s3:::{bucket}/*",
+            "Condition": {{
+                "StringEquals": {{
+                    "aws:sourceVpce": {vpce}
+                    }}
+                }}
+            }},
+        {{
+            "Sid": "mpFramework-AWSAccount-FUTURE",
+            "Effect": "Allow",
+            "Principal": {{
+                "AWS": "{aws_account}"
+                }},
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::{bucket}/*"
+            }}
+        ]
+    }}
+'''
+

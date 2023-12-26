@@ -1,0 +1,23 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Vueocity flat style with smaller content
+
+{%endcomment%}
+
+{% mp_include "mixin_scroll_none" %}
+{% mp_include "mixin_card_imagetext" with color='white' size='110%' %}
+{% mp_include "mixin_hover_grow" with speed='0.4' growth='1.25' %}
+{% mp_include "mixin_content_small" %}
+
+<style>
+
+    :root {
+        --es_theme_border-radius: 0.1em;
+        --es_theme_border-radius_content: 0.1em;
+        }
+
+    .es_tabs .es_tabs_menu {
+        width: fit-content;
+        }
+
+</style>

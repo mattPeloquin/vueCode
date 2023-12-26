@@ -1,0 +1,16 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Misc data needed for automated test cases
+
+
+- fields:
+    state: review
+    description: |
+        Discounted Services: $11.32
+        TaxPlace sales tax: $5.01
+        Total: $16.33
+    amount: 11.32
+    tax: 5.01
+    _provider: 11
+  model: ops.invoice
+  pk: 10

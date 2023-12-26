@@ -1,0 +1,64 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Provide raw access into user events
+
+{%endcomment%}
+
+
+{% block panel_body %}
+
+    <h2>User event query</h2>
+
+    {% if events_on  %}
+
+        <form class="mp_form" method="post">
+            {% csrf_token %}
+
+            <input name="query" type="text" style="width: 40em"/>
+            <p>Enter search criteria
+                </p>
+            <br>
+            <input name="sort" type="text" />
+            <p>Sort
+                </p>
+            <br>
+            <input name="limit" type="text" />
+            <p>Record limit
+                </p>
+            <br>
+
+            <input type="submit" class="mp_button" name="raw"
+                    value="Raw" />
+            <input type="submit" class="mp_button" name="user"
+                    value="User ID" />
+            <input type="submit" class="mp_button" name="sandbox"
+                    value="Sandbox ID" />
+            <input type="submit" class="mp_button" name="event"
+                    value="Event name" />
+            <input type="submit" class="mp_button" name="time"
+                    value="Time" />
+
+            <br>
+            </form>
+
+        {% if domains %}
+            <div class="mpdebug">
+                {% include "root/_/list.html" with items=domains %}
+                </div>
+        {% endif %}
+        {% if events %}
+            <div class="mpdebug">
+                {% include "root/_/list.html" with items=events.Items %}
+                </div>
+        {% endif %}
+
+    {% else %}
+
+        <p>DynamoDB support is not configured for this server</p>
+
+    {% endif %}
+
+{% endblock %}
+
+

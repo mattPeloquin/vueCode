@@ -1,0 +1,107 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Sitebuilder support for testing portals
+
+{%endcomment%}
+
+<div class="mp_menu_item mp_menu_header mpr_hide_small">
+    <a class="mp_tooltip" title="
+        Use these SiteBuilder menus to quickly
+        access links for building and testing your site.">
+        <span class="fa fa-puzzle-piece"></span>
+        </a>
+    <div class="mp_menu mp_menu_dropdown">
+
+        <span class="mp_menu_title">Portal test links...</span>
+
+        <div class="mp_menu mp_menu_float mp_menu_sub">
+            <div class="mp_menu_item mp_menu_header">
+                <span class="mp_menu_text">Themes...</span>
+                <div class="mp_menu mp_menu_dropdown">
+                    {% for theme in sb_themes|dictsort:'name' %}
+                        <a class="mp_menu_item"
+                                href="{% url 'portal_theme' theme_id=theme.pk %}">
+                            <div class="mp_menu_text">{{ theme.name }}</div>
+                            </a>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        <div class="mp_menu mp_menu_float mp_menu_sub">
+            <div class="mp_menu_item mp_menu_header">
+                <span class="mp_menu_text">VuePortals...</span>
+                <div class="mp_menu mp_menu_dropdown">
+                    {% for frame in sb_vueportals|dictsort:'name' %}
+                        <a class="mp_menu_item"
+                                href="{% url 'portal_frame' frame_id=frame.pk %}">
+                            <div class="mp_menu_text">{{ frame.name }}</div>
+                            </a>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        <div class="mp_menu mp_menu_float mp_menu_sub">
+            <div class="mp_menu_item mp_menu_header">
+                <span class="mp_menu_text">Collection Themes...</span>
+                <div class="mp_menu mp_menu_dropdown">
+                    {% for theme in sb_themes|dictsort:'name' %}
+                        {% for top in sb_sample_tops %}
+                            <a class="mp_menu_item"
+                                    href="{% url 'portal_content_theme' theme_id=theme.pk content_slug=top.slug %}">
+                                <div class="mp_menu_text">{{ theme.name }} - {{ top.name }}</div>
+                                </a>
+                        {% endfor %}
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        <div class="mp_menu mp_menu_float mp_menu_sub">
+            <div class="mp_menu_item mp_menu_header">
+                <span class="mp_menu_text">Collection VuePortals...</span>
+                <div class="mp_menu mp_menu_dropdown">
+                    {% for frame in sb_vuetrees|dictsort:'name' %}
+                        {% for top in sb_sample_tops %}
+                            <a class="mp_menu_item"
+                                    href="{% url 'portal_content_frame' frame_id=frame.pk content_slug=top.slug %}">
+                                <div class="mp_menu_text">{{ frame.name }} - {{ top.name }}</div>
+                                </a>
+                        {% endfor %}
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        <div class="mp_menu mp_menu_float mp_menu_sub">
+            <div class="mp_menu_item mp_menu_header">
+                <span class="mp_menu_text">Item Themes...</span>
+                <div class="mp_menu mp_menu_dropdown">
+                    {% for theme in sb_themes|dictsort:'name' %}
+                        {% for item in sb_sample_items %}
+                            <a class="mp_menu_item"
+                                    href="{% url 'portal_content_theme' theme_id=theme.pk content_slug=item.slug %}">
+                                <div class="mp_menu_text">{{ theme.name }} - {{ item.name }}</div>
+                                </a>
+                        {% endfor %}
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        <div class="mp_menu mp_menu_float mp_menu_sub">
+            <div class="mp_menu_item mp_menu_header">
+                <span class="mp_menu_text">Item VuePortals...</span>
+                <div class="mp_menu mp_menu_dropdown">
+                    {% for frame in sb_vueitems|dictsort:'name' %}
+                        {% for item in sb_sample_items %}
+                            <a class="mp_menu_item"
+                                    href="{% url 'portal_content_frame' frame_id=frame.pk content_slug=item.slug %}">
+                                <div class="mp_menu_text">{{ frame.name }} - {{ item.name }}</div>
+                                </a>
+                        {% endfor %}
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>

@@ -1,0 +1,26 @@
+{% extends 'admin/change_form.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    HTML updates for group account editing
+
+{%endcomment%}
+
+{% block page-no_cache %}
+    {{ block.super }}
+
+    <style>
+
+        #id__users_from {
+            height: 300px !important;
+            }
+        #id__users_to {
+            height: 333px !important;
+            }
+
+        #id_users_from {
+            height: 16em !important;
+            }
+
+        </style>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'portal/page.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display one pane in frame
+    This frame is loaded by default if no frame template is specified. It
+    uses the only (or first) pane defined in the frame structure.
+
+{%endcomment%}
+
+{% block top-cache %}
+    {{ block.super }}
+
+    <div class="es_user_bar mp_top_bar">
+        <div class="es_theme_bar mp_flex_line mp_flex_between">
+
+            <div class="es_top_bar_left">
+                {% block portal_top_left-cache %}
+                {% endblock %}
+                </div>
+
+            <div class="es_top_bar_right mp_flex_line">
+                {% block portal_top_right-cache %}
+                    {% mp_include "user_bar" %}
+                {% endblock %}
+                </div>
+
+            </div>
+        </div>
+{% endblock %}
+
+{% block portal_area-cache %}
+
+    {% mp_include request_frame.pane.template with pane=request_frame.pane %}
+
+{% endblock %}

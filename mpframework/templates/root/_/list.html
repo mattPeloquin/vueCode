@@ -1,0 +1,18 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Snippet for pretty display of lists
+
+{% endcomment %}
+
+
+{% for item in items %}
+    {% if style == "space" %}
+        {{ item }}
+    {% elif style == "comma" %}
+        {{ item }}{% if not forloop.last %},{% endif %}
+    {% else %}
+        <p>{{ item }}</p>
+    {% endif %}
+{% empty %}
+    <span style="font-style:italic">No items are present</span>
+{% endfor %}

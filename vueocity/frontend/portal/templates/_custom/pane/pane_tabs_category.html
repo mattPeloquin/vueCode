@@ -1,0 +1,37 @@
+{% mp_extends 'pane_tabs' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Show categories as tabs, with collections drill panes in each.
+    This can be inefficient, because top-level collections shared
+    across categories will be rendered for each path.
+
+{%endcomment%}
+
+{% block pane_name %} es_pane_tabs_category {% endblock %}
+
+{% block pane_tabs %}
+    <!-- ko with: mpp.vm_main.categories() -->
+        {% mp_include "nav_content_tabs" %}
+    <!-- /ko -->
+{% endblock %}
+
+{% block pane_panels %}
+    <!-- ko foreach: mpp.vm_main.categories() -->
+
+        <article class="es_category_panel" data-bind="
+                bind_nav_panel: $data,
+                class: css_classes(),
+                " data-no_breadcrumbs='true'
+                >
+            <h2 class="es_category_title" data-bind="
+                    visible: !!sb('text1'),
+                    html: sb('text1'),
+                    "></h2>
+
+            {% mp_include "pane_drill" with home_hide=True %}
+
+            {% include "portal/controls/content.html" %}
+            </article>
+
+    <!-- /ko -->
+{% endblock %}

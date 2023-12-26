@@ -1,0 +1,11 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Load platform client templates
+
+{%endcomment%}
+
+{% for t in platform_templates %}
+    <script id="template_{{ t.script_name }}" type="text/template">
+        {% mp_include t.script_name %}
+        </script>
+{% endfor %}

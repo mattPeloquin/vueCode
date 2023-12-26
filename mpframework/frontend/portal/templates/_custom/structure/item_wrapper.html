@@ -1,0 +1,28 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Portal element for content display
+    Normally used to display items with their configured template.
+
+      1) Expects KO $data context to be a content item.
+      2) Normally expects $context.default_item_template
+
+{%endcomment%}
+
+<!-- ko let: {
+        {#-- Let item override template default #}
+        _template: mpp.get_template_name( sb('item_template') ) ||
+                    $context.default_item_template,
+        } -->
+    <item class="es_content" data-bind="
+            bind_item: $data,
+            class: css_searchable() + ' es_' + _template,
+            ">
+
+        <!-- ko template: {
+            name: _template,
+            } -->
+        <!-- /ko -->
+
+        {% include "portal/controls/content.html" with tooltip=True %}
+        </item>
+<!-- /ko -->

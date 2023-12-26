@@ -1,0 +1,140 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Provide debugging diagnostic info
+
+{%endcomment%}
+
+<style>
+
+    {#-- Move DJ toolbar to bottom top items #}
+    #djDebug #djDebugToolbarHandle {
+        top: auto !important;
+        bottom: 100px !important;
+        }
+
+    .mpdev_toggle {
+        font-size: 90%;
+        font-style: italic;
+        line-height: 1;
+        color: yellow;
+        background-color: rgba(0, 0, 192, 0.7);
+        opacity:0.7;
+        border-radius: 0.1em;
+        padding: 0.2em 0.4em;
+        position: fixed;
+        bottom: 4em;
+        right: 0.2em;
+        cursor: pointer;
+        }
+
+    .mpdev_toggle * {
+        font-size: 85%;
+        }
+
+    </style>
+
+<script> 'use strict';
+    mp.when_ui_loaded( function debug_init() {
+        {#-- Toggle bottom debug display with the footer  #}
+        $(".mpdev_display").hide()
+        $("#mpdev_toggle").click( function() {
+                $(".mpdev_display").toggle()
+                $(".mp_bottom").toggle()
+                })
+
+        $(".mpdev_toggle_sql").click( function() {
+                const s = document.getElementById('mpdev_querytable').style
+                s.display = s.display == 'none' ? '' : 'none'
+                })
+
+        $("#mpdev_browser").text( mp.device.desc )
+        })
+    </script>
+
+{#-- Debug on/off button  #}
+<div id="mpdev_toggle" class="mpdev_toggle">
+    <!--MPSTATS-->
+    <br><div>
+        {{ sql_queries|length }} queries in {{ db_time }}
+        </div>
+    </div>
+
+<div class="mpdev_display mpdebug" style="display: none;">
+
+    {% if form and form.errors %}
+        <div class="mpdebug">
+            {{ form.errors.as_ul }}
+            </div>
+    {% endif %}
+
+    <div id="mpdev_browser">
+        </div>
+
+    <div>
+        Debug/Prod: {{ debug }}/{{ profile_is_prod }}
+        -- Site: {{ url_current }}
+        -- Profile: "{{ debug_settings.MP_PROFILE }}"
+        -- Playpen: "{{ debug_settings.MP_PLAYPEN }}"
+        -- IsPortal: {{ is_portal }}
+        -- IsPortalPage: {{ is_portal_content }}
+        -- IsStaffPage: {{ is_page_staff }}
+        -- IsAdminPage: {{ is_page_admin }}
+        -- Logging: debug({{ log_debug_level }})
+        -- Platforms: "{{ debug_settings.MP_PLATFORMS }}"
+        </div>
+
+    <div>
+        Template cache(staff): "{{ template_cache_staff }}"
+        -- Local buffer: {{ debug_settings.MP_CACHE_AGE.BUFFER }}s
+        -- Performance: {{ debug_settings.MP_CACHE_AGE.PERFORMANCE }}s
+        -- Browser: {{ debug_settings.MP_CACHE_AGE.BROWSER }}s
+        </div>
+
+    <div>
+        User: {{ request_mpipname }}
+        -- Sand/Prov: {{ user.sandbox }}, {{ user.provider }}
+        -- Remote: {{ request_mpremote }}
+        -- WF: {{ user.workflow_level }} / {{ user.workflow_filters }}
+        -- Staff: {{ user.staff_level }}
+        -- Areas: {{ user.staff_areas }}
+        -- StaffView: {{ user.staff_user_view }}
+        -- Flatland: {{ user.sandboxes_level }}
+        </div>
+
+    <div>
+        Sandbox: {{ site }}, {{ site.provider }}
+        <br>-- Pane: {{ request_frame.pane }}
+        <br>-- SB Options: {{ sb_options }}
+        <br>-- RequestSkin: {{ request_skin }}
+        <br>-- Policy: {{ site.policy }}
+        </div>
+
+    <div>
+        Databases: {{ debug_db_names }}
+        </div>
+
+    <div>
+        <p><b>DB time: {{ db_time }} -- {{ sql_queries|length }} Queries</b>
+            {% ifnotequal sql_queries|length 0 %}
+                <span class="mpdev_toggle_sql">
+                    Show...
+                    </span>
+            {% endifnotequal %}
+            </p>
+
+        <div id="mpdev_querytable" class="mp_flex_column " style="display: none;">
+            {% for query in sql_queries %}
+                <div class="mp_flex es_row" style="width: 100%;">
+                    <div style="width: 5%;">
+                        {{ forloop.counter }}</div>
+                    <div style="width: 85%;">
+                        {{ query.sql|escape }}</div>
+                    <div style="width: 10%;">
+                        <b>{{ query.time }}</b></div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+
+    </div>
+

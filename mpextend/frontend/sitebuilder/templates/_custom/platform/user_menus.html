@@ -1,0 +1,18 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Override MPF user bar to include group admin
+
+{% endcomment %}
+
+<div class="es_user_bar_menus mp_flex_line mp_flex_right">
+    {% if user.is_authenticated %}
+
+        {% include "group/group_menu.html" %}
+        {% include "user/profile/menu.html" %}
+
+    {% else %}
+
+        {% mp_include "user_signin" %}
+
+    {% endif %}
+    </div>

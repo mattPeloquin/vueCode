@@ -1,0 +1,55 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Small list item that builds tooltip of detailed content
+    if item doesn't already have a tooltip.
+
+{%endcomment%}
+
+<div class="es_compact es_theme_list es_theme_content" data-bind="
+        click: user_access,
+        style: {
+            '--es_item_font-size': sb_option('portal.item_font_size', $element),
+            },
+        ">
+    <div class="es_content_body es_content_highlight mp_flex_line">
+
+        {% mp_include "content_state" %}
+
+        <div class="es_content_text es_text_limit mp_flex_line">
+            <h3 class="es_item_title" data-bind="
+                    html: sb('name'),
+                    ">
+                </h3>
+            </div>
+
+        </div>
+    </div>
+<!-- ko if: !sb('tooltip') -->
+    <tooltip class="es_item_tooltip">
+        <!-- ko if: sb('image2') -->
+            <div class="es_content_image">
+                <img class="es_style_hover" data-bind="
+                        attr: { src: sb('image2') || sb('image1') }
+                        "/>
+                </div>
+        <!-- /ko -->
+        <div class="es_list_main mp_flex mp_flex_between mp_flex_vcenter">
+            <h3 class="es_item_title" data-bind="
+                    html: sb('name'),
+                    ">
+                </h3>
+            <!-- ko if: sb('text1') -->
+                <div class="es_item_text1" data-bind="
+                        html: sb('text1'),
+                        ">
+                    </div>
+            <!-- /ko -->
+            <!-- ko if: sb('text2') -->
+                <div class="es_item_text2" data-bind="
+                        html: sb('text2'),
+                        ">
+                    </div>
+            <!-- /ko -->
+            </div>
+        </tooltip>
+<!-- /ko -->

@@ -1,0 +1,50 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    nginx include file for default server configuration
+
+{%endcomment%}
+
+# Standard Unicode support
+charset utf-8;
+
+# Use default AWS DNS resolver
+# nginx is primarily used as reverse proxy via sockets, but for some
+# scenarios S3 and ELB paths need to be resolved
+resolver 169.254.169.253;
+
+# Setup default header/body handling
+client_header_buffer_size  {{ s.MP_NGINX.SERVER.HEADER_BUFFER }}k;
+client_max_body_size  {{ s.MP_NGINX.SERVER.BODY_MAX }}m;
+client_body_temp_path  {{ path_nginx_temp }}/client 1;
+
+# Track location in logs for debugging
+set $mp_location '';
+
+# These handlers are for nginx errors not passed to uwsgi.
+error_page 400 403 404  /4xx.htm;
+error_page 500 502 503 504  /5xx.htm;
+location ~ ^/[45]xx.htm {
+    set $mp_location 'error_page';
+    root {{ path_public_static }}/mpf-root;
+    internal;
+    }
+
+# Return cacheable empty page for certain types of requests without Django
+#  - jsi18n requests (not used)
+#  - JS map file requests (no need to support)
+location ~* ^.+(/jsi18n/|\.map)$ {
+    access_log {{ garbage_log }};
+    log_not_found off;
+    expires 30d;
+    return 200;
+    }
+
+# Make default location return 404
+# (so nginx doesn't look for items that aren't in explicit locations)
+location / {
+    log_not_found off;
+    return 404;
+    }
+
+include  inc_proxy.conf;
+include  inc_django.conf;

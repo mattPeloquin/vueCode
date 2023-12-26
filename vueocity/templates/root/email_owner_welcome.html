@@ -1,0 +1,34 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Email sent to new owners after they've logged in
+
+{%endcomment%}
+
+<style>
+    {% mp_include "email_css" %}
+</style>
+
+<h2>Welcome to your new Vueocity site!</h2>
+
+<p>You should now be logged into "{{ site.name }}" at:</p>
+
+<a href="{{ url }}">
+    {{ url }}
+    </a>
+
+<p>Your site is fully functional. You can explore all of Vueocity's features,
+    upload content, create accounts, etc. When you are ready to go live you
+    can select a plan and setup billing.
+    </p>
+
+<p>If you have any questions
+    <a href="mailto:support@vueocity.com?subject=New site question">please contact us.</a>
+    </p>
+
+<p>Thanks,<br>
+The Vueocity team</p>
+
+<br>
+<p style="font-size: 75%">If you did not create {{ site.name }}, someone entered your email
+    at <a href="https://www.vueocity.com">Vueocity</a>
+    </p>

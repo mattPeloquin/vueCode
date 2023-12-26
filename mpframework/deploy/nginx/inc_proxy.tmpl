@@ -1,0 +1,133 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Proxy pass settings and locations for S3 serving and x-accel
+    NOT for Django UWSGI proxy
+
+	NOTE -- mpFramework uses the convention of static files intended
+	to be served by Nginx being "htm" vs "html" files.
+
+{%endcomment%}
+
+#----------------------------------------------------------------
+# Proxy settings for NON-uwsgi proxy like direct S3 access
+
+# Force HTTP 1.1 to support keep alives on connections
+proxy_http_version 1.1;
+proxy_set_header Connection "";
+
+# Use proxy buffering in all locations
+# Default buffer settings will be tuned in some locations
+proxy_buffering  on;
+
+# Stop operation if client terminates connection
+proxy_ignore_client_abort off;
+
+# Max time to wait for starting upstream proxy request
+proxy_connect_timeout {{ s.MP_NGINX.CONNECTION_TIMEOUT_START }};
+
+# Timeouts for response for each backend request, NOT total response
+proxy_read_timeout {{ s.MP_NGINX.CONNECTION_TIMEOUT }}s;
+proxy_send_timeout {{ s.MP_NGINX.CONNECTION_TIMEOUT }}s;
+
+# Handle errors with nginx error pages
+# FUTURE - Turn this off to provide per-sandbox error responses
+proxy_intercept_errors on;
+
+#----------------------------------------------------------------
+# Skip call to Django for certain protected file types
+
+# Optimization that allows certain types of protected files to be access directly
+# via nginx without validating through Django.
+# Ignores the /cap/ABCD1234/ access prefix and redirects to the path after it;
+# only works for the given file types and on relative references as the original
+# reference won't have a file type.
+location ~ ^/{{ s.MP_URL_PROTECTED_PASS }}/.*?/(.*)\.({{ PROTECTED_NGINX_PASS_TYPES }})$ {
+    set $mp_location 'protpass';
+    set $puri $1;
+    set $pfiletype $2;
+    proxy_pass {{ s.MP_AWS_S3_PROTECTED_ENDPOINT }}$puri.$pfiletype;
+
+    # Optimizing for the smaller end of what could come through here
+    proxy_buffers            256 16k;   # Max total memory buffer
+    proxy_busy_buffers_size  128k;      # Max size for upstream in-memory
+
+    # Nginx caching of protected content downloaded from S3
+    # For key, sandbox will be added if there is a user session cookie,
+    # which is contolled by site settings
+    proxy_cache         content_cache;
+    proxy_cache_valid   {{ s.MP_NGINX.CONTENT.AGE }}s;
+    proxy_cache_key     $host$request_uri$mp_sandbox;
+    proxy_cache_lock    on;
+    }
+
+#----------------------------------------------------------------
+# X-Accel-Redirect for protected files validated by Django
+
+# Video compatibility mode, serves directly instead of through Cloudfront
+# FUTURE - SCALE if significant Nginx video, need to optimize caching, disk, etc.
+location ~ ^{{ s.MP_URL_PROTECTED_XACCEL }}(.*?)//(.*?)/(.*)\.({{ PROTECTED_VIDEO_TYPES }})$  {
+    internal;
+    set $mp_location 'protvid';
+    include  inc_proxy_protected.conf;
+
+    # Buffer responses from S3 files (optimized for videos)
+    proxy_buffers           {{ s.MP_NGINX.VIDEO.BUFFERS }};   # Number and size of memory buffers
+    proxy_busy_buffers_size {{ s.MP_NGINX.VIDEO.BUSY_SIZE }}; # Max size for upstream in-memory
+
+    # Support mp4 pseudo streaming
+    # Not needed to stream, it is for specific flash player requests for time stamp
+    mp4;
+    mp4_buffer_size       4m;
+    mp4_max_buffer_size   16m;
+
+    # Nginx caching of protected content downloaded from S3
+    # For key, sandbox will be added if there is a user session cookie,
+    # which is contolled by site settings
+    proxy_cache         video_cache;
+    proxy_cache_valid   {{ s.MP_NGINX.VIDEO.AGE }}s;
+    proxy_cache_key     $host$request_uri$mp_sandbox;
+    proxy_cache_lock    on;
+    proxy_cache_lock_timeout {{ s.MP_NGINX.CONNECTION_TIMEOUT }}s;
+    }
+
+# Protected url requests that are NOT redirected to CloudFront
+# Django has responded to a protected content request by asking nginx to
+# get content from S3 (with local caching) and send back to the user
+location ~ ^{{ s.MP_URL_PROTECTED_XACCEL }}(.*?)//(.*?)/(.*)\.([^/\.]*?)$  {
+    internal;
+    set $mp_location 'protxaccel';
+    include  inc_proxy_protected.conf;
+
+    # Will be scorm items frameworks or non-video user uploads
+    # Optimizing for the smaller end of what could come through here as that
+    # should be more frequent; larger items can go to disk as needed
+    proxy_buffers            256 16k;   # Max total memory buffer
+    proxy_busy_buffers_size  128k;      # Max size for upstream in-memory
+
+    # Nginx caching of protected content downloaded from S3
+    proxy_cache         content_cache;
+    proxy_cache_valid   {{ s.MP_NGINX.CONTENT.AGE }}s;
+    proxy_cache_lock    on;
+    proxy_cache_lock_timeout {{ s.MP_NGINX.CONNECTION_TIMEOUT }}s;
+    }
+
+#----------------------------------------------------------------
+# Nginx public static serving
+
+# X-Accel-Redirect for public files
+# Normally MPF populates the original page request with CloudFront urls
+# to public files, but this is can provide a pathway to return a file from S3
+# within the original request from the browser (via nginx's x-accel)
+location ~ ^{{ s.MP_URL_PUBLIC_XACCEL }}(.*)$  {
+    internal;
+    include  inc_proxy_public.conf;
+    }
+
+# Public static files are normally served from Cloudfront with an S3 origin,
+# but MPF config can dictate use of nginx instead, and there may be
+# exceptions for some files (such as nginx error handlers).
+# This is different from the x-accel public location, which provides access
+# to the same files, but only via an x-accel response from Django
+location ~ ^/{{ s.MP_URL_PUBLIC_DIRECT }}/(.*)$ {
+    include  inc_proxy_public.conf;
+    }

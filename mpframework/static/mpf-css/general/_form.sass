@@ -1,0 +1,78 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Form styles
+ */
+
+form
+    // Make sure any font overrides show in the inputs
+    input[type='text'],
+    input[type='password'],
+    input[type='url'],
+    input[type='email'],
+    input[type='number'],
+    input[type='button'],
+    input[type='submit'],
+    textarea, select, label
+        font-family: inherit !important
+
+    h1, h2, h3
+        margin-top: 0.8em
+
+        /* Turn off 3D highlighting in Safari, and generally reset field */
+        input, label, textarea
+            -webkit-appearance: none
+            &[type='text'], &[type='email'], &[type='url'], &[type='file'],
+            &[type='password'], &[type='date'], &[type='number']
+                -webkit-appearance: none
+
+.mp_form
+    p
+        display: inline-block
+        font-style: italic
+        font-size: 80%
+    div
+        span
+            display: inline-block
+            vertical-align: top !important
+        input
+            display: inline-block
+            vertical-align: middle !important
+            margin-right: 0.2em
+
+    input
+        &[type='submit'], &[type='button']
+            height: auto !important
+            margin: 0.8em 0.4em !important
+
+// Custom Checkbox
+.mp_checkbox
+    position: relative
+    display: flex
+    align-items: center
+    width: 100%
+    input
+        &[type='checkbox']
+            display: none !important
+        &[type='checkbox']:checked + label::after
+            opacity: 1
+    label
+        width: 1em
+        height: 1em
+        padding: 0.6em
+        +es_pointer
+        // Make checkmark with 2 borders of a square, rotated
+        &::after
+            content: ''
+            position: absolute
+            width: 0.55em
+            height: 0.3em
+            background: transparent
+            top: 0.22em
+            left: 0.66em
+            border: 0.2em solid
+            border-top: none
+            border-right: none
+            opacity: 0
+            transform: rotate(-45deg)
+        &:hover::after
+            opacity: 0.4

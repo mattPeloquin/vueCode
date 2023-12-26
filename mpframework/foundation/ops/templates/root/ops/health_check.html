@@ -1,0 +1,16 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    ELB health check ping
+
+    This has minimal human readable info, as it's main purpose is to
+    be served instead of 404 to health check when server is ready
+
+    NOTE -- this does not have the default context, as by definition,
+    the healthcheck has no sandbox, user, etc.
+
+{%endcomment%}
+
+
+    <h1>{{ ip }}</h1>
+    <br>
+    {{ outcome | safe }}

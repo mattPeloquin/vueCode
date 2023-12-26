@@ -1,0 +1,710 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Mesa platform extensions content test data
+#
+#       widget      900
+#       lms items   1100
+#       videos      1300
+#       audio       1350
+#       apps        1500
+#       link        1600
+#       pages       1700
+#       embed       1800
+#       quiz        1900
+#
+
+
+#--------------------------------------------------------------------
+# Videos
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: FREE Video test 1 for S20, with long title -- no, really a longer title than necessary
+    tag: Vid1-S20
+    text1: |
+        <div>
+        Video descriptions <b>USE HTML</b>, <i> this is a longer</i><br>
+        example of what can be done.
+        </div>
+        <div>
+        This is more text to make it longer
+        </div>
+        <div>
+        This is more text to make it longer
+        This is more text to make it longer
+        This is more text to make it longer
+        This is more text to make it longer
+        This is more text to make it longer
+        </div>
+    content_rev: 999999
+    sb_options:
+      access:
+        free_public: True
+  model: mpcontent.baseitem
+  pk: 1301
+- fields:
+    file_med: Video.mp4
+  model: mpcontent.video
+  pk: 1301
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Video2 for S20
+    content_rev: 1
+    tag: Vid2-S20
+    text1: But not all item descriptions need HTML
+  model: mpcontent.baseitem
+  pk: 1302
+- fields:
+    file_med: Video.mp4
+  model: mpcontent.video
+  pk: 1302
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Video multi-res for S20
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1303
+- fields:
+    file_low: Video.mp4
+    file_med: Video.mp4
+    file_high: Video.mp4
+  model: mpcontent.video
+  pk: 1303
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: BAD Video
+    _slug: Vid1-S20
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1304
+- fields:
+    file_med: NoVideoFile.mp4
+  model: mpcontent.video
+  pk: 1304
+
+#--------------------------------------------------------------------
+# LiveEvents
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Future Event for S20
+    _available: "2025-01-03 01:01:01+01:00"
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 2001
+- fields:
+    invite_html: |
+      <h2>This is an example invite</h2>
+      <a href="https://zoom.us/j/2791692385?pwd=REMvT0hIK1lGdXd1OC9lL0RIYlhZZz09">
+        Join event
+        </a>
+  model: mpcontent.liveevent
+  pk: 2001
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Open Proxy Event for S20
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 2002
+- fields:
+    minutes_open: 10
+    proxy_main: https://zoom.us/j/2791692385?pwd=REMvT0hIK1lGdXd1OC9lL0RIYlhZZz09
+    event_id: 279 169 2385
+    event_password: 263807
+  model: mpcontent.liveevent
+  pk: 2002
+
+- fields:
+    name: event_before
+    template_type: T
+    orig_path: "_custom/content/event_before.html"
+  model: sitebuilder.templatecustom
+  pk: 3110
+- fields:
+    name: event_invite
+    template_type: T
+    orig_path: "_custom/content/event_invite.html"
+  model: sitebuilder.templatecustom
+  pk: 3115
+- fields:
+    name: event_open
+    template_type: T
+    orig_path: "_custom/content/event_open.html"
+  model: sitebuilder.templatecustom
+  pk: 3120
+- fields:
+    name: event_closed
+    template_type: T
+    orig_path: "_custom/content/event_closed.html"
+  model: sitebuilder.templatecustom
+  pk: 3130
+
+#--------------------------------------------------------------------
+# Proxies
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Test Proxy Web
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1501
+- fields:
+    proxy_main: http://www.pixiefish.net
+  model: mpcontent.proxyapp
+  pk: 1501
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Test ProxyApp
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1502
+- fields:
+    proxy_main: https://www.reddit.com
+    _proxy_options:
+      tags:
+        test1: ThisIsAreplacement
+      credentials:
+        user: test
+        password: testpw
+      response_text_replace:
+        url_fixup:
+          path_regex: 'reddit'
+          replacements:
+              'https://reddit.com': '{url}'
+        test_fixup:
+          path_regex: '( \\ | \.php | \.js | \.css )$'
+          replacements:
+            /app/modules/: '/{session_url}/app/modules/'
+            ="assets/: '="{host_proxy}/assets/'
+  model: mpcontent.proxyapp
+  pk: 1502
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Public Share
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1601
+- fields:
+    link_type: 'aa_default'
+    proxy_main: https://docs.google.com/document/d/1Akfua9znkz9nm3XXF3zE293u1RslI3jgDlkibTzTVWE/edit?usp=sharing
+  model: mpcontent.proxylink
+  pk: 1601
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Hidden Share
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1602
+- fields:
+    link_type: 'protected'
+    proxy_main: https://docs.google.com/document/d/1Akfua9znkz9nm3XXF3zE293u1RslI3jgDlkibTzTVWE/edit?usp=sharing
+  model: mpcontent.proxylink
+  pk: 1602
+
+#--------------------------------------------------------------------
+# Other
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Portal item for S20
+    search_tags: 'portalitem'
+  model: mpcontent.baseitem
+  pk: 900
+- fields:
+    html1: |
+      <iframe class="mp_access_widget" data-slug="test_widget"
+        src="http://127.0.0.1/portalc/1302" ></iframe>
+        <script defer src="/publicdirect/_static/mpf-js/access_embed.js" /></script>
+  model: mpcontent.portalitem
+  pk: 900
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Audio file for S20
+    search_tags: 'audio'
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1351
+- fields: { audio_file: '01 Redemption.m4a' }
+  model: mpcontent.audio
+  pk: 1351
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: PDF for S20
+    search_tags: 'portalitem'
+  model: mpcontent.baseitem
+  pk: 1401
+- fields: { content_file: 'File.pdf' }
+  model: mpcontent.pdf
+  pk: 1401
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Page for S20 Ⅷ
+    tag: Page1-S20
+    text1: Test content page
+    search_tags: 'page'
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1701
+- fields:
+    html: <h1>TEST CONTENT</h1>
+  model: mpcontent.protectedpage
+  pk: 1701
+
+- fields:
+    _provider: 12
+    sandboxes: [30]
+    _name: Page for S30
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1702
+- fields:
+    html: <h1>TEST CONTENT for S30</h1>
+  model: mpcontent.protectedpage
+  pk: 1702
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Video wistia test for S20
+    tag: Vid3-S20
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1801
+- fields:
+    body: |
+        <script src="https://fast.wistia.com/embed/medias/j0ici0oau6.jsonp" async></script>
+        <script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+        <div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
+        <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+        <div class="wistia_embed wistia_async_j0ici0oau6 seo=false videoFoam=true" style="height:100%;width:100%">
+        &nbsp;
+        </div></div></div>
+  model: mpcontent.embed
+  pk: 1801
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Embed for S20 Ⅷ
+    tag: E1-S20
+    text1: Test content embed page
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1802
+- fields:
+    body: |
+      <p class="codepen" data-height="265" data-theme-id="0" data-default-tab="js,result" data-user="shubniggurath" data-slug-hash="VOpwYB" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Gravity">
+        <span>See the Pen <a href="https://codepen.io/shubniggurath/pen/VOpwYB/">
+        Gravity</a> by Liam Egan (<a href="https://codepen.io/shubniggurath">@shubniggurath</a>)
+        on <a href="https://codepen.io">CodePen</a>.</span>
+      </p>
+      <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+  model: mpcontent.embed
+  pk: 1802
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: Quiz for S20
+    search_tags: 'quiz test'
+    content_rev: 1
+  model: mpcontent.baseitem
+  pk: 1901
+- fields:
+    content:
+       question1:
+          text: What is your favorite color?
+          answers: [ 'red' ]
+  model: mpcontent.quiz
+  pk: 1901
+
+#--------------------------------------------------------------------
+#    Packages
+#
+#    Test fixture packages use a hack for loading/mounting; in particular
+#    See the package model for more details
+
+- fields:
+    _provider: 11
+    current: 2
+  model: lms.packageroot
+  pk: 1
+- fields:
+    _provider: 11
+    package_root: 1
+    archive_name: LMSTEST_Battle.zip
+  model: lms.package
+  pk: 1
+- fields:
+    _provider: 11
+    package_root: 1
+    archive_name: LMSTEST_Battle.zip
+  model: lms.package
+  pk: 2
+
+- fields:
+    _provider: 11
+    current: 3
+  model: lms.packageroot
+  pk: 3
+- fields:
+    _provider: 11
+    package_root: 3
+    archive_name: LMSTEST_Battle.zip
+    launch_file: index_lms_html5.html
+    lms_type: S
+    package_type: S
+  model: lms.package
+  pk: 3
+
+- fields:
+    _provider: 11
+    current: 4
+  model: lms.packageroot
+  pk: 4
+- fields:
+    _provider: 11
+    package_root: 4
+    archive_name: LMSTEST_Battle.zip
+    launch_file: 'story.html'
+    lms_type: N
+    package_type: S
+  model: lms.package
+  pk: 4
+
+- fields:
+    _provider: 11
+    current: 5
+  model: lms.packageroot
+  pk: 5
+- fields:
+    _provider: 11
+    package_root: 5
+    archive_name: LMSTEST_Battle.zip
+  model: lms.package
+  pk: 5
+
+- fields:
+    _provider: 11
+    current: 6
+  model: lms.packageroot
+  pk: 6
+- fields:
+    _provider: 11
+    package_root: 6
+    archive_name: LMSTEST_Battle.mp4
+    run_name: LMSTEST_Battle.mp4
+  model: lms.package
+  pk: 6
+
+- fields:
+    _provider: 11
+    current: 13
+  model: lms.packageroot
+  pk: 13
+- fields:
+    _provider: 11
+    package_root: 13
+    archive_name: LMSTEST_Battle.zip
+    lms_type: T
+    package_type: S
+  model: lms.package
+  pk: 13
+- fields:
+    _provider: 11
+    package_root: 13
+    archive_name: LMSTEST_Battle.zip
+  model: lms.package
+  pk: 14
+
+
+#--------------------------------------------------------------------
+# LmsItems
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: BP1
+    _name: LmsItem1 - BattleProof Video launched with Scorm LMS
+    text1: <div class="es_textcenter">
+        LmsItem1 description <b>USES HTML<b>
+        </div>
+    workflow: P
+  model: mpcontent.baseitem
+  pk: 1101
+- fields: { package_root: 1 }
+  model: mpcontent.lmsitem
+  pk: 1101
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: BP2
+    _name: LmsItem2 - BattleProof video launched with TinCan
+    text1: Battle Proof TinCan video -- this isn't hooked up fully YET!
+    workflow: B
+  model: mpcontent.baseitem
+  pk: 1102
+- fields: { package_root: 1 }
+  model: mpcontent.lmsitem
+  pk: 1102
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: BP3
+    _name: LmsItem3 - Battle Proof with forced HTML5 in LMS
+    text1: Battle Proof Video forcing HTML 5 LMS behavior
+    workflow: P
+  model: mpcontent.baseitem
+  pk: 1103
+- fields: { package_root: 3 }
+  model: mpcontent.lmsitem
+  pk: 1103
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: BP4
+    _name: LmsItem4 - Battle Proof storyline outside LMS
+    text1: Battle Proof Video with non-HTML5 Story launch outside LMS framework
+    _points: 3
+    size: 10
+    workflow: P
+  model: mpcontent.baseitem
+  pk: 1104
+- fields: { package_root: 4 }
+  model: mpcontent.lmsitem
+  pk: 1104
+
+- fields:
+    _provider: 12
+    sandboxes: [30]
+    tag: BP5-P12
+    _name: LmsItem5 - 5 BattleProof videos on Provider12
+    text1: 'This is a larger LMS file, which embeds 5 videos to look at how downloading works'
+    workflow: D
+  model: mpcontent.baseitem
+  pk: 1105
+- fields: { package_root: 5 }
+  model: mpcontent.lmsitem
+  pk: 1105
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    tag: BP6
+    _name: LmsItem6 - BattleProof straight video
+    workflow: P
+  model: mpcontent.baseitem
+  pk: 1106
+- fields: { package_root: 6 }
+  model: mpcontent.lmsitem
+  pk: 1106
+
+- fields:
+    _provider: 11
+    sandboxes: [20]
+    _name: RETIRED
+    text1: RETIRED -- Should not be sent to the client
+    workflow: R
+  model: mpcontent.baseitem
+  pk: 1109
+- fields: { package_root: 3 }
+  model: mpcontent.lmsitem
+  pk: 1109
+
+
+#--------------------------------------------------------------------
+# Tree to item links
+
+# Videos
+
+- fields:
+    item: 1301
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 301
+- fields:
+    item: 1302
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 302
+- fields:
+    item: 1303
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 303
+- fields:
+    item: 1304
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 304
+
+- fields:
+    item: 1301
+    tree: 1002
+  model: mpcontent.treebaseitem
+  pk: 311
+- fields:
+    item: 1302
+    tree: 1002
+    is_required: false
+  model: mpcontent.treebaseitem
+  pk: 312
+
+# other
+
+- fields:
+    item: 2001
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 400
+- fields:
+    item: 900
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 401
+- fields:
+    item: 1701
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 402
+- fields:
+    item: 1351
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 403
+- fields:
+    item: 1801
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 404
+- fields:
+    item: 1802
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 405
+- fields:
+    item: 1501
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 406
+- fields:
+    item: 1601
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 407
+- fields:
+    item: 1602
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 408
+
+- fields:
+    item: 900
+    tree: 1002
+  model: mpcontent.treebaseitem
+  pk: 411
+- fields:
+    item: 1701
+    tree: 1002
+  model: mpcontent.treebaseitem
+  pk: 412
+- fields:
+    item: 1802
+    tree: 1002
+  model: mpcontent.treebaseitem
+  pk: 414
+
+- fields:
+    item: 1701
+    tree: 1010
+  model: mpcontent.treebaseitem
+  pk: 420
+
+# LmsItems
+
+- fields:
+    item: 1101
+    tree: 1001
+  model: mpcontent.treebaseitem
+  pk: 1
+
+- fields:
+    item: 1101
+    drag_order: 1
+    tree: 1006
+  model: mpcontent.treebaseitem
+  pk: 2
+- fields:
+    item: 1102
+    drag_order: 2
+    tree: 1006
+  model: mpcontent.treebaseitem
+  pk: 3
+- fields:
+    item: 1103
+    drag_order: 3
+    tree: 1006
+  model: mpcontent.treebaseitem
+  pk: 4
+- fields:
+    item: 1104
+    drag_order: 4
+    is_required: false
+    tree: 1006
+  model: mpcontent.treebaseitem
+  pk: 5
+- fields:
+    item: 1106
+    drag_order: 4
+    tree: 1006
+  model: mpcontent.treebaseitem
+  pk: 6
+
+- fields:
+    item: 1101
+    drag_order: 1
+    tree: 1010
+  model: mpcontent.treebaseitem
+  pk: 8
+- fields:
+    item: 1102
+    tree: 1010
+  model: mpcontent.treebaseitem
+  pk: 9
+
+- fields:
+    item: 1104
+    tree: 1011
+  model: mpcontent.treebaseitem
+  pk: 11
+- fields:
+    item: 1105
+    tree: 1011
+  model: mpcontent.treebaseitem
+  pk: 12
+

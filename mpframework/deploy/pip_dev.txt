@@ -1,0 +1,19 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Optional requirements for dev machines or debug servers
+#
+
+# Toolbar overlay for debug
+django-debug-toolbar==3.2.1
+
+# Support for VsCode IDE
+pylint
+
+#--------------------------------------------------------------
+# Tools needed to run dev servers
+
+# Python Static analysis
+pyflakes
+
+# Selenium web testing
+Selenium

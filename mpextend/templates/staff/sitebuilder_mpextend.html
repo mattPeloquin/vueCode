@@ -1,0 +1,28 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Sitebuilder admin menu
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% if not user.logged_into_root %}
+
+    {% if user.access_high %}
+        <hr class="mp_menu_break">
+        {% usemacro menu_item 'Public files' 'fa-file' 'staff_admin:sitebuilder_publicfile_changelist' %}
+        {% if user.has_test_access %}
+            {% usemacro menu_item 'Add CNAME' 'fa fa-cloud' 'manage_cnames' %}
+            {% usemacro menu_item 'Landing pages' 'fa-newspaper-o' 'staff_admin:sitebuilder_landingpage_changelist' %}
+            {% usemacro menu_item 'Webhooks' 'fa-plug' 'staff_admin:sitebuilder_webhook_changelist' %}
+        {% endif %}
+    {% endif %}
+
+{% endif %}
+
+{% if user.access_root_menu %}
+    <a class="mp_menu_item root"  href="{% url 'root_admin:sitebuilder_publicfile_changelist' %}">Public files</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:sitebuilder_landingpage_changelist' %}">Landing pages</a>
+    <a class="mp_menu_item root"  href="{% url 'root_admin:sitebuilder_webhook_changelist' %}">Webhooks</a>
+{% endif %}

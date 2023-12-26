@@ -1,0 +1,73 @@
+
+See AwsSetup.txt for discussion of SSH keys for access to AWS
+Using AWS Certificate Manager, which became available in 2017,
+some notes below only apply to external key creation.
+
+
+=====================================
+SSH Keys
+
+Key pairs can be generated in the AWS EC2 control panel, with a one-time
+download of the private key.
+
+Generate in EC2 or Windows PowerShell:
+
+    > ssh-keygen
+    or
+    > ssh-keygen -t rsa -C "user@acme.com"
+
+    Define file name for private key, public key will have .pub extension.
+    Windows assumes .ssh folder under users
+    AWS clients assume 'id_rsa' and 'id_rsa.pub' default names in that folder.
+
+Or create private and public EC2
+    > openssl genrsa -out private2048.pem 2048
+    > openssl rsa -in private2048.pem -pubout
+
+=====================================
+Adding SSL to ELB
+
+    - Add SSL certificates to listeners
+	- Certificate provider to AWS term conversion file conventions:
+
+        xxx.key === Private Key (AWS), the key used to generate the csr request
+		primary.crt === Public Key Certificate (AWS) === End Entity Certificate === ssl_certificate
+		chain.crt === Certificate Chain (AWS) === Primary (crossRootCA) AND Secondary (intermediateCA) certificate
+
+		FOR AWS chain.crt, NEED TO PLACE SECONDARY AT TOP, AND PRIMARY AT BOTTOM!
+
+=====================================
+SSL Notes
+
+    - Assumption is terminate at ELB
+    - AWS calls ELB SSL certificates "server certificates"
+    - Nginx termination requires cert in AMI instance or via cert manager API; don't plan to use
+	- Files are stored under by convention under:  [root]\deploy\certs\cert_name
+	- For AWS, want X.509 (Apache) certifiate type (vs. MS PKCS)
+	- MUST USE CERTIFICATE CHAIN
+	  It is documented many places as optional, but FireFox stopped accepting
+	  certificates without chains.
+
+Can access Cloudfront SSL certificates from North Virginia region.
+To do it via command line:
+
+    aws iam upload-server-certificate --server-certificate-name NAME --certificate-body file://../primary.crt --private-key file://../PRIVATE_KEY.pem --certificate-chain file://../chain.crt --path /cloudfront/xyz/
+
+
+=====================================
+Creating SSL certificates
+
+To generate a key for registration  (named prod2048.crt)
+
+    > openssl req -new -key private2048.pem -out prod2048.csr
+    - Answer questions -- remember they will be validated by SSL provider
+    - Take csr and register it with an SSL provider to get a crt back
+    - Encrypt private file with pwd before storing
+
+To generate a self-signed dev key
+
+    > openssl genrsa -out dev1024.pem 1024
+    > openssl req -new -key dev1024.pem -out dev1024.csr
+    - Answer questions
+    > openssl x509 -req -days 365 -in dev1024.csr -signkey dev1024.pem -out dev1024.crt
+

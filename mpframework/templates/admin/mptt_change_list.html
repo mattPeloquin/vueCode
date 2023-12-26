@@ -1,0 +1,19 @@
+{% extends 'admin/change_list.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+	Override MPTT change list to use sidebar filter
+
+{%endcomment%}
+
+{% load admin_list mptt_admin %}
+
+{#-- Add MPTT indent to result list  #}
+{% block result_list %}
+
+    {% mptt_result_list cl %}
+
+    {% if action_form and actions_on_bottom and cl.full_result_count %}
+        {% admin_actions %}
+    {% endif %}
+
+{% endblock %}

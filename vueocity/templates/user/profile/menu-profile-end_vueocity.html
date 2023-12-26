@@ -1,0 +1,16 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    User profile extensions
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "_/menu_macros.html" %}
+
+{% if user.is_owner %}
+
+    {% if user.has_test_access %}
+        {% usemacro menu_user 'Billing' 'fa-bank' 'owner_billing' %}
+    {% endif %}
+
+{% endif %}

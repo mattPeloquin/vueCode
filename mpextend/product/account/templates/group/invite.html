@@ -1,0 +1,142 @@
+{% extends 'group/_page.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Group account user invite screen
+
+{% endcomment %}
+
+{% block page_ready_script %}
+
+    {{ block.super }}
+
+    mp.set_watermark("#{{ form.invite_code.auto_id }}", "Add invite code");
+
+    {% include "_/field_errors.html" with form=form %}
+
+{% endblock %}
+
+{% block group_page_body %}
+    <form method="post" class="mp_form" data-parsley-validate
+            style="max-width: 600px">
+        {% csrf_token %}
+
+        <h2>Invite to group</h2>
+        <p>Users can join {{ account.name }} with
+            this link and optional invite code:</p>
+        <div class="es_groupadmin_invite mp_clipboard">
+            <div class="mp_ellipsis">
+                {{ site.main_host_url }}{% url 'ga_login' ga_id %}
+                </div>
+            </div>
+        <div class="mp_flex_line" style="margin-top: 0.8em">
+            <div>
+                {{ form.invite_code }}
+                </div>
+            <div>
+                <input type="submit" class="es_groupadmin_code es_button" name="update_code"
+                        value="Update invite code" />
+                </div>
+            </div>
+
+        {% if active_coupons %}
+            <h2>Invite to coupon</h2>
+            <p>Add users to group and apply specific coupons using the links
+                below (and optional invite code above)</p>
+            {% for coupon in active_coupons %}
+                <div class="mp_flex_column">
+                    <h3>
+                        <a href="{% url 'staff_admin:account_coupon_change' coupon.pk %}"
+                                class="es_button_text">
+                            {{ coupon.name }}
+                            </a>
+                        </h3>
+                    <div class="es_groupadmin_coupon mp_clipboard">
+                        <div class="mp_ellipsis">
+                            {{ site.main_host_url }}{% url 'ga_login_coupon' ga_id coupon.code %}
+                            </div>
+                         </div>
+            {% endfor %}
+        {% endif %}
+        {% if available_apas %}
+            <h2>Invite to license</h2>
+            <p>Add users to specific licenses using the links
+                below (and optional invite code above)</p>
+            {% for apa in available_apas %}
+                <div class="mp_flex_column">
+                    <h3>
+                        <a href="{% url 'staff_admin:account_apa_change' apa.pk %}"
+                                class="es_button_text">
+                            {{ apa.name }}
+                            </a>
+                        </h3>
+                    <div class="es_groupadmin_license mp_clipboard">
+                        <div class="mp_ellipsis">
+                            {{ site.main_host_url }}{% url 'ga_login_apa' ga_id apa.pk %}
+                            </div>
+                        </div>
+                    <p>
+                        {% if apa.expire %}
+                            Expires: {{ apa.expire }}
+                        {% endif %}
+                        Current users: {{ apa.user_count }}
+                        {% if apa.ga_users_max %}
+                            Max users: {{ apa.ga_users_max }}
+                        {% endif %}
+                        {% if apa.base_points %}
+                            Points: {{ apa.rules.usage_points }} of {{ apa.base_points }}
+                        {% endif %}
+                        {% if apa.base_minutes %}
+                            Minutes: {% widthratio apa.rules.usage_seconds 60 1 %} of
+                                {{ apa.base_minutes }}
+                        {% endif %}
+                        </p>
+                    </div>
+            {% endfor %}
+        {% endif %}
+        {% if unavailable_apas %}
+            <h2>Expired or full licenses</h2>
+            {% for apa in unavailable_apas %}
+                <div class="es_groupadmin_unavailable">
+                    <a href="{% url 'staff_admin:account_apa_change' apa.pk %}"
+                            class="es_button_text">
+                        {{ apa.name }}
+                        </a>
+                    <p>
+                        {% if apa.expire %}
+                            Expired: {{ apa.expire }}
+                        {% endif %}
+                        Users: {{ apa.user_count }}
+                        {% if apa.ga_users_max %}
+                            Max users: {{ apa.ga_users_max }}
+                        {% endif %}
+                        {% if apa.base_points %}
+                            Points: {{ apa.rules.usage_points }} of {{ apa.base_points }}
+                        {% endif %}
+                        {% if apa.base_minutes %}
+                            Minutes: {% widthratio apa.rules.usage_seconds 60 1 %} of
+                                {{ apa.base_minutes }}
+                        {% endif %}
+                        </p>
+                        </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if False %}
+
+            <h3>FUTURE - GA Email invite</h3>
+            <div>
+                {{ form.emails }}
+                </div>
+
+            <input type="submit" class="es_button" name="invite_emails"
+                    value="Invite new users" />
+
+            <div>
+                Invite tracking
+                </div>
+
+        {% endif %}
+
+        </form>
+
+{% endblock %}

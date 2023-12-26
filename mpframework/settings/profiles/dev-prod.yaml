@@ -1,0 +1,17 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Run demo server non-debug, outside a cluster
+#
+
+# Share the same DB as the dev profile
+MP_PLAYPEN_NAME: dev
+
+DEBUG: False
+
+# Prod logging settings
+MP_LOG_LEVEL_DEBUG_MIN: 0
+MP_LOG_SUB: []
+
+MP_COMPRESS:
+    CSS: True
+    JS: True

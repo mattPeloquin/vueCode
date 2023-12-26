@@ -1,0 +1,28 @@
+{% extends '_base/pages/style.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Payment cancel landing page
+
+{%endcomment%}
+
+{% block page_body %}
+
+    <div class="es_theme_page">
+
+        <h1>Paypal transaction canceled</h1>
+
+            <a class="es_button_text" href="{{ site.portal_url }}"
+            >
+            Return to {{ site.name }}.
+            </a>
+
+        {% if debug %}
+            <br>
+            <div class="mp_mono">
+                {{ response|linebreaks }}
+                </div>
+        {% endif %}
+
+        </div>
+
+{% endblock %}

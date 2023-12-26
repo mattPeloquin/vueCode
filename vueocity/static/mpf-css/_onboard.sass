@@ -1,0 +1,68 @@
+/*--- Copyright 2021 Vueocity LLC
+
+    Onboarding tool styles
+ */
+
+.onboard_tool
+    @extend .es_tool
+    padding: 0.2em 0.2em 0.16em 0.2em
+    .onboard_panel
+        padding: 0.2em 0.4em 0.4em 0.4em
+        h2
+            color: $cBlue
+        div
+            max-width: 28em
+        > div.mp_button_flat
+            padding: 0.4em
+            border-radius: 4px
+    .onboard_heading
+        align-items: center !important
+        width: 100%
+        color: $cBlue
+        padding: 0.1em 0 0.1em 0.2em
+        border-radius: 1px
+        font-weight: bold
+        .mp_button_flat
+            margin-left: 2em
+
+// Trial helper
+#onboard_help_wrapper
+    position: relative
+    width: 8em
+    margin-left: 1em
+#onboard_help
+    position: absolute
+    top: -1em
+    right: 0
+    z-index: 810
+    .onboard_heading span
+        color: rgba(107,192,72,0.9)
+    .onboard_panel
+        padding: 0.4em
+        max-width: 16em
+    .mp_button_text
+        padding: 0.1em 0.2em 0.2em 0.4em
+    .onboard_level
+        margin-top: 0.4em
+    #onboard_level
+        width: 12em !important
+
+// Tutorial
+#tutorial_tool
+    position: fixed
+    top: 9em
+    left: 2em
+    right: auto
+    min-width: 12em
+    max-width: 20em
+    .onboard_heading
+        > div:first-child
+            min-width: 12em
+        .mp_button_flat
+            font-weight: normal
+            font-size: 90%
+    &.right
+        left: auto
+        right: 2em
+    .mp_viz_area
+        color: rgba( $cBlack, 0.8 ) !important

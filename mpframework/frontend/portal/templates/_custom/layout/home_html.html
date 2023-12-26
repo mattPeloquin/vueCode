@@ -1,0 +1,68 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Overridable template for home page display
+
+{%endcomment%}
+
+<!-- ko ifnot: mpp.sb_option( 'portal.home_hide', $element ) -->
+
+    <!-- ko ifnot: mpp.sb_option( 'portal.home_header_hide', $element ) -->
+        <div class="es_home_header es_hero_container mp_flex_column">
+
+            {% if site.hero_video %}
+                <div class="es_hero_video mp_video">
+                    <video playsinline autoplay muted loop width="x" height="y"
+                        {% if site.hero_image %}
+                            poster="{{ site.hero_image.url }}"
+                        {% endif %}
+                        >
+                        <source src="{{ site.hero_video.url }}">
+                        </video>
+                    </div>
+            {% elif site.hero_image %}
+                <div class="es_hero_image mp_image"
+                        style="background-image: url('{{ site.hero_image.url }}')">
+                    </div>
+            {% elif site.logo %}
+                <div class="es_hero_image mp_image"
+                        style="background-image: url('{{ site.logo.url }}')">
+                    </div>
+            {% endif %}
+
+            <!-- ko ifnot: mpp.sb_option( 'portal.home_title_hide', $element ) -->
+                <header class="es_home_title es_hero_overlay mpr_width_half mp_overlay">
+                    <div class="es_theme_overlay">
+                        {% if site.intro_html %}
+                            {{ site.intro_html | safe }}
+                        {% else %}
+                            <h1 class="es_overlay_title">
+                                {{ site.name }}
+                                </h1>
+                            {% if site.summary %}
+                                <section class="es_overlay_text">
+                                    {{ site.summary | safe }}
+                                    </section>
+                            {% endif %}
+                        {% endif %}
+                        </div>
+                    </header>
+            <!-- /ko -->
+
+            </div>
+    <!-- /ko -->
+
+    {% if site.home_html %}
+        <!-- ko ifnot: mpp.sb_option( 'portal.home_html_hide', $element ) -->
+            <section class="es_home_html es_theme_panel">
+                {{ site.home_html | safe }}
+                </section>
+        <!-- /ko -->
+    {% endif %}
+
+    {% if featured_group %}
+        <!-- ko ifnot: mpp.sb_option( 'portal.no_featured', $element ) -->
+            {% mp_include "portal_group" with group=featured_group horizontal=True %}
+        <!-- /ko -->
+    {% endif %}
+
+<!-- /ko -->

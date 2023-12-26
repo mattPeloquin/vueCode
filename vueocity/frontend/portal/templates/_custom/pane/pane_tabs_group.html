@@ -1,0 +1,40 @@
+{% mp_extends 'pane_tabs' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Shows an example of specific groups as tabs, with collection drill panes.
+
+    This assumes script naming convention of group is used to
+    decide what groups to display.
+
+{%endcomment%}
+
+{% block pane_name %} es_pane_tabs_group {% endblock %}
+
+{% block pane_tabs %}
+    <!-- ko with: mpp.vm_groups().vm_attr(
+            { script_name: 'portal_group' }, { sort: true } ) -->
+        {% mp_include "nav_content_tabs" %}
+    <!-- /ko -->
+{% endblock %}
+
+{% block pane_panels %}
+    <!-- ko foreach: mpp.vm_groups().vm_attr(
+            { script_name: 'portal_group' }, { sort: true } ) -->
+
+        <article class="es_group_panel" data-bind="
+                bind_nav_panel: $data,
+                class: css_classes(),
+                " data-no_breadcrumbs='true'
+                >
+            <h2 class="es_group_title" data-bind="
+                    visible: !!sb('html'),
+                    html: sb('html'),
+                    "></h2>
+
+            {% mp_include "pane_drill" with home_hide=True %}
+
+            {% include "portal/controls/content.html" %}
+            </article>
+
+    <!-- /ko -->
+{% endblock %}

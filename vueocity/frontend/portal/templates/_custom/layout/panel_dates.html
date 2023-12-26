@@ -1,0 +1,26 @@
+{% mp_extends 'panel_page' %}
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display core items organized by available date, with resources
+
+{%endcomment%}
+
+{% block panel_class %} es_panel_dates {% endblock %}
+
+{% block panel_content %}
+
+    <section class="es_dates_upcoming">
+        <h2 class="es_title2" data-bind="
+            html: sbt('date_upcoming'),
+            "></h2>
+        {% mp_include "collection_node" with itemfn='items_upcoming' %}
+        </section>
+
+    <section class="es_dates_previous">
+        <h2 class="es_title2" data-bind="
+            html: sbt('date_previous'),
+            "></h2>
+        {% mp_include "collection_node" with itemfn='items_previous' %}
+        </section>
+
+{% endblock %}

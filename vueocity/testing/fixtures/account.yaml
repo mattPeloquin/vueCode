@@ -1,0 +1,20 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Account and payment overrides and extensions
+
+
+- fields:
+    _provider: 11
+    sandbox: 20
+    payment_type: paypal_nvp
+    service_account: matt@peloquin.com
+  model: payment.payto
+  pk: 20
+- fields:
+    _provider: 11
+    sandbox: 20
+    payment_type: stripe_connect
+    # Pixiefish
+    service_account: acct_1HG41oFZ2x0BApls
+  model: payment.payto
+  pk: 21

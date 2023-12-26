@@ -1,0 +1,98 @@
+{% extends 'admin/mpcontent/change_form.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Tree base change form, with tree-item inline support
+
+{%endcomment%}
+
+{% block page-no_cache %}
+    {{ block.super }}
+
+    {% if change %}
+        {#-- Inject MPF add inline item #}
+        <script id="template_tree_change_add" type="text/template">
+            <span class="mp_tree_item_add mp_menu_admin">
+                <div class="mp_menu mp_menu_float mp_button_text mp_staff_content_add">
+                    <div class="mp_menu_item mp_menu_header">
+                        <span class="mp_menu_text">Create and add new item</span>
+                        <div class="mp_menu mp_menu_dropdown">
+                            {% mp_include_files "content" "menu-content_addcollection" ".html" %}
+                            </div>
+                        </div>
+                    </div>
+                </span>
+            </script>
+    {% endif %}
+
+{% endblock %}
+
+{% block page_ready_script %}
+    mp.is_tree = true;
+    {{ block.super }}
+    {% include "admin/mpcontent/_tree_change_form.html.js" %}
+{% endblock %}
+
+{% block admin_bar_class %}
+    mp_tree_node
+{% endblock %}
+{% block admin_form_class %}
+    mp_tree_node
+{% endblock %}
+
+{% block head-no_cache %}
+    {{ block.super }}
+    <style>
+
+        .djn-items .related-widget-wrapper {
+            position: relative;
+            }
+            .djn-items .related-widget-wrapper .related-widget-wrapper-link {
+                position: absolute;
+                right: -1.2em;
+                display: inline;
+                }
+        .djn-items .djn-inline-form .original p {
+            display: None;
+            }
+        .djn-items .djn-tbody .field-area {
+            font-size: 80%;
+            }
+        .djn-items .djn-tbody .field-area select {
+            width: auto !important;
+            min-width: 6em;
+            }
+        .djn-items .djn-tbody .field-item {
+            text-align: left;
+            min-width: 40vw;
+            }
+        .djn-items .djn-tbody .field-is_required {
+            width: 3em;
+            }
+        .djn-items .djn-tbody :is(
+                .field-item_workflow, .field-item_size, .field-item_points ) {
+            font-size: 80%;
+            }
+        .djn-items .djn-tbody .field-item_workflow {
+            width: 6em;
+            }
+        .djn-items .djn-tbody .field-item_size {
+            width: 2em;
+            }
+        .djn-items .djn-tbody .field-item_points {
+            width: 2em;
+            }
+        .djn-items .djn-tbody .djn-delete-handler {
+            width: 3em;
+            }
+        .djn-items :is( .djn-add-handler, .mp_tree_item_add ) {
+            display: inline-table;
+            margin-left: 1em;
+            }
+        .es_width_small .djn-items .djn-thead :is( .workflow, .size, .points ),
+        .es_width_small .djn-items .djn-tbody :is(
+                .field-item_workflow, .field-item_size, .field-item_points ) {
+            display: none;
+            }
+
+        </style>
+{% endblock %}

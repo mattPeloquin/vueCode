@@ -1,0 +1,153 @@
+{% extends 'templates/admin/change_list.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Overrides for Django change list
+
+    To avoid template recursion, this includes base template
+    with the 'templates' full path location.
+
+{%endcomment%}
+
+{% load admin_list %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+    {% include 'admin/change_list.html.js' %}
+{% endblock %}
+
+{% block top-nocache %}
+    {{ block.super}}
+    <header id="admin_top" class="mp_top_bar mp_print_hidden">
+
+        {% include "admin/_/messages.html" %}
+
+        {#-- First header line with title and filter #}
+        <div id="admin_top1" class="mp_flex mp_flex_between mp_flex_vcenter
+                mp_flex_nowrap">
+            <div class="mp_flex mp_flex_left">
+                {% block content-title %}
+                    <div class="mp_admin_title">
+                        {{ cl.opts.verbose_name_plural }}
+                        </div>
+                {% endblock %}
+                </div>
+            {% if user.access_root %}
+                <div style="color: red;font-size: 60%">
+                    ROOT {{ site }}
+                    </div>
+            {% endif %}
+            <div class="mp_admin_buttons mp_flex mp_flex_right">
+                {% if cl.result_count %}
+                    {% pagination cl %}
+                {% endif %}
+                {% include "admin/_/cancel.html" %}
+                {% if cl.result_count and cl.formset %}
+                    {#-- Outside the form, so need to replicate buttons #}
+                    <input type="submit" value="Save"
+                            class="mp_button mp_button_default"
+                            onclick="$('#mpsave').click()" />
+                {% endif %}
+                </div>
+
+            </div>
+
+        <div id="admin_top2" class="mp_help_staff">
+            {% if helptext_changelist %}
+                {{ helptext_changelist | safe }}
+            {% endif %}
+            {% if cl.result_incomplete %}
+                <div class="warning">Not all results are shown, try narrowing search</div>
+            {% endif %}
+            </div>
+
+        {#-- Third header line with search and filter #}
+        <div id="admin_top3" class="mp_menu_admin">
+            <div class="mp_flex_line">
+                {% if cl.search_fields %}
+                    {% block search %}
+                        <div id="search">
+                            {% search_form cl %}
+                            </div>
+                    {% endblock %}
+                {% endif %}
+                <div class="mp_special_filters">
+                    {% block mp_special_filters %}
+                    {% endblock %}
+                    </div>
+                {% if has_add_permission and not is_popup %}
+                    <div class="mp_flex" style="margin-left: 1.4em">
+                        {% block mp_add_button %}
+                            <a class="mp_button" href="add/" >
+                                Add {{ cl.opts.verbose_name }}
+                                </a>
+                        {% endblock %}
+                        </div>
+                {% endif %}
+                <div class="mp_flex_line mp_flex_between mp_flex_vcenter">
+                    {% if cl.has_filters %}
+                        <div id="mp_filters">
+                            <div class="mp_filters_button mp_button_text">
+                                Filters...
+                                </div>
+                            <div class="mp_filters_menu mp_hidden">
+                                {% for spec in cl.filter_specs %}
+                                    {% admin_list_filter cl spec %}
+                                {% endfor %}
+                                </div>
+                            </div>
+                    {% endif %}
+                    {% block mp_after_filters %}
+                    {% endblock %}
+                    </div>
+                </div>
+            </div>
+
+    </header>
+
+{% endblock %}
+{% block content %}
+
+    {#-- Change list #}
+    <form id="mp_changelist_form" action="" method="post"
+            {% if cl.formset.is_multipart %}enctype="multipart/form-data"{% endif %}
+            novalidate>
+        {% csrf_token %}
+
+        {#-- Root actions #}
+        {% if action_form %}
+            <div id="root-action">
+                {% admin_actions %}
+                </div>
+        {% endif %}
+
+        <section id="mp_changelist"
+                class="{% if cl.list_editable %}mp_editable{% endif %}" >
+            {% if is_popup %}<input type="hidden" name="_popup" value="1" />{% endif %}
+            {% if cl.formset.errors %}
+                <p class="errornote">
+                    Please correct the
+                    error{{ cl.formset.total_error_count|pluralize }} below.
+                    </p>
+                {{ cl.formset.non_form_errors }}
+            {% endif %}
+            {% if cl.formset %}
+                {{ cl.formset.management_form }}
+            {% endif %}
+            {% block result_list %}
+                {% result_list cl %}
+            {% endblock %}
+           </section>
+
+        {% if cl.result_count %}
+            {% if cl.formset or action_form %}
+                {#-- Usually hidden, but inside form and clicked by JS #}
+                <input id="mpsave" type="submit" name="_save"
+                        class="mp_hidden mp_button mp_button_default"
+                        value="Save"
+                        />
+            {% endif %}
+        {% endif %}
+
+    </form>
+
+{% endblock %}

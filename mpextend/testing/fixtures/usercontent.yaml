@@ -1,0 +1,81 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Experience app test data for automated Django tests
+
+# Unit tests assume this one is first
+- fields:
+    sandbox: 20
+    user: 20
+  model: usercontent.contentuser
+  pk: 20
+
+- fields:
+    sandbox: 20
+    user: 12
+  model: usercontent.contentuser
+  pk: 112
+
+#--------------------------------------------------------------------
+# User content data for basic admin UI tests
+
+- fields:
+    sandbox: 20
+    cu: 20
+    item: 1005
+    progress: S
+    uses: 2
+  model: usercontent.useritem
+  pk: 10
+
+- fields:
+    sandbox: 20
+    cu: 20
+    item: 1101
+    top_tree: 10
+    progress: S
+    progress_data: 2e144050ed100101150101100Tl03Gb9c14107gU690_$000v102Y3i6A200K0146A200c21420000100,
+    item_version: 2
+    uses: 2
+    last_used: "2013-01-03 01:01:01+01:00"
+    seconds_used: 20
+  model: usercontent.useritem
+  pk: 11
+
+- fields:
+    sandbox: 20
+    cu: 20
+    item: 1102
+  model: usercontent.useritem
+  pk: 12
+
+- fields:
+    sandbox: 20
+    cu: 112
+    item: 1102
+    item_version: 2
+    feedback: 4
+    feedback_data:
+        test_feedback1: Statement 1
+        test_feedback2: Statement 2
+    feedback_state: 'C'
+  model: usercontent.useritem
+  pk: 20
+
+#--------------------------------------------------------------------
+# User badge data
+
+- fields:
+    sandbox: 20
+    _name: Badge for S20
+    certificate_file: File.pdf
+  model: usercontent.badge
+  pk: 10
+
+- fields:
+    sandbox: 20
+    cu: 20
+    badge: 10
+    progress: S
+  model: usercontent.userbadge
+  pk: 10
+

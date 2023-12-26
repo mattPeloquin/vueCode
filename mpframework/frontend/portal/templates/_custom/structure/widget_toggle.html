@@ -1,0 +1,18 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Toggle buttons for optional add/remove of CSS toggle class
+
+{% endcomment %}
+
+<!-- ko if: mpp.sb_option( 'portal.content_toggle_show', $element ) -->
+
+    <div class="es_toggle_extra_css mp_control mp_flex_line">
+        <div class="es_tool_button mpp_toggle_A">
+            {{ sb_options.text.content_toggle_A|default:"Show more" }}
+            </div>
+        <div class="es_tool_button mpp_toggle_B">
+            {{ sb_options.text.content_toggle_B|default:"Show less" }}
+            </div>
+        </div>
+
+<!-- /ko -->

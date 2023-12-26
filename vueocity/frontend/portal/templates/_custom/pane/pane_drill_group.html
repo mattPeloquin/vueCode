@@ -1,0 +1,29 @@
+{% mp_extends 'pane_drill' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Display top collections on home page with drill down, organized into
+    collection groups.
+
+{%endcomment%}
+
+{% block pane_name %} es_pane_drill_group {% endblock %}
+
+{% block pane_home_nav %}
+
+    <!-- ko foreach: mpp.vm_groups().vm_attr(
+            { script_name: 'portal_group' }, { sort: true } ) -->
+
+        <section data-bind="
+                class: css_classes(),
+                ">
+
+            <h2 data-bind="html: name">
+                </h2>
+
+            {% mp_include "items" with items='all_tops()' %}
+
+            </section>
+
+    <!-- /ko -->
+
+{% endblock %}

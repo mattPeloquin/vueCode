@@ -1,0 +1,120 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Debug options page
+
+{%endcomment%}
+
+{% block panel_body %}
+
+    <h1>Test Links</h1>
+    <div class="mpdebug">
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_exc_view' %}" class="mp_button_flat">Raise 500 View exception</a>
+            <a href="{% url 'mptest_exc_404' %}" class="mp_button_flat">Raise 404 View exception</a>
+            </div>
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_csrf' %}" class="mp_button_flat">CSRF</a>
+            </div>
+        </div>
+
+    <h1>Test client script</h1>
+    <div class="mpdebug">
+        <div style="padding-left: 1em">
+            <span class="mp_button_flat" onclick="mp.log_phone_home('FATAL TEST', 'ITEMS')"
+                >Send fatal error to server</span>
+            <span class="mp_button_flat" onclick="mp.log_phone_home('ERROR TEST', 'ITEMS')"
+                >Send error</span>
+            <span class="mp_button_flat" onclick="mp.log_phone_home('MSG TEST', 'ITEMS')"
+                >Send msg</span>
+            <span class="mp_button_flat" onclick="var xhr = new XMLHttpRequest();
+                    xhr.open( 'POST', '{% url 'browser_message' %}', true );
+                    xhr.send('BLAH=GOO')"
+                >Bad post</span>
+            <span class="mp_button_flat" onclick="var xhr = new XMLHttpRequest();
+                    xhr.open( 'GET', '{% url 'browser_message' %}', true );
+                    xhr.send()"
+                >Bad get</span>
+            </div>
+        </div>
+
+    <h1>Test logging</h1>
+    <div class="mpdebug">
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_logging' log='info_mail' %}" class="mp_button_flat">InfoEmail</a>
+            <a href="{% url 'mptest_logging' log='warning' %}" class="mp_button_flat">Warning</a>
+            <a href="{% url 'mptest_logging' log='error' %}" class="mp_button_flat">Error</a>
+            </div>
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_logging' log='info' %}" class="mp_button_flat">Info</a>
+            <a href="{% url 'mptest_logging' log='info2' %}" class="mp_button_flat">Info2</a>
+            <a href="{% url 'mptest_logging' log='info3' %}" class="mp_button_flat">Info3</a>
+            </div>
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_logging' log='debug' %}" class="mp_button_flat">Debug</a>
+            <a href="{% url 'mptest_logging' log='debug2' %}" class="mp_button_flat">Debug2</a>
+            <a href="{% url 'mptest_logging' log='debug3' %}" class="mp_button_flat">Debug3</a>
+            </div>
+        </div>
+
+    <h1>Test uwsgi</h1>
+    <div class="mpdebug">
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_uwsgi' command='RELOAD' %}" class="mp_button_flat">Reload</a>
+            </div>
+        </div>
+
+    <h1>Test email</h1>
+    <div class="mpdebug">
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_email' num=1 %}" class="mp_button_flat">Send email</a>
+            <a href="{% url 'mptest_email' num=10 %}" class="mp_button_flat">Send 10 emails</a>
+            <a href="{% url 'mptest_email' num=100 %}" class="mp_button_flat">Send 100 emails</a>
+            <a href="{% url 'mptest_email' num=1000 %}" class="mp_button_flat">Send 1000 emails</a>
+            </div>
+        </div>
+
+    <h1>Test tasks</h1>
+    <div class="mpdebug">
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_task' num=1 %}" class="mp_button_flat">Send task</a>
+            <a href="{% url 'mptest_task' num=1 p='HS' c='NONE' %}" class="mp_button_flat">Send no cache task</a>
+            </div>
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_task' num=10 p='HI' c='NONE' %}" class="mp_button_flat">Send 10 Immediate</a>
+            <a href="{% url 'mptest_task' num=10 p='HS' %}" class="mp_button_flat">Send 10 High</a>
+            <a href="{% url 'mptest_task' num=10 p='MS' %}" class="mp_button_flat">Send 10 Med</a>
+            <a href="{% url 'mptest_task' num=10 p='LS' %}" class="mp_button_flat">Send 10 Low</a>
+            </div>
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_task' num=100 p='HI' c='NONE' %}" class="mp_button_flat">Send 100 Immediate</a>
+            <a href="{% url 'mptest_task' num=100 p='HS' %}" class="mp_button_flat">Send 100 High</a>
+            <a href="{% url 'mptest_task' num=100 p='MS' %}" class="mp_button_flat">Send 100 Med</a>
+            <a href="{% url 'mptest_task' num=100 p='LS' %}" class="mp_button_flat">Send 100 Low</a>
+            </div>
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_task' num=1000 p='HI' c='NONE' %}" class="mp_button_flat">Send 1000 Immediate</a>
+            <a href="{% url 'mptest_task' num=1000 p='HS' %}" class="mp_button_flat">Send 1000 High</a>
+            <a href="{% url 'mptest_task' num=1000 p='MS' %}" class="mp_button_flat">Send 1000 Med</a>
+            <a href="{% url 'mptest_task' num=1000 p='LS' %}" class="mp_button_flat">Send 1000 Low</a>
+            </div>
+        </div>
+
+    <h1>Test jobs</h1>
+    <div class="mpdebug">
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_job' tasks=1 p='HS' %}" class="mp_button_flat">Start 1 task job</a>
+            </div>
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_job' tasks=10 p='HS' %}" class="mp_button_flat">Start 10 task High job</a>
+            <a href="{% url 'mptest_job' tasks=10 p='MS' %}" class="mp_button_flat">Start 10 task Med job</a>
+            <a href="{% url 'mptest_job' tasks=10 p='LS' %}" class="mp_button_flat">Start 10 task Low job</a>
+            </div>
+        <div style="padding-left: 1em">
+            <a href="{% url 'mptest_job' depth=2 jobs=2 tasks=4 %}" class="mp_button_flat">Start 1x2x4 nested</a>
+            <a href="{% url 'mptest_job' depth=2 jobs=30 tasks=20 %}" class="mp_button_flat">Start 1x30x20 nested</a>
+            <a href="{% url 'mptest_job' depth=6 jobs=3 tasks=6 %}" class="mp_button_flat">Start 1x3x3x3x3x3x6 nested</a>
+            </div>
+        </div>
+
+{% endblock %}

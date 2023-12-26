@@ -1,0 +1,15 @@
+{% extends '_base/page_bare.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Base scripting page
+    Loads shared scripting without portal UI.
+
+{%endcomment%}
+
+{% block page_head %}
+
+    {% with True as page_add_script %}
+        {{ block.super }}
+    {% endwith %}
+
+{% endblock %}

@@ -1,0 +1,81 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   rsyslog config template
+#   Installed by config_server command.
+#
+
+$EscapeControlCharactersOnReceive off
+
+# Set known work directory (on Amazon Linux rsyslog is root)
+$WorkDirectory /var/run
+
+# Setup default message format that includes profile
+$template mpfTemplate, "%timestamp% {{ ip }} {{ profile }}-%syslogtag% %msg%"
+$ActionFileDefaultTemplate mpfTemplate
+$ActionForwardDefaultTemplate mpfTemplate
+
+# Depending on config, local files may be sent, or not used (syslog direct)
+module( load="imfile" PollingInterval="1" )
+input( type="imfile"
+    File="{{ path_nginx_log }}error.log"
+    Severity="error"
+    Tag="nginx"
+    Facility="local6"
+    )
+input( type="imfile"
+    File="{{ path_nginx_log }}access.log"
+    Severity="info"
+    Tag="nginx"
+    Facility="local6"
+    )
+input( type="imfile"
+    File="{{ path_home }}/uwsgi/uwsgi.log"
+    Severity="notice"
+    Tag="uwsgi"
+    Facility="local7"
+    )
+
+$InputFileBindRuleset mpframework
+
+# Setup for TLS transmission to Papertrail
+$DefaultNetstreamDriverCAFile {{ syslog.ca_file }}
+$ActionSendStreamDriver gtls    # use gtls netstream driver
+$ActionSendStreamDriverMode 1   # require TLS
+$ActionSendStreamDriverAuthMode x509/name # authenticate by hostname
+$ActionSendStreamDriverPermittedPeer {{ syslog.permitted_peer }}
+
+# Setup connection failure queuing
+$ActionResumeInterval 10
+$ActionQueueSize 100000
+$ActionQueueDiscardMark 97500
+$ActionQueueHighWaterMark 80000
+$ActionQueueType LinkedList
+$ActionQueueFileName mpframework_queue
+$ActionQueueCheckpointInterval 100
+$ActionQueueMaxDiskSpace 1g
+$ActionResumeRetryCount -1
+$ActionQueueSaveOnShutdown on
+$ActionQueueTimeoutEnqueue 2
+$ActionQueueDiscardSeverity 0
+
+# Filter local server stuff that isn't worth aggregating
+:syslogtag, startswith, "kernel" stop
+:syslogtag, startswith, "systemd" stop
+:syslogtag, startswith, "postfix" stop
+:syslogtag, startswith, "dhclient" stop
+:syslogtag, startswith, "crond" stop
+:syslogtag, startswith, "amazon" stop
+:syslogtag, startswith, "cloud-init" stop
+:syslogtag, startswith, "dracut" stop
+:syslogtag, startswith, "ec2net" stop
+
+# Filter nginx info on closed keepalive, since nginx must be configured
+# to keep ELB connection open longer than the ELB keepalive
+:msg, contains, "closed keepalive connection" stop
+
+# Send ryslog output to remote over TLS
+*.* @@{{ syslog.host }}:{{ syslog.port }}
+
+# Change to default ruleset for any following config
+$InputFileBindRuleset RSYSLOG_DefaultRuleset
+$RuleSet RSYSLOG_DefaultRuleset

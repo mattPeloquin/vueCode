@@ -1,0 +1,52 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Default layout for navigation cards
+
+{%endcomment%}
+
+<div class="es_card es_theme_card es_theme_content" data-bind="
+        style: {
+            '--es_item_font-size': sb_option('portal.item_font_size', $element),
+            '--es_card_width': sb_option('portal.card_width', $element),
+            '--es_card_height': sb_option('portal.card_height', $element),
+            '--es_card_image_ratio': sb_option('portal.card_image_ratio', $element),
+            '--es_card_image_height': sb_option('portal.card_image_height', $element),
+            },
+        ">
+    <a class="es_content_body mp_nav_anchor">
+        <div class="es_card_body es_text_limit" data-bind="
+                style: {
+                    '--es_card_image_height': !!sb('image1') ? '' : '0em',
+                    },
+                ">
+            <!-- ko if: type_db == 'tree' && !sb('image1') -->
+                {% mp_include "content_progress" %}
+            <!-- /ko -->
+
+            <!-- ko if: !!sb('image1') -->
+                <div class="es_content_image">
+                    <img class="es_style_hover" data-bind="
+                            attr: { src: sb('image1') },
+                            "/>
+                    </div>
+            <!-- /ko -->
+
+            <div class="es_content_text" data-bind="
+                    css: {
+                        'es_item_text_image': !!sb('image1'),
+                        'es_style_hover': !sb('image1'),
+                        },
+                    ">
+                <h3 class="es_item_title" data-bind="
+                        html: sb('name'),
+                        ">
+                    </h3>
+                <div class="es_item_text1" data-bind="
+                        html: sb('text1'),
+                        ">
+                    </div>
+                </div>
+
+            </div>
+        </a>
+    </div>

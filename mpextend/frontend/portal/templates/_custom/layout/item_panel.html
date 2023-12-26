@@ -1,0 +1,22 @@
+{%comment%} PORTAL_TEMPLATE -- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Shows item as a navigable panel
+    Assumes the item content will be visible with the nav element
+    that selected it.
+
+{%endcomment%}
+
+{% load macros %}
+{% loadmacros "portal/_/nav_macros.html" %}
+
+<div class="es_itempanel es_content_full es_theme_content" data-bind="
+        style: {
+            '--es_item_font-size': sb_option('portal.item_font_size', $element),
+            },
+        ">
+    <div {% usemacro nav_attr '' 'nested_nav' 'es_content_wrapper' %}>
+
+        {% mp_include "content_itemview" with no_image=True no_title=True %}
+
+        </div>
+    </div>

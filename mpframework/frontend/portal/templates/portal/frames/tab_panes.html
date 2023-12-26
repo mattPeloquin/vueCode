@@ -1,0 +1,50 @@
+{% extends 'portal/frames/default.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Tab for each pane defined in the frame's structure
+
+{%endcomment%}
+
+{% block portal_top_left-cache %}
+    <nav class="es_tabs">
+
+        {#-- Add tab panes defined in portal #}
+        <div class="mpr_collapse" data-collapse="mppane_menu">
+            <div class="fa fa-bars mpr_collapse_toggle"></div>
+            <nav id="mppane_menu" class="es_tabs_menu mpr_collapse_hide">
+                {% for pane in request_frame.panes %}
+                    {% if not pane.workflow_dev or user.workflow_dev %}
+                        <nav class="es_portal_tab mp_nav_link">
+                            <a class="es_tab_{{ pane.address }} es_nav_anchor
+                                    mp_nav_anchor" data-bind="attr: {
+                                        href: mp.nav_path_full('{{ pane.address }}')
+                                    }">
+                                {{ pane.name }}
+                                </a>
+                            </nav>
+                    {% endif %}
+                {% endfor %}
+                </nav>
+            </div>
+
+        </nav>
+{% endblock %}
+
+{% block portal_area-cache %}
+
+    {% for pane in request_frame.panes %}
+        {% if not pane.workflow_dev or user.workflow_dev %}
+            <div class="es_pane_container" data-bind="
+                    {#-- Add name, slug to duck type part of content VM #}
+                    lazy_bind_pane: _.extend({
+                        name: '{{ pane.name }}',
+                        slug: '{{ pane.slug }}',
+                        }, $data ),
+                    " data-no_breadcrumbs='true'
+                    >
+                {% mp_include pane.template with pane=pane %}
+                </div>
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}

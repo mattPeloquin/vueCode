@@ -1,0 +1,112 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+	Pricing page and panel widget
+
+{%endcomment%}
+
+<article id="vue_price_panels" class="mp_flex_column" data-bind="
+  		with: get_tag('pricing'),
+        ">
+	{% include "portal/controls/content.html" %}
+
+    <h1 class="" data-bind="html: sb('text1')">
+        </h1>
+    <p class="" data-bind="html: sb('text2')">
+        </p>
+
+    <div class="price_panels mp_flex_line mp_flex_center">
+
+        {#-- Feature row headings #}
+        <div id="price_headers" class="price_panel">
+            <div class="header">
+                </div>
+            <div class="features" data-bind="
+                    foreach: sb('options').features,
+                    ">
+                <div class="feature mp_flex_line">
+                    <h2 class="outside" data-bind="html: name">
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+        {#-- Each feature panel #}
+        <div id="price_levels" class="mp_flex_line mp_flex_center" data-bind="
+                template: {
+                    name: 'template_price_panel',
+                    foreach: items_core(),
+                    as: 'panel',
+                    },
+                ">
+            </div>
+
+        </div>
+
+    <div class="faq">
+        <h2 data-bind="html: sb('text3')">
+            </h2>
+        <div data-bind="html: sb('html2')">
+            </div>
+        </div>
+
+    <a class="signup es_nav_anchor mp_nav_anchor" href="{{ url_portal }}/sign_up"
+        data-bind="html: sb('text4')">
+        </a>
+
+    </article>
+
+<script id="template_price_panel" type="text/template">
+
+    <div class="price_panel" data-bind="class: panel.sb('tag')">
+
+        <item class="header mp_flex_column mp_flex_vcenter mp_relative">
+            {% include "portal/controls/content.html" %}
+
+            <div class="mp_flex_column mp_flex_vcenter">
+                <div class="et" data-bind="class: panel.sb('text2')">
+                    </div>
+                <div class="name" data-bind="html: panel.sb('name')">
+                    </div>
+                </div>
+
+            <div class="mp_flex_column mp_flex_vcenter">
+                <div class="price">
+                    <span data-bind="html: panel.sb('options').overview.price"></span>
+                    </div>
+                <div class="users">
+                    <span data-bind="html: panel.sb('options').overview.users"></span> active users
+                    </div>
+                <div class="extra">
+                    <span data-bind="html: panel.sb('options').overview.extra"></span>
+                    </div>
+                </div>
+            </item>
+
+        {#-- Match feature data to feature rows #}
+        <div class="features" data-bind="
+                foreach: { data: $parent.sb('options').features, as: 'feature' },
+                ">
+            <!-- ko with: panel.sb('options').features[ key ] -->
+                <div class="feature mp_flex_line" data-bind="
+                        css: { level1: level==1, level2: level==2, level3: level==3, level4: level==4 },
+                        ">
+                    {#-- Base display of side headers for mobile view on lack of level #}
+                    <!-- ko if: level -->
+                        <h2 class="inline" data-bind="html: feature.name">
+                            </h2>
+                        {#-- Optional display of level-based icon with feature #}
+                        <img class="level" data-bind="
+                                attr: { src: $parents[2].sb('image' + level ) }
+                                "/>
+                    <!-- /ko -->
+                    <div class="desc mp_flex_line">
+                        <div class="sub" data-bind="html: sub">
+                            </div>
+                        </div>
+                    </div>
+            <!-- /ko -->
+            </div>
+
+        </div>
+
+</script>

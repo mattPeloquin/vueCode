@@ -1,0 +1,44 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Show list of accounts that can be switched to
+
+{% endcomment %}
+
+
+{% if accounts|length > 1 %}
+
+    <div class="mp_flex">
+
+        {#-- Dropdown for accounts #}
+        <select style="margin: 1em 0 0 0"
+                onChange="mp.ga_select_change( this )">
+
+            {% for a in accounts %}
+                <option value="{{ a.ga_id }}"
+                        {% if account == a %} selected {% endif %}
+                        >
+                    {{ a.name }}</option>
+            {% endfor %}
+
+        </select>
+
+    </div>
+
+    <script> 'use strict';
+        mp.when_ui_loaded( function account_list() {
+            mp.ga_select_change = function( select ) {
+                const ga_id = select.options[ select.selectedIndex ].value
+                {#-- Remember the selected group account #}
+                mp.local_nav.ga_last = ga_id
+                {#-- Change the page to the selected account #}
+                window.document.location.href = '{{ url_no_param }}/' + ga_id
+                }
+            })
+        </script>
+
+{% else %}
+
+    {#-- Otherwise just one account is available #}
+    <h1>{{ account.name }}</h1>
+
+{% endif %}

@@ -1,0 +1,39 @@
+
+DNS and Route53 Setup
+
+=====================================
+Vueocity root site
+
+    See current Vueocity AWS config
+
+
+=====================================
+Provider root SSL DNS setup  (to host https://provider.com)
+
+This allows a provider to host HTTPS sandboxes under their own URL, such as
+
+    provider.com
+    customer.provider.com
+
+This requires a separate certificate loaded to ELB listner sharing the autoscale group
+to terminate SSL at ELB. Current limit is 25.
+Thus this is unlikely to be used in prodution, and if it is, will require some manaul
+administration.
+
+The follwoing has to be setup manaually:
+
+    - The URL and SSL certificate (root and wildcard for sandboxes) has
+    to be registerd (registrar presumeably managed by customer)
+
+    - A hosted zone must be created for the URL
+
+    - The customer's DNS must point to to the Amazon hosted zone
+
+    - The SSL certs must be uploaded (via ELB listener UI)
+
+    - Root and wildcard aliases in Route53 need to be setup to new ELB
+
+    - SES validation needs to be setup for email address to send from,
+    requires TXT record on the customer DNS
+
+    - Sandbox URLs need to be updated appropriately

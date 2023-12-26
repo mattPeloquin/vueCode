@@ -1,0 +1,64 @@
+{% extends '_base/pages/standard.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Username editing screen
+
+{% endcomment %}
+
+{% block page_ready_script %}
+
+    mp.set_watermark("#{{ username_form.email.auto_id }}", "New email for username");
+    mp.set_watermark("#{{ password_form.old_password.auto_id }}", "Current password");
+    mp.set_watermark("#{{ password_form.password1.auto_id }}", "New password");
+    mp.set_watermark("#{{ password_form.password2.auto_id }}", "Confirm new password");
+
+    $("#id_old_password").focus();
+
+    {% include "_/field_errors.html" with form=form %}
+
+{% endblock %}
+
+{% block panel_body %}
+
+    <div class="es_user_security">
+
+        <form class="mp_form" method="post" data-parsley-validate>
+            {% csrf_token %}
+            <h2>Password</h2>
+            <div>
+                {{ password_form.old_password }}
+                </div>
+
+            <div class="mp_flex_line">
+                <div>
+                    {{ password_form.password1 }}
+                    </div>
+                <div>
+                    {{ password_form.password2 }}
+                    </div>
+                </div>
+
+            <div>
+                <input class="es_button" type="submit" name="update_password"
+                        value="Change my password" />
+                </div>
+
+            </form>
+
+        <form class="mp_form" method="post" data-parsley-validate>
+            {% csrf_token %}
+            <h2>Username</h2>
+            <p>Current username: <strong>{{ user.username }}</strong></p>
+
+            <div>{{ username_form.email }}
+                </div>
+
+                <input type="submit" class="es_button" name="update_username"
+                        value="Change my username" />
+
+            </form>
+
+        </div>
+
+{% endblock %}
+

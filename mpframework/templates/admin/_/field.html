@@ -1,0 +1,48 @@
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Shared layout for admin fields
+
+{%endcomment%}
+
+{% with inline=inline|default:False %}
+
+    {% if field.is_checkbox and not inline %}
+        <div class="mp_field mp_field_checkbox">
+            <div>
+                {% if not field.is_readonly %}
+                    {{ field.field }}{{ field.label_tag | label }}
+                {% endif %}
+                </div>
+            {% if field.field.help_text %}
+                <p class="mp_help_staff">{{ field.field.help_text | safe }}</p>
+            {% endif %}
+            </div>
+    {% else %}
+        {% if not inline %}
+            <div class="mp_label">{{ field.label_tag | label }}</div>
+        {% endif %}
+        <div class="mp_field">
+            {% if field.is_readonly %}
+                <div id="ro_{{ field.field.name }}" class="mp_readonly">
+                    {% if field.contents %}
+                        {{ field.contents | safe | linebreaksbr }}
+                    {% else %}
+                        <div></div>
+                    {% endif %}
+                    </div>
+            {% else %}
+                {{ field.field }}
+            {% endif %}
+
+            {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+            {% if not line.fields|length_is:'1' and not field.is_readonly %}
+                {{ field.field.errors }}
+            {% endif %}
+
+            {% if field.field.help_text %}
+                <p class="mp_help_staff">{{ field.field.help_text | safe }}</p>
+            {% endif %}
+            </div>
+    {% endif %}
+
+{% endwith %}

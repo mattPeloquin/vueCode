@@ -1,0 +1,1016 @@
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Custom style sheet for the Vueocity website
+
+{%endcomment%}
+
+<link rel="stylesheet" href="{{ static_url }}fonts/elegant-icons.css" />
+{% include "_/add_hosted_font.html" with name='JakartaText' no_set=True url='fonts/jakarta-text.woff2' %}
+
+{% mp_include "mixin_scroll_none" %}
+
+<style>
+
+    /* Global */
+    :root {
+        --text: rgb(88,89,107,0.9);
+        --back: white;
+        --overlay: linear-gradient(var(--gradient),rgba(88,89,107,0.1),rgba(88,89,107,0.2)),
+            linear-gradient(var(--gradient),rgba(255,255,255,1),rgba(255,255,255,0.95));
+        --popup_back: var(--overlay);
+        --popup_text: rgba(88,89,107,1);
+        --tooltip_back: rgba(128,130,153,.95);
+        --tooltip_back: rgba(128,130,207,.95);
+        --tooltip_back: rgba(0,161,225,0.95);
+        --icon_color: rgb(107,192,72);
+        }
+    :is( h1, h2, h3, h4 ) {
+        color: rgb(88,89,107);
+        }
+    .es_theme_highlight, .es_theme_current,
+    :is( .es_button, .es_button_flat ):is(:hover,:focus,:active) {
+        background-color: rgba(107,192,72,0.8) !important;
+        }
+    :is( .es_button_text, .es_nav_anchor ):is(:hover,:focus,:active) {
+        color: rgba(107,192,72,1) !important;
+        }
+    :is( nav, item ).es_content:is(:hover,:focus,:active) .es_theme_list {
+        background-color: rgba(107,192,72,0.6);
+        }
+    h1 {
+        font-size: 200%;
+        margin: 0.5em 0 0 0;
+        }
+    section {
+        position: relative;
+        }
+    .es_viewer .es_close {
+        color: rgba(253,130,4,0.6);
+        }
+
+    /* Top menu */
+    .signup {
+        font-size: 200%;
+        margin: 1em;
+        }
+    .mp_input {
+        box-shadow: 1px 2px 6px rgba(88,89,107,0.24);
+        background-image:
+            linear-gradient( var(--gradient), rgba(88,89,107,0.03), rgba(88,89,107,0) );
+        transition:
+            box-shadow 0.2s ease-out,
+            background-image 0.2s ease-out;
+        }
+        .mp_input:focus, .mp_input:hover, .mp_input:active {
+            background-image:
+                linear-gradient( to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0) );
+            box-shadow:
+                2px 4px 8px 1px rgba(88,89,107,0.24);
+            }
+    #vue_menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+		height: 2.5em;
+        z-index: 4;
+        background: white;
+		}
+        #vue_menu_logo {
+            margin: 0.2em 0.6em;
+            }
+            #vue_menu_logo img {
+                min-width: 6em;
+                height: 2.5em;
+                }
+            #vue_menu_logo:hover a::before {
+                content: ' ';
+                position: absolute;
+                height: 2.5em;
+                width: 6em;
+                /*  showing selection of home page doesn't look good
+                background-color: rgba(107,192,72,0.3);
+                */
+                }
+        #vue_menu_signup {
+            width: 100%;
+            margin-right: 0.4em;
+            }
+        #vue_menu .es_button_text,
+        #vue_menu_signup a {
+            font-family: 'JakartaText';
+            line-height: 1.2;
+            padding: 0.2em 0.4em;
+            border-radius: 0.2em;
+            white-space: nowrap;
+            }
+        #vue_menu .fa {
+            font-size: 125%;
+            color: rgba(0,161,225,0.9);
+            }
+        #vue_menu .es_theme_current.es_button_text {
+            background-color: rgba(107,192,72,0.88) !important;
+            color: white !important;
+            }
+        .vue_menu_items, #vue_menu_adj {
+            display: flex;
+            align-items: center;
+            gap: 0.25em 0;
+            }
+        .vue_menu_items a {
+            margin: 0 0 0 3vw;
+            }
+    @media( max-width: {{ sb_options.breakpoints.width_medium }}px ) {
+        #vue_menu .es_button_text {
+            margin: 0 0 0 2vw;
+            }
+        }
+    @media( max-width: {{ sb_options.breakpoints.width_small }}px ) {
+        #vue_menu_logo {
+            margin: 0 0 0 0.2em;
+            }
+        #vue_menu_adj.mpr_collapse_show {
+            background-color: white;
+            border-radius: 0.2em;
+            align-items: flex-start !important;
+            }
+
+        #vue_menu_adj a {
+            margin: 0 !important;
+            }
+        #vue_menu .es_theme_current.es_button_text .fa {
+            color: white !important;
+            }
+        }
+    main_page header .es_user_bar {
+        display: none;
+        }
+    .highlight_button {
+        background-color: rgba(0,161,225,0.7);
+        color: rgb(255,255,255) !important;
+        border-radius: 6px;
+        transition: text-shadow 0.06s ease-out;
+        position: relative;
+        }
+        .highlight_button:hover, .highlight_button:focus, .highlight_button:active {
+            color: rgb(255,255,255) !important;
+            background-color: rgba(0,161,225,0.92);
+            text-shadow: 0px 0px 1px rgba(255,255,255,0.8) !important;
+            }
+        .highlight_button::after {
+            background-image: linear-gradient( var(--gradient), rgba(255,255,255,0), rgba(255,255,255,0.18) );
+            content: "";
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            pointer-events: none;
+            will-change: opacity;
+            transition: opacity .06s ease-out;
+            }
+        .highlight_button:hover::after {
+            opacity: 0.2;
+            }
+    .faq {
+        max-width: 60em;
+        line-height: 1.3;
+        padding: 1em 2em;
+        text-align: justify;
+        font-size: 90%;
+        }
+        .faq div, zq p, .faq li {
+            font-size: 95%;
+            }
+        .faq h2 {
+            margin: 1.2em 0 0.4em 0;
+            }
+    .vue_widget_title div {
+		transition: text-shadow 0.12s ease-out;
+		}
+    .vue_widget_title:hover * {
+        text-shadow: 4px 4px 4px rgba(0,0,0,0.3) !important;
+        }
+    .vue_widget_desc div {
+		line-height: 1.4;
+        }
+    @media( max-width: {{ sb_options.breakpoints.width_small }}px ) {
+        .faq {
+            padding: 0;
+            }
+        }
+    .mp_nav_panel.top {
+        position: relative;
+        }
+
+    /* Home page */
+
+    #vue_home_header {
+        font-family: 'JakartaText';
+        }
+    #vue_home_hero {
+        position: relative;
+        width: 100%;
+        height: 60vh;
+        min-height: 25em;
+        overflow: hidden;
+        background: linear-gradient( var(--gradient),
+                 rgba(88,89,107,0.3), rgba(88,89,107,0) );
+        }
+    #vue_home_hero .mp_video {
+        /* filter: blur(1px); */
+        }
+    #vue_home_title, #vue_home_promo {
+        position: absolute;
+        font-size: 3.5em;
+        top: 0;
+        right: 0;
+        bottom: 6vh;
+        display: flex;
+        align-items: center;
+        padding: 0.7em;
+        }
+    #vue_home_promo {
+        z-index: 1;
+        justify-content: center;
+        }
+    #vue_home_promo item {
+        transition: opacity 0.12s ease-out;
+        opacity: 40%;
+        }
+    #vue_home_promo item:is(:hover,:focus,:active) {
+        opacity: 66%;
+        }
+    #vue_home_promo .es_content .es_theme_card {
+        margin: 0.5em;
+        background-color: inherit !important;
+        background-image: inherit !important;
+        }
+    #vue_home_title {
+        max-width: 8em;
+        text-align: right;
+        font-weight: 900;
+        color: rgba(250,208,0,1);
+        text-shadow: 2px 2px 2px rgba(0,0,0,0.8) !important;
+        letter-spacing: 0.06em;
+        }
+    #vue_home_users {
+        font-size: 110%;
+        position: absolute;
+        top: 0;
+        left: 1.5em;
+        bottom: 5vh;
+        justify-content: center;
+        color: white;
+        --es_theme_border-radius_content: 0.2em 0.8em 0 0;
+        }
+        #vue_home_users .es_title1 {
+            color: rgba(250,208,0,1);
+            margin: 0.8em 0 0.2em 0.2em;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+            }
+        #vue_home_users .es_theme_list {
+            --es_item_font-size: 120%;
+            margin: 0;
+            }
+        #vue_home_users item.es_content:hover {
+            z-index: 1;
+            }
+        #vue_home_users .es_content_title {
+            padding: 0;
+            border-radius: 0.2em 0.8em 0 0;
+            }
+        #vue_home_users .es_content_title h3 {
+            line-height: 1.4;
+            margin: 0em 0.3em;
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+            }
+        #vue_home_users .es_content_title.es_theme_current h3 {
+            text-shadow: none;
+            }
+        #vue_home_users .es_item_heading {
+            padding: 0em 0.2em;
+            border-radius: 0.2em 0.8em 0 0;
+            }
+        #vue_home_users .es_content_body {
+            width: 100%;
+            padding: 0.4em 1em 0.8em 0.6em;
+            border-radius: 0 0 0.8em 0.2em;
+            }
+        #vue_home_users .needs {
+            width: 100%;
+            }
+        #vue_home_users .needs_title {
+            font-weight: normal;
+            margin: 0 0 0.2em 0;
+            }
+        #vue_home_users .need {
+            padding: 0.2em 0.4em 0.4em 0.2em;
+            justify-content: space-between;
+            }
+        #vue_home_users .need_text {
+            margin-left: 0.7em;
+            }
+        #vue_home_users .need_features {
+            font-size: 120%;
+            color: rgba(0,161,225,1);
+            min-width: 3.5em;
+            justify-content: center;
+            }
+        #vue_home_users .need .fa,
+        #vue_home_users .need_features .et:is(:hover,:focus,:active) {
+            color: rgba(107,192,72,1) !important;
+            }
+        #vue_home_users .need_feature {
+            margin-left: 0.7em;
+            perspective: 8em;
+            }
+        #vue_home_users .tippy-box {
+            font-weight: normal;
+            font-size: 90%;
+            padding: 0 0.2em 0.4em 0.4em;
+            border-radius: 0.5em 0.2em 2em 0.2em;
+            }
+        #vue_home_whoami, #vue_home_mybiz {
+            position: relative;
+            }
+        #vue_home_whoami {
+            width: 45vw;
+            }
+        #vue_home_mybiz {
+            width: 50vw;
+            }
+    #vue_home_float {
+        position: absolute;
+        bottom: 2em;
+        right: 2em;
+        z-index: 1;
+        font-size: 1rem;
+        max-width: 25vw;
+        padding: 0.6em 1em;
+        color: white;
+        background-color: rgba(253,79,0,0.6);
+        background-image: linear-gradient( var(--gradient), rgba(255,255,255,0.1), rgba(255,255,255,0.25) );
+        border-radius: 6px;
+        }
+        #vue_home_float .es_button_text {
+            display: block;
+            font-weight: bold;
+            }
+        #vue_home_float :is(.es_button_text,.es_viz_toggle):is(:hover,:focus,:active) {
+            color: rgba(110,240,90,1) !important;
+            }
+        #vue_home_float .mp_flex_left {
+            font-size: 90%;
+            margin: 0.4em 0 0 0.4em;
+            }
+    @media( max-width: {{ sb_options.breakpoints.width_small }}px ) {
+        #vue_home_header {
+            font-size: 0.9rem;
+            }
+        #vue_home_hero {
+            min-height: 35em;
+            }
+        #vue_home_title, #vue_home_promo {
+            font-size: 2.5em;
+            left: 0em;
+            right: auto;
+            bottom: 10em;
+            max-width: 80vw;
+            text-align: left;
+            }
+        #vue_home_users {
+            font-size: 1.1rem;
+            }
+        #vue_home_users {
+            top: 20vh;
+            left: 5vw;
+            }
+        #vue_home_float {
+            top: 0.5em;
+            right: 0.5em;
+            bottom: auto;
+            max-width: 40vw;
+            padding: 0.5em;
+            border-radius: 2px;
+            }
+        #vue_home_users .es_listslide.es_theme_list {
+            --es_item_font-size: 1.1em;
+            }
+        #vue_home_whoami, #vue_home_mybiz {
+            width: 90vw;
+            }
+        #vue_home_users .es_title1 {
+            margin-top: 0.5em;
+            }
+        }
+    @media( min-width: {{ sb_options.breakpoints.width_medium }}px ) {
+        }
+    @media( min-width: {{ sb_options.breakpoints.width_large }}px ) {
+        #vue_home_title, #vue_home_promo {
+            font-size: 6vw;
+            padding: 0.5em;
+            }
+        #vue_home_promo {
+            font-size: 4.5vw;
+            right: 35vw;
+            }
+        #vue_home_promo item {
+            opacity: 60%;
+            }
+        #vue_home_promo item:is(:hover,:focus,:active) {
+            opacity: 80%;
+            }
+        #vue_home_whoami {
+            width: 21em;
+            }
+        #vue_home_mybiz {
+            width: 27em;
+            }
+        }
+
+	#vue_home_customers {
+		padding: 1em 0.8em 0.8em 0em;
+		}
+        #vue_home_customers .vue_widget {
+			padding: 0.8em 0.8em 0 0.8em;
+			align-items: center;
+			text-align: center;
+			}
+	        #vue_home_customers .vue_widget > div {
+                max-width: 40vw;
+                padding: 1em;
+				}
+	        #vue_home_customers .vue_widget .vue_widget_title {
+                padding-bottom: 0em;
+				}
+	        #vue_home_customers .vue_widget .vue_widget_title .mp_flex_line {
+                flex-direction: column;
+				}
+	        #vue_home_customers .vue_widget .vue_widget_desc {
+                padding-top: 0em;
+				}
+			#vue_home_customers .vue_widget_name {
+		        font-size: 1.4em;
+                font-weight: bold;
+		        padding: 0.4em 0 0.4em 0;
+				}
+            #vue_home_customers .et {
+                font-size: 4em;
+                color: rgb(0,161,225);
+                }
+    @media( max-width: {{ sb_options.breakpoints.width_small }}px ) {
+        #vue_home_customers .vue_widget > div {
+            max-width: 80vw;
+            }
+        }
+
+    #vue_home_highlight {
+    	padding: 0 2em 1em 2em;
+        }
+        #vue_home_highlight > h2 {
+            font-size: 200%;
+            margin: 1em 0 0.5em 0;
+            }
+        #vue_home_highlight .vue_widget {
+			padding: 1em;
+            max-width: 64em;
+			}
+        #vue_home_highlight .vue_widget_name {
+            font-size: 1.5em;
+            padding: 0 0 1em 0;
+            max-width: 25em;
+            text-align: center;
+            }
+        #vue_home_highlight .vue_widget .image {
+            width: 60%;
+			}
+        #vue_home_highlight .vue_widget .image img {
+            max-width: 100%;
+			}
+        #vue_home_highlight .vue_widget .text {
+            font-size: 1.2em;
+			padding: 0 1em 1em 1em;
+            width: 40%;
+			}
+    @media( max-width: {{ sb_options.breakpoints.width_medium }}px ) {
+        #vue_home_highlight .vue_widget_desc {
+            flex-direction: column;
+            }
+        #vue_home_highlight .vue_widget * {
+            width: 100% !important;
+            }
+        }
+    @media( max-width: {{ sb_options.breakpoints.width_small }}px ) {
+        #vue_home_highlight > h2 {
+            font-size: 1.6em;
+            }
+        #vue_home_highlight .vue_widget_name {
+            font-size: 1.2em;
+            }
+        }
+
+    #vue_home_solutions {
+    	padding: 1em 5vw;
+        --es_card_width: 21em;
+        --es_card_height: 15em;
+        }
+        #vue_home_solutions > h2 {
+            font-size: 200%;
+            text-align: center;
+            margin: 0em 1em 1em 1em;
+            }
+        #vue_home_solutions .es_theme_card .es_content_image {
+            height: 100%;
+            }
+        #vue_home_solutions .es_theme_card .es_content_body {
+            position: relative;
+            }
+        #vue_home_solutions .es_card.es_theme_card .es_content_text {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            height: 100%;
+            background-color: transparent;
+            }
+        #vue_home_solutions .es_theme_card .es_item_text_image .es_item_title {
+            font-family: 'JakartaText';
+            font-size: 180%;
+            margin-top: 3em;
+            color: white;
+            text-shadow: 2px 2px 2px rgba(0,0,0,0.8);
+            }
+
+    #vue_home_how {
+    	padding: 1em 5vw;
+        }
+        #vue_home_how > h2 {
+            font-size: 300%;
+            }
+        #vue_home_how .vue_widget_name {
+            width: 100%;
+            font-size: 120%;
+            font-weight: bold;
+            }
+        .how_panel .left {
+            margin: 0.4em 0.8em 0 1em;
+            }
+        .how_panel .vue_widget {
+			padding: 1em;
+            max-width: 40em;
+            font-size: 1.1em;
+            flex-wrap: nowrap;
+			}
+		.how_panel .et {
+            font-size: 400%;
+            padding: 0 0.4em 0 0;
+            color:  rgb(107,192,72);
+            }
+    @media( max-width: {{ sb_options.breakpoints.width_medium }}px ) {
+        .how_panel .left {
+            margin: 0.4em 0.4em 0 0.4em;
+            }
+        }
+    @media( max-width: {{ sb_options.breakpoints.width_small }}px ) {
+        .how_panel .vue_widget {
+            flex-direction: column;
+            align-items: center;
+            }
+		.how_panel .et {
+            padding: 0 0 0.2em 0;
+            }
+        #vue_home_how > h2 {
+            font-size: 250%;
+            }
+        #vue_home_how .vue_widget_name,
+        #vue_home_how .vue_widget_desc {
+            text-align: center;
+            }
+        }
+
+    /* Demo  */
+
+    #vue_demo {
+        padding: 1em 5vw;
+        }
+        #vue_demo h2 {
+            font-size: 140%;
+            margin: 1em 0 0 0;
+            }
+        #vue_demo p {
+            margin: 0 0 0.5em 0;
+            }
+        #vue_demo :is(.portal_links,.invite_links,
+                .social_buttons,.access_buttons) > :is(div,a) {
+            margin: 1em 1em 0 1em;
+            }
+        #vue_demo .social_buttons img {
+                width: 7em;
+                height: 2em;
+                }
+        #vue_demo .mp_easylink {
+            font-size: 110%;
+            }
+        #vue_demo .mp_easylink:is(:hover,:focus,:active) {
+            color: rgba(107,192,72,0.9) !important;
+            }
+        #vue_demo .small_widgets {
+            gap: 2em;
+            }
+    @media( max-width: {{ sb_options.breakpoints.width_small }}px ) {
+        }
+
+    /* Customer pages  */
+
+    #vue_customers div.mp_flex {
+        width: 100%;
+        height: 100%;
+        }
+    #vue_customers .signup {
+        font-size: 1.8em;
+        margin: 0.2em 0 0 0.2em;
+        padding: 0.4em;
+        }
+    #vue_customers .es_portal_tab {
+        font-size: 1.8em;
+        list-style-type: none;
+        padding: 0.6em 0.2em 0.6em 0.6em;
+        }
+    #vue_customers .call_to_action {
+        margin: 1em 0;
+        font-weight: bold;
+        }
+    #vue_customers h2 {
+        color: rgba(0, 161, 225, 1);
+        }
+    .customer_top {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 50% 50%;
+        }
+        .customer_top > div {
+            color: white;
+            padding: 1em;
+            font-size: 4em;
+            }
+    #vue_customers .customer_head {
+        width: 100%;
+        font-size: 1.2em;
+        color: white;
+        background: rgb(107,192,72);
+        padding: 0.6em 1.2em;
+        font-weight: normal;
+        }
+    .customer_head a {
+        font-weight: bold;
+        }
+    .customer_body {
+        padding: 1em 0.2em;
+        font-size: 1em;
+        line-height: 1.6;
+        }
+        .customer_quote {
+            line-height: 1.4;
+            font-style: italic;
+            margin-top: 0.6em;
+            }
+        .customer_body h2 {
+            font-size: 1.4em;
+            margin: 0.8em 0 0.4em 0;
+            }
+        .customer_body a {
+            color: rgb(253, 130, 4);
+            }
+        .customer_body ul {
+            margin-left: 1.4em;
+            }
+        .customer_body ul li {
+            margin-top: 0.4em;
+            line-height: 1.4;
+            }
+    @media( max-width: {{ sb_options.breakpoints.width_medium }}px ) {
+        #vue_customers {
+            flex-direction: column;
+            }
+        #customers_menu {
+            flex-direction: row;
+            align-items: center;
+            list-style: none;
+            }
+        #vue_customers .es_portal_tab {
+            font-size: 1.2em;
+            padding: 0.2em 0.4em;
+            text-align: center;
+            }
+        #vue_customers .signup {
+            font-size: 1.2em;
+            padding: 0.2em 0.4em;
+            margin: 0;
+            text-align: center;
+            }
+        .customer_head {
+            font-size: 1em;
+            width: 100%;
+            }
+        .customer_body {
+            padding: 1em 1.6em;
+            }
+        }
+
+    /* Pricing page  */
+
+    #vue_price_panels {
+        padding: 1em 5vw;
+        }
+    #vue_price_panels > p {
+        font-size: 1.2em;
+        }
+    #vue_price_panels .left_adjust {
+        margin-left: 10em;
+        }
+    #price_headers .feature {
+    	padding-right: 1em;
+        height: 3.3em;
+        }
+    #price_levels .price_panel {
+        width: 12em;
+        margin-right: 1em;
+        }
+        #price_levels .price_panel .feature {
+            font-family: arial;
+            font-size: 110%;
+            }
+    .price_panels {
+        margin: 1em;
+        }
+    .price_panel {
+        padding: 0.8em 0.1em;
+        }
+        .price_panel .header {
+            height: 7.8em;
+            }
+        .price_panel .header .et {
+            font-size: 200%;
+            color: rgb(0,161,225);
+            }
+        .price_panel .header .name {
+            font-size: 140%;
+            font-weight: bold;
+            color: rgb(253,130,4);
+            padding: 0.2em 0 0.2em 0;
+            }
+        .price_panel .header .price {
+            font-family: arial;
+            font-size: 125%;
+            font-weight: bold;
+            padding-bottom: 0.1em;
+            }
+        .price_panel .header :is( .users, .extra ) {
+            font-family: arial;
+            font-size: 80%;
+            line-height: 1;
+            }
+        .price_panel h2.inline {
+            display: none;
+            }
+        .price_panel .level {
+            display: none;
+            width: 1.8em;
+            }
+        .price_panel .desc {
+            height: 2.9em;
+            width: 100%;
+            padding: 0.6em;
+            }
+        .price_panel .feature {
+            height: 3em;
+            width: 100%;
+            color: white;
+            }
+            .price_panel .feature h2 {
+                font-size: 130%;
+                color: rgb(0,161,225);
+                width: 100%;
+                text-align: right;
+                }
+            .price_panel .feature .desc {
+                border-radius: 3px;
+                }
+
+            .price_panel.price_easy .feature .desc { background-image: linear-gradient( to right, rgba(107,192,72,0.12), rgba(107,192,72,0.16) ); }
+            .price_panel.price_biz .feature .desc { background-image: linear-gradient( to right, rgba(107,192,72,0.16), rgba(107,192,72,0.2) ); }
+
+            .price_panel.price_free .feature .desc { background-image: linear-gradient( var(--gradient), rgba(107,192,72,0.8), rgba(107,192,72,1) ); }
+            .price_panel.price_sb .feature .desc { background-image: linear-gradient( var(--gradient), rgba(107,192,72,0.8), rgba(107,192,72,1) ); }
+            .price_panel.price_sbpro .feature .desc { background-image: linear-gradient( var(--gradient), rgba(107,192,72,0.8), rgba(107,192,72,1) ); }
+
+            .price_panel .feature .sub {
+                width: 100%;
+                font-size: 80%;
+                text-align: center;
+                }
+    @media( max-width: {{ sb_options.breakpoints.width_small }}px ) {
+        #price_headers {
+            display: none;
+            }
+        #vue_price_panels .left_adjust {
+            margin-left: 0
+            }
+        #price_levels {
+            flex-wrap: wrap;
+            }
+            #price_levels .header {
+                flex-direction: row;
+                justify-content: space-evenly;
+                }
+            #price_levels .price_panel {
+                min-width: 20em;
+                max-width: 30em;
+                }
+        .price_panel .header {
+            height: 6em;
+            }
+        .price_panel .feature {
+            height: 2em;
+            color: rgb(88,89,107);
+            justify-content: space-between;
+            }
+        .price_panel .feature .desc {
+            background: none !important;
+            }
+        .price_panel .feature .sub {
+            text-align: left;
+            }
+        .price_panel h2.inline {
+            display: initial;
+            font-size: 100%;
+            max-width: 6em;
+            text-align: left;
+            }
+        #vue_customers .signup {
+            margin: 0.2em;
+            }
+        }
+
+    /* Features page  */
+
+	#vue_features {
+        padding: 1em 5vw;
+		}
+        #vue_features .vue_widget {
+			padding: 0.8em;
+			align-items: center;
+			}
+            #vue_features .vue_widget_title {
+				flex-direction: row;
+				align-items: center;
+				cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+				border-radius: 2px;
+				}
+			#vue_features .vue_widget_name {
+		        font-size: 110%;
+                font-weight: bold;
+		        padding: 1em;
+                min-width: 9em;
+                width: min-content;
+ 				}
+	        #vue_features .vue_widget_desc div {
+	        	text-align: center;
+				}
+	        #vue_features .f1 .vue_widget > div {
+	        	max-width: 20em;
+				}
+	        #vue_features .f2 .vue_widget > div {
+	        	max-width: 18em;
+				}
+	        #vue_features :is( .vue_f1, .vue_f2 ) {
+                display: flex;
+                justify-content: space-evenly;
+                flex-wrap: wrap;
+        		}
+            #vue_features .f1 .et {
+                font-size: 400%;
+		        padding: 0.2em;
+                color: rgb(107,192,72);
+                }
+            #vue_features .f2 .et {
+                font-size: 300%;
+		        padding: 0.2em;
+                color: rgb(253, 130, 4);
+                }
+    @media( max-width: {{ sb_options.breakpoints.width_small }}px ) {
+        #vue_features .vue_widget {
+			padding: 0.8em;
+			}
+        #vue_features .vue_widget_desc div {
+            text-align: justify;
+            }
+        }
+
+    /* Resources  */
+
+    #vue_resources {
+        padding: 2em 3em;
+        }
+    #vue_resources .es_heading.es_theme_panel {
+        padding: 0 1em 1em 0;
+        }
+    #vue_resources .es_heading .es_title1 {
+        font-size: 200%;
+        margin: 0;
+        }
+    #vue_resources .es_heading .es_item_text1 {
+        font-size: 120%;
+        }
+    #vue_resources .es_content_panel.es_theme_panel {
+        font-size: 120%;
+        }
+    #vue_resources .es_tabs .es_tabs_menu {
+        font-size: 120%;
+        }
+    #vue_resources .es_content_panel.es_theme_panel .es_items_container {
+        gap: 0.5em;
+        }
+
+    /* Signup page */
+
+    #vue_signup {
+        padding: 1em 1em 1em 4em;
+        }
+        #vue_signup > h1 {
+            font-weight: bold;
+            }
+        #vue_signup > h1,
+        #vue_signup .es_button_text {
+            font-size: 2em;
+            margin-top: 0.5em;
+            }
+        #vue_signup p {
+            font-size: 1.2em;
+            max-width: 66vw;
+            margin: 0.5em 0;
+            }
+        #vue_signup :is( .mp_input, select ) {
+            margin: 0.4em;
+            }
+   .signup_label {
+        margin: 0.8em 0 0 0.6em;
+        font-size: 1em;
+        font-weight: bold;
+        color: rgb(0, 161, 225);
+        width: 22em;
+        }
+       .signup_label .subdomain_url,
+       .signup_label.onboard_role span {
+            margin-left: 1em;
+            font-size: 90%;
+            font-weight: normal;
+            font-style: italic;
+            }
+    .signup_row {
+        display: flex;
+        align-items: center;
+        }
+        .signup_row input, .signup_row select {
+            font-family: 'Raleway', sans-serif;
+            font-size: 1.2em;
+            width: 16em;
+            min-width: 16em;
+            }
+        .signup_row .es_error_list {
+            font-size: 0.88em;
+            margin-left: 0.6em !important;
+            color: red !important;
+            transition: none;
+            }
+        .signup_row.onboard_role .mp_input {
+            border: 0px;
+            border-radius: 2px;
+            margin: 0 0 0 0.2em;
+            }
+        .signup_row .et {
+            color: rgb(107,192,72);
+            }
+    .es_field_valid_show {
+        font-size: 1.8em;
+        transition: none;
+        }
+    @media( max-width: {{ sb_options.breakpoints.width_small }}px ) {
+        #vue_signup {
+            padding: 1em;
+            font-size: 90%;
+            }
+        .signup_label {
+            width: 20em;
+            }
+        .signup_row input, .signup_row select {
+            font-size: 1.1em;
+            width: 14em;
+            min-width: 14em;
+            }
+        }
+
+</style>

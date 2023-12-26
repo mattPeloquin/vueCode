@@ -1,0 +1,164 @@
+{% extends 'admin/base_site.html' %}
+{%comment%}-- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Replace Admin change/add form
+
+{%endcomment%}
+
+{% load admin_urls admin_modify %}
+
+{% block page_ready_script %}
+    {{ block.super }}
+    {% include 'admin/change_form.html.js' %}
+{% endblock %}
+
+{% block top-nocache %}
+    {{ block.super}}
+    <div id="admin_top" class="mp_top_bar mp_flex mp_flex_vcenter mp_flex_nowrap">
+
+        {% include "admin/_/messages.html" %}
+        <div class="mp_width_full mp_flex_line mp_flex_between">
+
+            <div class="mp_flex_line mp_admin_title">
+                {% block admin_corner %}
+                {% endblock %}
+                <div>
+                    {% block admin_title %}
+                        {{ title }} {% if change %} - {{ original }} {% endif %}
+                        <div class="mp_help_staff">
+                            {% if not change and helptext_changeform_add %}
+                                {{ helptext_changeform_add | safe }}
+                            {% elif helptext_changeform %}
+                                {{ helptext_changeform | safe }}
+                            {% endif %}
+                            </div>
+                    {% endblock %}
+                    </div>
+                </div>
+
+            <div class="mp_admin_buttons mp_flex_line mp_flex_right">
+                {% if change and not is_popup %}
+                    {% if has_absolute_url %}
+                        <a href="{{ absolute_url }}" class="mp_button_text viewsitelink">
+                            View
+                            </a>
+                    {% endif %}
+                    {% if not is_view_only %}
+                        {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
+                        <a class="mp_admin_history mp_button_text"
+                                href="{% add_preserved_filters history_url %}"
+                                >
+                            History
+                            </a>
+                    {% endif %}
+                {% endif %}
+
+                {#-- This is outide the form, so need to replicate buttons #}
+                {% if not is_popup and can_copy and change %}
+                    <input value="Copy" type="button"
+                            class="mp_admin_copy mp_button_text"
+                            onclick="$('#mpsavecopy').click()" />
+                {% endif %}
+                {% if change and not is_popup and not is_view_only %}
+                    <input value="Save&nbsp;and&nbsp;continue" type="button"
+                            class="mp_button_text"
+                            onclick="$('#mpsavecontinue').click()" />
+                {% endif %}
+                {% include "admin/_/cancel.html" %}
+                {% if not is_view_only %}
+                    <input value="Save" type="button"
+                            class="mp_button mp_button_default"
+                            onclick="$('#mpsave').click()" />
+                {% endif %}
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
+{% block content %}
+
+    <div class="mp_admin_bar mp_flex
+            {% block admin_bar_class %}{% endblock %}"
+            data-content_id="{{ original.pk }}">
+        {% block admin_bar %}
+        {% endblock %}
+        </div>
+
+    <form class="mp_admin_form {% block admin_form_class %}{% endblock %}"
+            {% if has_file_field %}enctype="multipart/form-data" {% endif %}
+            action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form" novalidate
+            data-content_id="{{ original.pk }}"
+            >
+        {% csrf_token %}{% block form_top %}{% endblock %}
+        {% if is_popup %}<input type="hidden" name="_popup" value="1" />{% endif %}
+
+        {% if errors %}
+            <p class="errornote">Please correct the error{{ errors|pluralize }}</p>
+            <ul class="errorlist">{% for error in adminform.form.non_field_errors %}
+                <li>{{ error }}</li>
+                {% endfor %}</ul>
+        {% endif %}
+
+        {#-- Add each expandable section, which is a fieldset #}
+        {% block field_sets %}
+            {% for fieldset in adminform %}
+                {% include "admin/includes/fieldset.html" %}
+            {% endfor %}
+        {% endblock %}
+
+        {#-- Add inlines at the end, and then move them with JS #}
+        {% block inline_field_sets %}
+            {% for inline_admin_formset in inline_admin_formsets %}
+                {% include inline_admin_formset.opts.template %}
+            {% endfor %}
+        {% endblock %}
+
+        {% block after_related_objects %}{% endblock %}
+
+        {#-- HACK - Make the ugly redirecting through the page more palatable #}
+        {% if admin_copy_request %}
+            <div class="mp_admin_copymessage mp_flex mp_flex_center mp_flex_vcenter">
+                </div>
+        {% endif %}
+
+        {% block submit_buttons_bottom %}
+            {#-- Override Django form submits with custom behavior #}
+            <footer class="mp_module submit_row">
+                <div class="mp_admin_buttons mp_flex_line">
+                    {% if change and can_delete %}
+                        <a href="delete/" class="mp_admin_delete">Delete</a>
+                    {% endif %}
+                    {% if change and can_copy %}
+                        <input id="mpsavecopy" type="submit" name="_saveasnew"
+                                class="mp_admin_copy mp_button_flat"
+                                onclick="mp.admin_copy_start_fixup()"
+                                value="Copy"
+                                />
+                    {% endif %}
+                    {% if add and has_add_permission and not is_popup %}
+                        <input type="submit" value="Save and add another"
+                                class="mp_button_flat" name="_addanother" />
+                    {% endif %}
+                    {% if change and not is_popup and not is_view_only %}
+                        <input id="mpsavecontinue" type="submit" name="_continue"
+                                class="mp_button_flat"
+                                onclick="mp._save_continue_{{ opts.model_name }}=true"
+                                value="Save&nbsp;and&nbsp;continue"
+                                />
+                    {% endif %}
+                    {% include "admin/_/cancel.html" %}
+                    {% if not is_view_only %}
+                        <input id="mpsave" type="submit" name="_save"
+                                class="mp_button mp_button_default"
+                                onclick="mp.admin_submit_form()"
+                                value="Save"
+                                />
+                    {% endif %}
+                    </div>
+                </footer>
+        {% endblock %}
+
+        {% prepopulated_fields_js %}
+
+    </form>
+{% endblock %}

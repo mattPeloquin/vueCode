@@ -1,0 +1,82 @@
+/*--- Mesa Platform, Copyright 2021 Vueocity, LLC
+
+    Default styling
+
+ */
+
+.es_theme_background
+    background-color: $cWhite
+.es_theme_popup
+    background-color: $cWhite
+
+// Menu
+.es_menu
+    padding: 0.2em
+    background-color: $cWhite
+    .mp_menu_item, .mp_menu_control
+        padding: 0.4em 0.4em 0.1em 0
+        > div
+            text-align: center
+.es_menu_page
+    flex-direction: row
+    .mp_menu_item, .mp_menu_control
+        margin-left: 0.9em
+        .es_menu_text
+            font-size: 80%
+.es_menu_text
+    padding-left: 0.3em
+
+// Force indent bullet lists
+.es_theme_root, .es_theme_popup, .es_theme_editor
+    ul
+        margin-left: 1.5em
+
+// Dialog boxes
+.es_dialog_wrapper
+    &.es_dialog_modal
+        z-index: 9
+        position: fixed
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+    .es_dialog_box
+        z-index: 6
+        position: fixed
+        left: 17vw
+        right: 17vw
+    .es_dialog_body
+        padding: 0.5em 0.1em 0.1em 0.1em
+.es_width_large .es_dialog_wrapper .es_dialog_box
+    left: 25vw
+    right: 25vw
+.es_width_xlarge .es_dialog_wrapper .es_dialog_box
+    left: 33vw
+    right: 33vw
+
+// User bar, typically at screen top
+.es_user_bar
+    z-index: 600 !important      // Make user bar play nice with menus
+    &.mp_top_bar
+        position: fixed
+        margin: 0
+        left: 0
+        right: 0
+        border-radius: 0px
+    .es_user_bar_menus
+        width: 100%
+        & :is( .es_top_ga, .es_top_user )
+            padding-right: 1em
+            .mp_ga_menu
+                position: relative
+    .es_button_text
+        padding-right: 0.5em
+        .fa
+            font-size: 130%
+            text-shadow: none
+    .es_top_user
+        .mp_user_name
+            text-align: right
+    .es_menu
+        right: 0
+        left: auto

@@ -1,0 +1,285 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#   Sitebuilder test data, mostly for ad hoc manual UI testing
+
+#--------------------------------------------------------------------
+# Dummy template for admin auto testing - needs to be first id, and not provider_optional
+
+- fields:
+    name: test
+    template_type: S
+    code_prod: TEST TEMPLATE
+  model: sitebuilder.templatecustom
+  pk: 1
+
+#-----------------------------------------------------
+# Themes
+
+- fields:
+    name: Base theme - all defaults
+  model: sitebuilder.theme
+  pk: 10
+- fields:
+    name: Test theme 1 - items
+    frame_site: 10
+    _font: 10
+    _color: 30
+    _color2: 31
+    _style: 40
+    _mixin: 50
+    sb_options:
+      test: test_option
+  model: sitebuilder.theme
+  pk: 11
+- fields:
+    name: Test theme 2 - drill collections
+  model: sitebuilder.theme
+  pk: 12
+
+#--------------------------------------------------------
+# Frames
+
+- fields:
+    name: Item scroll
+    _script_name: default_frame
+    frame_type: P
+    simple_pane: 201
+    sb_options:
+      banner:
+        login: true
+        viewer: true
+        popup: true
+        hide_portal: true
+  model: sitebuilder.frame
+  pk: 10
+
+- fields:
+    name: Collection drill
+    frame_type: P
+    structure:
+      pane:
+        template: pane_drill
+        sb_options:
+          ui:
+            text_empty: Put some damn content in here
+          portal:
+            expandable: true
+  model: sitebuilder.frame
+  pk: 11
+
+#--------------------------------------------------------------------
+# Theme templates
+
+- fields:
+    name: font_test
+    template_type: A
+    orig_path: "_custom/theme/font_test.html"
+    staff_level: 90
+  model: sitebuilder.templatecustom
+  pk: 10
+- fields:
+    name: font_classic
+    template_type: A
+    orig_path: "_custom/theme/font_classic.html"
+  model: sitebuilder.templatecustom
+  pk: 20
+- fields:
+    name: font_fun
+    template_type: A
+    orig_path: "_custom/theme/font_fun.html"
+  model: sitebuilder.templatecustom
+  pk: 21
+
+- fields:
+    name: color_test1
+    template_type: C
+    orig_path: "_custom/theme/color_test1.html"
+    staff_level: 90
+  model: sitebuilder.templatecustom
+  pk: 30
+- fields:
+    name: color_test2
+    template_type: C
+    orig_path: "_custom/theme/color_test2.html"
+    staff_level: 90
+  model: sitebuilder.templatecustom
+  pk: 31
+- fields:
+    name: Basic white background
+    _script_name: color_basic
+    template_type: C
+    orig_path: "_custom/theme/color_basic.html"
+  model: sitebuilder.templatecustom
+  pk: 32
+- fields:
+    name: color_vueocity
+    _script_name: color_vueocity
+    template_type: C
+    orig_path: "_custom/theme/color_vueocity.html"
+  model: sitebuilder.templatecustom
+  pk: 34
+- fields:
+    name: color_vuedark
+    template_type: C
+    orig_path: "_custom/theme/color_vuedark.html"
+  model: sitebuilder.templatecustom
+  pk: 36
+
+- fields:
+    name: style_test
+    template_type: B
+    orig_path: "_custom/theme/style_test.html"
+    staff_level: 90
+  model: sitebuilder.templatecustom
+  pk: 40
+- fields:
+    name: style_flat
+    template_type: B
+    orig_path: "_custom/theme/style_flat.html"
+  model: sitebuilder.templatecustom
+  pk: 42
+- fields:
+    name: style_classic
+    template_type: B
+    orig_path: "_custom/theme/style_classic.html"
+  model: sitebuilder.templatecustom
+  pk: 44
+- fields:
+    name: style_material
+    template_type: B
+    orig_path: "_custom/theme/style_material.html"
+  model: sitebuilder.templatecustom
+  pk: 46
+- fields:
+    name: style_rounded
+    template_type: B
+    orig_path: "_custom/theme/style_rounded.html"
+  model: sitebuilder.templatecustom
+  pk: 48
+
+- fields:
+    name: mixin_test
+    template_type: D
+    orig_path: "_custom/theme/mixin_test.html"
+    staff_level: 90
+  model: sitebuilder.templatecustom
+  pk: 50
+- fields:
+    name: Float the user menu
+    _script_name: mixin_user_float
+    template_type: D
+    orig_path: "_custom/theme/mixin_user_float.html"
+  model: sitebuilder.templatecustom
+  pk: 54
+- fields:
+    name: Big content
+    _script_name: mixin_content_big
+    template_type: D
+    orig_path: "_custom/theme/mixin_content_big.html"
+  model: sitebuilder.templatecustom
+  pk: 56
+- fields:
+    name: Small content
+    _script_name: mixin_content_small
+    template_type: D
+    orig_path: "_custom/theme/mixin_content_small.html"
+  model: sitebuilder.templatecustom
+  pk: 58
+
+#--------------------------------------------------------------------
+# Templates
+
+- fields:
+    name: dialog
+    template_type: Y
+    orig_path: "_custom/platform/dialog.html"
+  model: sitebuilder.templatecustom
+  pk: 110
+
+- fields:
+    name: user_bar
+    template_type: Z
+    orig_path: "_custom/platform/user_bar.html"
+  model: sitebuilder.templatecustom
+  pk: 121
+- fields:
+    name: user_menus
+    template_type: Z
+    orig_path: "_custom/platform/user_menus.html"
+  model: sitebuilder.templatecustom
+  pk: 122
+- fields:
+    name: user_signin
+    template_type: Z
+    orig_path: "_custom/platform/user_signin.html"
+  model: sitebuilder.templatecustom
+  pk: 123
+
+- fields:
+    name: platform_messages
+    template_type: Z
+    orig_path: "_custom/platform/messages.html"
+  model: sitebuilder.templatecustom
+  pk: 130
+
+- fields:
+    name: user_terms
+    template_type: Z
+    code_prod: User terms test data
+  model: sitebuilder.templatecustom
+  pk: 198
+
+- fields:
+    name: user_terms_preamble
+    template_type: Z
+    code_prod: User terms preamble test data
+  model: sitebuilder.templatecustom
+  pk: 199
+
+#--------------------------------------------------------------------
+# User display/communication
+
+- fields:
+    name: email_css
+    template_type: E
+    orig_path: "_custom/email/shared_css.html"
+  model: sitebuilder.templatecustom
+  pk: 170
+
+- fields:
+    name: email_welcome
+    template_type: E
+    orig_path: "_custom/email/welcome.html"
+  model: sitebuilder.templatecustom
+  pk: 171
+
+- fields:
+    name: email_reset_password
+    template_type: E
+    orig_path: "_custom/email/reset_password.html"
+  model: sitebuilder.templatecustom
+  pk: 172
+
+- fields:
+    name: email_customer_purchase
+    template_type: E
+    orig_path: "_custom/email/purchase.html"
+  model: sitebuilder.templatecustom
+  pk: 175
+
+#--------------------------------------------------------------------
+# Custom template tests
+
+- fields:
+    name: Test viewer
+    _script_name: viewer_test
+    template_type: F
+    notes: Viewer frame for admin introspection tests
+    code_prod: |
+
+        <div class="es_viewer">
+          THIS IS A CUSTOM VIEWER TEST
+            </div>
+
+  model: sitebuilder.templatecustom
+  pk: 920

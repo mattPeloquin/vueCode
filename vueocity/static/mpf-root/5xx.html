@@ -1,0 +1,21 @@
+{% extends 'static/page.html' %}
+{%comment%}-- Copyright 2021 Vueocity, LLC
+
+    Vueocity default 500 page
+
+{%endcomment%}
+
+{% block static_title %}{{ settings.MP_UI_TEXT.root_name }} error{% endblock %}
+
+{% block static_body %}
+
+    <h1>We're Sorry...</h1>
+    <p>There is a temporary problem with this site</p>
+
+    <p>
+        If this continues
+        <a href="mailto:support@vueocity.com?subject=Server Error">please let us know.</a>
+        </p>
+
+{% endblock %}
+

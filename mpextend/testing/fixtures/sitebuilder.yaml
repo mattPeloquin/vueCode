@@ -1,0 +1,141 @@
+#--- Mesa Platform, Copyright 2021 Vueocity, LLC
+#
+#  mpExtend sitebuilder test data
+
+
+- fields:
+    name: Extend theme 1 - drill
+    frame_site: 100
+    sb_options:
+      test: test_option
+      portal:
+        hero_style: MAX:20vh
+  model: sitebuilder.theme
+  pk: 100
+- fields:
+    name: Extend theme 2 - tabs
+    frame_site: 110
+  model: sitebuilder.theme
+  pk: 101
+
+#--------------------------------------------------------
+# Frames
+
+- fields:
+    name: CardPages
+    frame_type: P
+    structure:
+       pane:
+         template: pane_drill
+    sb_options:
+      test: True
+  model: sitebuilder.frame
+  pk: 100
+
+- fields:
+    name: TabsLeft
+    frame_type: P
+    simple_pane: 311
+    structure:
+      pane:
+        sb_options:
+          site:
+            show_extra_help: true
+          portal:
+            pane_tabs: es_tabs_side
+            no_breadcrumbs: true
+            collection_no_top: true
+            collection_right: true
+  model: sitebuilder.frame
+  pk: 110
+
+- fields:
+    name: TabsTop
+    frame_type: P
+    structure:
+      pane:
+        template: pane_tabs
+        sb_options:
+          portal:
+            no_home: true
+            collection_no_top: true
+  model: sitebuilder.frame
+  pk: 111
+
+- fields:
+    name: CollectionPage default
+    frame_type: C
+    _script_name: default_frame
+    structure:
+      pane:
+        template: panecollection_page
+  model: sitebuilder.frame
+  pk: 120
+- fields:
+    name: CollectionPage viewer
+    frame_type: C
+    _script_name: collectionpage_viewer
+    structure:
+      pane:
+        template: panecollection_page
+        options:
+          panel_template: panel_viewer
+  model: sitebuilder.frame
+  pk: 122
+
+- fields:
+    name: ItemPage card embed
+    frame_type: I
+    _script_name: default_frame
+    structure:
+      frame_template: content_item.html
+      pane:
+        template: paneitem_page
+        options:
+          item_template: item_card
+  model: sitebuilder.frame
+  pk: 130
+- fields:
+    name: ItemPage
+    frame_type: I
+    _script_name: itempage_frame
+    structure:
+      pane:
+        template: paneitem_page
+  model: sitebuilder.frame
+  pk: 132
+
+
+#--------------------------------------------------------------------
+# Landing page tests
+
+- fields:
+    _name: Test public file
+    sandbox: 20
+    filename: P1BuddyLax.jpg
+  model: sitebuilder.publicfile
+  pk: 10
+
+- fields:
+    sandbox: 20
+    title: Landing page test
+    url: test/landing
+  model: sitebuilder.landingpage
+  pk: 10
+
+- fields:
+    sandbox: 20
+    name: Webhook test
+    url: test/webhook
+  model: sitebuilder.webhook
+  pk: 10
+
+#--------------------------------------------------------------------
+# Platform templates
+
+- fields:
+    name: coupon_redeem
+    template_type: Z
+    orig_path: "_custom/platform/coupon_redeem.html"
+  model: sitebuilder.templatecustom
+  pk: 181
